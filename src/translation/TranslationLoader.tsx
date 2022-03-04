@@ -9,12 +9,12 @@ export interface ITranslationLoaderProps extends Partial<ILoaderLayoutProps<ITra
 }
 
 export const TranslationLoader: FC<ITranslationLoaderProps> = ({useQuery, logo, ...props}) => {
-	if (!useQuery) {
-		return <>{props.children}</>
-	}
-	const result = useQuery();
+	const result = useQuery?.();
 	const {i18next} = useI18NextContext();
 	const [isLoading, setIsLoading] = useState(true);
+	if (!result) {
+		return <>{props.children}</>
+	}
 	useEffect(() => {
 		if (result.isSuccess) {
 			result.data.bundles.forEach(translations => i18next.addResources(translations.language, translations.namespace, translations.translations));

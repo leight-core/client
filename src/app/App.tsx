@@ -3,19 +3,7 @@ import {FC, ReactNode} from "react";
 import {CookiesProvider} from "react-cookie";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from "react-query/devtools";
-import {
-	bootstrap,
-	DayjsProvider,
-	I18NextProvider,
-	IResponsiveProviderProps,
-	LayoutBlockProvider,
-	LinkProvider,
-	MenuSelectionProvider,
-	ResponsiveContext,
-	ResponsiveProvider,
-	SiderCollapseProvider,
-	TranslationLoader
-} from "@leight-core/client";
+import {DayjsProvider, I18NextProvider, IResponsiveProviderProps, LayoutBlockProvider, LinkProvider, MenuSelectionProvider, ResponsiveContext, ResponsiveProvider, SiderCollapseProvider, TranslationLoader} from "@leight-core/client";
 import {ITranslationsQuery} from "@leight-core/api";
 
 export interface IAppProps {
@@ -47,7 +35,6 @@ export const App: FC<IAppProps> = (
 		defaultCollapsed,
 		...props
 	}) => {
-	bootstrap();
 	return <QueryClientProvider client={queryClient}>
 		<ResponsiveProvider {...responsiveProviderProps}>
 			<DayjsProvider dayjs={dayjs}>
