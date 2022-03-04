@@ -47,10 +47,10 @@ export const bootstrapLocale = async (language: string): Promise<ILocaleConfig> 
 	return new Promise<{ antd: any }>(resolver => {
 		import(`dayjs/locale/${locale.short}.js`)
 			.then(() => dayjs.locale(locale.short))
-			.catch(_ => console.log(`Cannot import [dayjs/locale/${locale.short}.js].`));
+			.catch(() => console.log(`Cannot import [dayjs/locale/${locale.short}.js].`));
 		import(`moment/locale/${locale.short}.js`)
 			.then(() => moment.locale(locale.short))
-			.catch(_ => console.log(`Cannot import [moment/locale/${locale.short}.js].`));
+			.catch(() => console.log(`Cannot import [moment/locale/${locale.short}.js].`));
 		import(`antd/lib/locale/${locale.long}.js`)
 			.then(antd => resolver({antd: antd.default}))
 			.catch(e => {

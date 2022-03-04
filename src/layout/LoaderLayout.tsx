@@ -4,14 +4,14 @@ import {Card, Col, Divider, Layout, LayoutProps, Result, Row, Typography} from "
 import {PropsWithChildren, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface ILoaderLayoutProps<TResult> extends Partial<LayoutProps> {
+export interface ILoaderLayoutProps<TResult = void> extends Partial<LayoutProps> {
 	logo?: ReactNode;
 	icon: ReactNode;
 	result?: TResult;
 	loading: boolean;
 	isError?: boolean;
 	errorText?: string;
-	children: ReactNode | ((result: TResult) => ReactNode);
+	children?: ReactNode | ((result: TResult) => ReactNode);
 }
 
 export const LoaderLayout = <TResult, >({logo, icon, result, errorText, loading, isError, children, ...props}: PropsWithChildren<ILoaderLayoutProps<TResult>>) => {
@@ -42,6 +42,6 @@ export const LoaderLayout = <TResult, >({logo, icon, result, errorText, loading,
 				</Col>
 			</Row>
 		</Layout>}
-		{result && isCallable(result) ? (children as any)(result) : children}
+		{!loading && result && isCallable(result) ? (children as any)(result) : children}
 	</>;
 };
