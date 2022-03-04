@@ -1,9 +1,9 @@
 import {TranslationOutlined} from "@ant-design/icons";
 import {FC, ReactNode, useEffect, useState} from "react";
 import {ILoaderLayoutProps, LoaderLayout, useI18NextContext} from "@leight-core/client";
-import {ITranslations, ITranslationsQuery} from "@leight-core/api";
+import {ITranslationBundle, ITranslationsQuery} from "@leight-core/api";
 
-export interface ITranslationLoaderProps extends Partial<ILoaderLayoutProps<ITranslations>> {
+export interface ITranslationLoaderProps extends Partial<ILoaderLayoutProps<ITranslationBundle>> {
 	useQuery?: ITranslationsQuery;
 	logo?: ReactNode;
 }
@@ -17,7 +17,7 @@ export const TranslationLoader: FC<ITranslationLoaderProps> = ({useQuery, logo, 
 	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {
 		if (result.isSuccess) {
-			i18next.addResources(result.data.language, result.data.namespace, result.data.translations);
+			result.data.bundles.forEach(translations => i18next.addResources(translations.language, translations.namespace, translations.translations));
 			setIsLoading(false);
 		}
 	}, [result.isSuccess, result.data]);
