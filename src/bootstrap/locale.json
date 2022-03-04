@@ -1,0 +1,26 @@
+{
+	"cs": {
+		"short": "cs",
+		"long": "cs_CZ"
+	},
+	"cs_CZ": {
+		"short": "cs",
+		"long": "cs_CZ"
+	},
+	"en": {
+		"short": "en",
+		"long": "en_US"
+	},
+	"en_US": {
+		"short": "en",
+		"long": "en_US"
+	},
+	"de": {
+		"short": "de",
+		"long": "de_DE"
+	},
+	"ru": {
+		"short": "ru",
+		"long": "ru_RU"
+	}
+}
