@@ -1,0 +1,60 @@
+{
+	"version": "0.5.0",
+	"name": "@leight-core/client",
+	"description": "All that shiny client stuff.",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/leight-core/client.git"
+	},
+	"engines": {
+		"node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+	},
+	"sideEffects": false,
+	"main": "lib/cjs/index.js",
+	"module": "lib/esm/index.js",
+	"files": [
+		"lib"
+	],
+	"scripts": {
+		"lint": "eslint src",
+		"build": "npm run lint && tsc -p tsconfig.json && tsc -p tsconfig.json -m es6 --outDir lib/esm"
+	},
+	"dependencies": {
+		"@leight-core/api": "^0.5.25",
+		"react-i18next": "^11.15.5",
+		"react-cookie": "^4.1.1",
+		"react-query": "^3.34.16",
+		"axios": "^0.26.0",
+		"axios-retry": "^3.2.4",
+		"@fingerprintjs/fingerprintjs": "^3.3.3",
+		"deepmerge": "^4.2.2",
+		"is-string": "^1.0.7",
+		"is-callable": "^1.2.4",
+		"raw-body": "^2.5.1",
+		"cancelable-promise": "^4.2.1",
+		"react-device-detect": "^2.1.2",
+		"path-to-regexp": "^6.2.0",
+		"humanize-duration": "^3.27.1",
+		"filesize": "^8.0.7"
+	},
+	"peerDependencies": {
+		"antd": "^4.18.9",
+		"react": "^17.0.2",
+		"next": "^12.1.0"
+	},
+	"devDependencies": {
+		"antd": "^4.18.9",
+		"next": "^12.1.0",
+		"@types/node": "^17.0.21",
+		"@types/react": "^17.0.39",
+		"@types/is-string": "^1.0.0",
+		"@types/is-callable": "^1.1.0",
+		"@types/humanize-duration": "^3.27.1",
+		"eslint": "^8.10.0",
+		"@typescript-eslint/eslint-plugin": "^5.13.0",
+		"@typescript-eslint/parser": "^5.13.0",
+		"eslint-plugin-unicorn": "^41.0.0",
+		"typescript": "^4.6.2"
+	}
+}
