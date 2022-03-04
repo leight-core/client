@@ -17,7 +17,7 @@ export const TranslationLoader: FC<ITranslationLoaderProps> = ({useQuery, logo, 
 	}
 	useEffect(() => {
 		if (result.isSuccess) {
-			result.data.bundles.forEach(bundle => bundle.translations.forEach(translation => i18next.addResource(bundle.language, bundle.namespace, translation.key, translation.value)));
+			result.data.bundles.forEach(bundle => bundle.translations.forEach(translation => i18next.addResource(bundle.language, bundle.namespace || 'translation', translation.key, translation.value)));
 			setIsLoading(false);
 		}
 	}, [result.isSuccess, result.data]);
