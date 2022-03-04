@@ -52,6 +52,7 @@ export const toPromise = <TRequest, TResponse>(method: Method, url: string, requ
  * Create react-query hook (~ needs to be used as a hook).
  */
 export function createQueryHook<TRequest, TResponse, TQuery extends IQueryParams = IQueryParams>(link: string, method: Method): IQueryHook<TRequest, TResponse, TQuery> {
+	console.log('query hoook', link);
 	return (request?, query?, options?, config?) => useQuery([link, {query, request}], () => toPromise<TRequest, TResponse>(method, useLinkContext().link(link, query), request, config), options);
 }
 

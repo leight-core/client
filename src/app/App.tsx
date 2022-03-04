@@ -16,10 +16,11 @@ import {
 	SiderCollapseProvider,
 	TranslationLoader
 } from "@leight-core/client";
+import {ITranslationsQuery} from "@leight-core/api";
 
 export interface IAppProps {
 	logo?: ReactNode;
-	translationLink?: string;
+	useTranslationQuery?: ITranslationsQuery;
 	queryClient: QueryClient;
 	dayjs: any;
 	i18next: i18n;
@@ -38,7 +39,7 @@ export interface IAppProps {
 export const App: FC<IAppProps> = (
 	{
 		logo,
-		translationLink = "/api/shared/translation",
+		useTranslationQuery,
 		dayjs,
 		i18next,
 		queryClient,
@@ -53,7 +54,7 @@ export const App: FC<IAppProps> = (
 				<I18NextProvider i18next={i18next}>
 					<LinkProvider>
 						<CookiesProvider>
-							<TranslationLoader link={translationLink} logo={logo}>
+							<TranslationLoader useQuery={useTranslationQuery} logo={logo}>
 								<ResponsiveContext.Consumer>
 									{browserContext => <SiderCollapseProvider defaultCollapsed={defaultCollapsed !== undefined ? defaultCollapsed : !browserContext.isMobile()}>
 										<MenuSelectionProvider>

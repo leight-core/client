@@ -1,17 +1,18 @@
 import {TranslationOutlined} from "@ant-design/icons";
 import {FC, ReactNode, useEffect, useState} from "react";
-import {LoaderLayout, useI18NextContext, useTranslationQuery} from "@leight-core/client";
+import {LoaderLayout, useI18NextContext} from "@leight-core/client";
+import {ITranslationsQuery} from "@leight-core/api";
 
 export interface ITranslationLoaderProps {
+	useQuery?: ITranslationsQuery;
 	logo?: ReactNode;
-	/**
-	 * Which link from Discovery index should be used to retrieve translations.
-	 */
-	link: string;
 }
 
-export const TranslationLoader: FC<ITranslationLoaderProps> = ({logo, link, ...props}) => {
-	const result = useTranslationQuery(link)();
+export const TranslationLoader: FC<ITranslationLoaderProps> = ({useQuery, logo, ...props}) => {
+	if (!useQuery) {
+		return <>{props.children}</>
+	}
+	const result = useQuery();
 	const {i18next} = useI18NextContext();
 	const [isLoading, setIsLoading] = useState(true);
 	useEffect(() => {
