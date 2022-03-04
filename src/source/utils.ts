@@ -52,12 +52,17 @@ export const toPromise = <TRequest, TResponse>(method: Method, url: string, requ
  * Create react-query hook (~ needs to be used as a hook).
  */
 export function createQueryHook<TRequest, TResponse, TQuery extends IQueryParams = IQueryParams>(link: string, method: Method): IQueryHook<TRequest, TResponse, TQuery> {
-	console.log('query hoook', link);
-	return (request?, query?, options?, config?) => useQuery([link, {query, request}], () => toPromise<TRequest, TResponse>(method, useLinkContext().link(link, query), request, config), options);
+	return (request?, query?, options?, config?) => {
+		const linkContext = useLinkContext();
+		return useQuery([link, {query, request}], () => toPromise<TRequest, TResponse>(method, linkContext.link(link, query), request, config), options)
+	};
 }
 
 export function createMutationHook<TRequest, TResponse, TQuery extends IQueryParams = IQueryParams>(link: string, method: Method): IMutationHook<TRequest, TResponse, TQuery> {
-	return (query?, options?, config?) => useMutation<TResponse, any, TRequest>(["mutation", link, {query}], request => toPromise<TRequest, TResponse>(method, useLinkContext().link(link, query), request, config), options);
+	return (query?, options?, config?) => {
+		const linkContext = useLinkContext();
+		return useMutation<TResponse, any, TRequest>(["mutation", link, {query}], request => toPromise<TRequest, TResponse>(method, linkContext.link(link, query), request, config), options)
+	};
 }
 
 /**
