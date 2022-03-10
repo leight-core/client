@@ -9,10 +9,6 @@ const humanizer = humanizeDuration.humanizer({
 	maxDecimalPoints: 2,
 });
 
-export const miliDuration = (milis: number | string, options?: Options) => {
-	return humanizer(parseFloat(milis as any), options);
-};
+export const toHumanTimeMs = (miliseconds: number | string, options?: Options) => humanizer(parseFloat(miliseconds as any), options);
 
-export const secDuration = (secs: number | string, options?: Options) => {
-	return miliDuration(parseFloat(secs as any) * 1000, options);
-};
+export const toHumanTimeSec = (secs: number | string, options?: Options) => toHumanTimeMs(parseFloat(secs as any) * 1000, options);
