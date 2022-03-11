@@ -43,7 +43,10 @@ export const Table = <TResponse extends object, TFilter extends IFilter | void =
 			}}
 			size={"large"}
 			locale={{emptyText: <Empty description={t("common.nothing-found")}/>}}
-			pagination={sourceContext.pagination()}
+			pagination={{
+				...sourceContext.pagination(),
+				position: ['bottomRight'],
+			}}
 			onChange={((pagination: TablePaginationConfig, filters: Record<keyof TResponse, FilterValue | null>, sorter: SorterResult<TResponse> | SorterResult<TResponse>[]) => {
 				const orderBy: IndexOf<any> = {};
 				((isArray(sorter) ? sorter : [sorter]) as SorterResult<TResponse>[]).forEach(sorter => {

@@ -54,8 +54,8 @@ export const SourceProvider = <TResponse, TFilter extends IFilter | void = void,
 	{
 		useQuery,
 		live = false,
-		defaultPage = 0,
-		defaultSize = 10,
+		defaultPage,
+		defaultSize,
 		defaultOrderBy,
 		defaultFilter,
 		defaultQuery,
@@ -63,11 +63,11 @@ export const SourceProvider = <TResponse, TFilter extends IFilter | void = void,
 		...props
 	}: PropsWithChildren<ISourceProviderProps<TResponse, TFilter, TOrderBy, TQuery>>
 ) => {
-	const [page, setPage] = useState<number>(defaultPage);
+	const [page, setPage] = useState(defaultPage);
 	const [orderBy, setOrderBy] = useState<TOrderBy | undefined>(merge<TOrderBy, TOrderBy>(defaultOrderBy || {}, props.orderBy || {}));
 	const [filter, setFilter] = useState<TFilter | undefined>(merge<TFilter, TFilter>(defaultFilter || {}, props.filter || {}));
 	const [query, setQuery] = useState<TQuery | undefined>(merge<TQuery, TQuery>(defaultQuery || {}, props.query || {}));
-	const [size, setSize] = useState<number>(defaultSize);
+	const [size, setSize] = useState(defaultSize);
 
 	const result = useQuery({
 		size,
@@ -101,12 +101,11 @@ export const SourceProvider = <TResponse, TFilter extends IFilter | void = void,
 			setFilter: filter => setFilter({...filter, ...props.filter}),
 			query,
 			setQuery: query => setQuery({...query, ...props.query}),
-			mergeQuery: input => setQuery({...query, ...input, ...props.query}),
 			pagination: function () {
 				return result.isSuccess ? {
 					size: "small",
 					responsive: true,
-					current: page + 1,
+					current: (page || 0) + 1,
 					total: result.data.total,
 					pageSize: result.data.size,
 					defaultPageSize: result.data.size,
