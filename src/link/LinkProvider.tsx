@@ -25,7 +25,7 @@ export const LinkProvider: FC<ILinkProviderProps> = props => {
 
 	return <LinkContext.Provider
 		value={{
-			link<TQuery extends IQueryParams = IQueryParams>(href: string, query?: TQuery): string {
+			link<TQuery extends IQueryParams | void = void>(href: string, query?: TQuery): string {
 				return href === "/" ? href : generator(href)(query, {pretty: true});
 			}
 		}}

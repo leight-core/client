@@ -3,36 +3,36 @@ import {Empty, List, ListProps, Table as CoolTable, TablePaginationConfig, Table
 import {FilterValue, SorterResult} from "antd/lib/table/interface";
 import React, {ReactNode} from "react";
 import {useTranslation} from "react-i18next";
-import {IndexOf, IQueryParams, IRecordItem, ISourceContext, ITableChildrenCallback, ITableToFilterCallback} from "@leight-core/api";
+import {IFilter, IndexOf, IOrderBy, IQueryParams, IRecordItem, ISourceContext, ITableChildrenCallback, ITableToFilterCallback} from "@leight-core/api";
 
-export interface ITableProps<TResponse, TQuery extends IQueryParams = IQueryParams, TOrderBy = void, TFilter = void> extends Omit<TableProps<TResponse>, "footer"> {
-	header?: (sourceContext: ISourceContext<TResponse, TQuery, TOrderBy, TFilter>) => ReactNode;
-	footer?: (sourceContext: ISourceContext<TResponse, TQuery, TOrderBy, TFilter>) => ReactNode;
-	children?: ITableChildrenCallback<TResponse, TQuery, TOrderBy, TFilter> | ReactNode;
+export interface ITableProps<TResponse, TFilter extends IFilter | void = void, TOrderBy extends IOrderBy | void = void, TQuery extends IQueryParams | void = void> extends Omit<TableProps<TResponse>, "footer"> {
+	header?: (sourceContext: ISourceContext<TResponse, TFilter, TOrderBy, TQuery>) => ReactNode;
+	footer?: (sourceContext: ISourceContext<TResponse, TFilter, TOrderBy, TQuery>) => ReactNode;
+	children?: ITableChildrenCallback<TResponse, TFilter, TOrderBy, TQuery> | ReactNode;
 	toFilter?: ITableToFilterCallback<TResponse, TFilter>;
 	listItemRender?: (item: TResponse) => ReactNode;
 	listProps?: ListProps<TResponse>;
 	forceList?: boolean;
 }
 
-export const Table = <TResponse extends object, TQuery extends IQueryParams = IQueryParams, TOrderBy = void, TFilter = void>(
+export const Table = <TResponse extends object, TFilter extends IFilter | void = void, TOrderBy extends IOrderBy | void = void, TQuery extends IQueryParams | void = void>(
 	{
 		children,
 		header,
 		footer,
 		forceList = false,
-		toFilter = () => null,
+		toFilter = () => undefined,
 		listItemRender,
 		listProps,
 		...props
-	}: ITableProps<TResponse, TQuery, TOrderBy, TFilter>) => {
+	}: ITableProps<TResponse, TFilter, TOrderBy, TQuery>) => {
 	const {t} = useTranslation();
 	const isMobile = useIsMobile();
-	const sourceContext = useSourceContext<TResponse, TQuery, TOrderBy, TFilter>();
+	const sourceContext = useSourceContext<TResponse, TFilter, TOrderBy, TQuery>();
 	if (header && !props.title) {
 		props.title = () => header(sourceContext);
 	}
-	return (!isMobile && !forceList) ? <CoolTable
+	return (!isMobile && !forceList) ? <CoolTable<TResponse>
 			style={{minHeight: "50vh"}}
 			showSorterTooltip={false}
 			dataSource={sourceContext.result.isSuccess ? sourceContext.result.data.items : []}
@@ -55,7 +55,7 @@ export const Table = <TResponse extends object, TQuery extends IQueryParams = IQ
 			footer={() => footer?.(sourceContext)}
 			{...props}
 		>
-			{isCallable(children) ? (children as ITableChildrenCallback<TResponse, TQuery, TOrderBy, TFilter>)({
+			{isCallable(children) ? (children as ITableChildrenCallback<TResponse, TFilter, TOrderBy, TQuery>)({
 				column: (props: any) => {
 					if (isString(props.title)) {
 						props.title = t(props.title as string);

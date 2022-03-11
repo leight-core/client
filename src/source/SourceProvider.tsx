@@ -1,13 +1,13 @@
 import {merge, SourceContext} from "@leight-core/client";
-import {IQuery, IQueryHook, IQueryParams, IQueryResult} from '@leight-core/api';
+import {IFilter, IOrderBy, IQuery, IQueryHook, IQueryParams, IQueryResult} from '@leight-core/api';
 import {PropsWithChildren, useEffect, useState} from "react";
 import {UseQueryOptions} from "react-query";
 
-export interface ISourceProviderProps<TResponse, TOrderBy = any, TFilter = any, TQuery extends IQueryParams = IQueryParams> {
+export interface ISourceProviderProps<TResponse, TFilter extends IFilter | void = void, TOrderBy extends IOrderBy | void = void, TQuery extends IQueryParams | void = void> {
 	/**
 	 * Source of the query
 	 */
-	useQuery: IQueryHook<IQuery<TOrderBy, TFilter>, IQueryResult<TResponse>, TQuery>;
+	useQuery: IQueryHook<IQuery<TFilter, TOrderBy>, IQueryResult<TResponse>, TFilter, TOrderBy, TQuery>;
 	/**
 	 * Enables live refetches of the query
 	 */
@@ -50,7 +50,7 @@ export interface ISourceProviderProps<TResponse, TOrderBy = any, TFilter = any, 
 	query?: TQuery
 }
 
-export const SourceProvider = <TResponse, TOrderBy = any, TFilter = any, TQuery extends IQueryParams = IQueryParams>(
+export const SourceProvider = <TResponse, TFilter extends IFilter | void = void, TOrderBy extends IOrderBy | void = void, TQuery extends IQueryParams | void = void>(
 	{
 		useQuery,
 		live = false,
@@ -61,11 +61,11 @@ export const SourceProvider = <TResponse, TOrderBy = any, TFilter = any, TQuery 
 		defaultQuery,
 		options,
 		...props
-	}: PropsWithChildren<ISourceProviderProps<TResponse, TOrderBy, TFilter, TQuery>>
+	}: PropsWithChildren<ISourceProviderProps<TResponse, TFilter, TOrderBy, TQuery>>
 ) => {
 	const [page, setPage] = useState<number>(defaultPage);
-	const [orderBy, setOrderBy] = useState<TOrderBy | null | undefined>(merge<TOrderBy, TOrderBy>(defaultOrderBy || {}, props.orderBy || {}));
-	const [filter, setFilter] = useState<TFilter | null | undefined>(merge<TFilter, TFilter>(defaultFilter || {}, props.filter || {}));
+	const [orderBy, setOrderBy] = useState<TOrderBy | undefined>(merge<TOrderBy, TOrderBy>(defaultOrderBy || {}, props.orderBy || {}));
+	const [filter, setFilter] = useState<TFilter | undefined>(merge<TFilter, TFilter>(defaultFilter || {}, props.filter || {}));
 	const [query, setQuery] = useState<TQuery | undefined>(merge<TQuery, TQuery>(defaultQuery || {}, props.query || {}));
 	const [size, setSize] = useState<number>(defaultSize);
 
@@ -80,31 +80,25 @@ export const SourceProvider = <TResponse, TOrderBy = any, TFilter = any, TQuery 
 	}, options || {}));
 
 	useEffect(() => {
-		props.filter && setFilter(merge<TFilter, TFilter>(defaultFilter || {}, props.filter));
-	}, [props.filter]);
-	useEffect(() => {
-		props.orderBy && setOrderBy(merge<TOrderBy, TOrderBy>(defaultOrderBy || {}, props.orderBy));
-	}, [props.orderBy]);
-	useEffect(() => {
 		props.query && setQuery(merge<TQuery, TQuery>(defaultQuery || {}, props.query));
 	}, [props.query]);
+
+	const _setPage = (page: number, size?: number) => {
+		setPage(page);
+		setSize(size || defaultSize);
+	};
 
 	return <SourceContext.Provider
 		value={{
 			result,
 			page,
-			setPage: (page, size) => {
-				setPage(page);
-				setSize(size || defaultSize);
-			},
+			setPage: _setPage,
 			size,
 			setSize,
 			orderBy,
 			setOrderBy: orderBy => setOrderBy({...orderBy, ...props.orderBy}),
-			mergeOrderBy: input => setOrderBy({...orderBy, ...input, ...props.orderBy}),
 			filter,
 			setFilter: filter => setFilter({...filter, ...props.filter}),
-			mergeFilter: input => setFilter({...filter, ...input, ...props.filter}),
 			query,
 			setQuery: query => setQuery({...query, ...props.query}),
 			mergeQuery: input => setQuery({...query, ...input, ...props.query}),
@@ -118,7 +112,7 @@ export const SourceProvider = <TResponse, TOrderBy = any, TFilter = any, TQuery 
 					defaultPageSize: result.data.size,
 					showQuickJumper: false,
 					hideOnSinglePage: false,
-					onChange: (current, size) => this.setPage(current - 1, size),
+					onChange: (current, size) => _setPage(current - 1, size),
 				} : undefined;
 			},
 			hasData: () => result.isSuccess && result.data.count > 0,

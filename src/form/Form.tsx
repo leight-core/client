@@ -5,7 +5,7 @@ import {useMutation} from "react-query";
 import {IFormContext, IFormError, IFormErrorHandler, IFormErrorMap, IFormInitialMapper, IFormMutationMapper, IFormOnFailure, IFormOnSuccess, IFormOnValuesChanged, IMutationHook, INavigate, IQueryParams, IToError} from "@leight-core/api";
 import {FormProvider, isCallable, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext} from "@leight-core/client";
 
-export interface IFormProps<TRequest, TResponse, TQuery extends IQueryParams = IQueryParams> extends Partial<Omit<FormProps, "onValuesChange">> {
+export interface IFormProps<TRequest, TResponse, TQuery extends IQueryParams | void = void> extends Partial<Omit<FormProps, "onValuesChange">> {
 	translation?: string;
 	/**
 	 * What to do on form submit.
@@ -36,11 +36,11 @@ export interface IFormProps<TRequest, TResponse, TQuery extends IQueryParams = I
 	onValuesChange?: IFormOnValuesChanged;
 }
 
-const usePassThroughMutation: IMutationHook<any, any> = () => useMutation<any, any, any, any>(values => {
+const usePassThroughMutation: IMutationHook<any, any, any> = () => useMutation<any, any, any, any>(values => {
 	return new Promise(resolve => resolve(values));
 });
 
-const FormInternal = <TRequest, TResponse, TQuery extends IQueryParams = IQueryParams>(
+const FormInternal = <TRequest, TResponse, TQuery extends IQueryParams | void = void>(
 	{
 		useMutation = usePassThroughMutation,
 		mutationQuery,
@@ -124,7 +124,7 @@ const FormInternal = <TRequest, TResponse, TQuery extends IQueryParams = IQueryP
 	</CoolForm>;
 };
 
-export function Form<TRequest = any, TResponse = any, TQuery extends IQueryParams = IQueryParams>({translation, ...props}: PropsWithChildren<IFormProps<TRequest, TResponse, TQuery>>): JSX.Element {
+export function Form<TRequest = any, TResponse = void, TQuery extends IQueryParams | void = void>({translation, ...props}: PropsWithChildren<IFormProps<TRequest, TResponse, TQuery>>): JSX.Element {
 	return <FormProvider translation={translation}>
 		<ItemGroupProvider prefix={[]}>
 			<FormInternal<TRequest, TResponse, TQuery> {...props}/>

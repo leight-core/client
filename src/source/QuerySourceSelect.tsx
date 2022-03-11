@@ -1,5 +1,5 @@
 import {useOptionalFormContext, useOptionalFormItemContext, useSourceContext, useUpdate} from "@leight-core/client";
-import {IBaseSelectOption, IQueryParams, IToOptionMapper} from '@leight-core/api';
+import {IBaseSelectOption, IToOptionMapper} from '@leight-core/api';
 import {Empty, Select, SelectProps} from "antd";
 import React, {PropsWithChildren, useEffect, useRef} from "react";
 import {useTranslation} from "react-i18next";
@@ -18,10 +18,6 @@ export interface IQuerySourceSelectProps<TResponse> extends Partial<Omit<SelectP
 	 */
 	usePlaceholder?: boolean;
 	/**
-	 * Select first value when available.
-	 */
-	useFirst?: boolean;
-	/**
 	 * When this "something" changes, input is cleared (value set to undefined); this can be used to externally
 	 * clear this input on change.
 	 */
@@ -38,7 +34,7 @@ export interface IQuerySourceSelectProps<TResponse> extends Partial<Omit<SelectP
 	onSelect?: (value: IQuerySourceValue<TResponse>) => void;
 }
 
-export const QuerySourceSelect = <TResponse, TQuery extends IQueryParams = IQueryParams, TOrderBy = void, TFilter = void>(
+export const QuerySourceSelect = <TResponse, >(
 	{
 		toOption,
 		/**
@@ -48,7 +44,6 @@ export const QuerySourceSelect = <TResponse, TQuery extends IQueryParams = IQuer
 		debounce = 100,
 		clearOn = false,
 		usePlaceholder,
-		useFirst,
 		showSearch = false,
 		filter = showSearch,
 		disableOnEmpty = true,
@@ -57,7 +52,7 @@ export const QuerySourceSelect = <TResponse, TQuery extends IQueryParams = IQuer
 	}: PropsWithChildren<IQuerySourceSelectProps<TResponse>>) => {
 	const tid = useRef<any>();
 	const {t} = useTranslation();
-	const sourceContext = useSourceContext<TResponse, TQuery, TOrderBy, TFilter>();
+	const sourceContext = useSourceContext<TResponse, { fulltext?: string }>();
 	const formContext = useOptionalFormContext();
 	const formItemContext = useOptionalFormItemContext();
 	formItemContext && usePlaceholder && (props.placeholder = formItemContext.label);
@@ -69,12 +64,6 @@ export const QuerySourceSelect = <TResponse, TQuery extends IQueryParams = IQuer
 	useEffect(() => {
 		filter && sourceContext.setFilter({fulltext: value} as any);
 	}, [value]);
-	useEffect(() => {
-		if (useFirst && sourceContext.result.isSuccess && sourceContext.result.data.items.length > 0 && !(formItemContext && formItemContext.getValue())) {
-			// formItemContext && formItemContext.setValue(sourceContext.result.data.items[0].value);
-			// props.onChange && props.onChange(options[0].value, options[0]);
-		}
-	}, []);
 
 	const _onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => {
 		onSelect?.(option);
@@ -93,7 +82,7 @@ export const QuerySourceSelect = <TResponse, TQuery extends IQueryParams = IQuer
 		onSearch={showSearch ? fulltext => {
 			clearTimeout(tid.current);
 			tid.current = setTimeout(() => {
-				sourceContext.setFilter({fulltext} as any);
+				sourceContext.setFilter({fulltext});
 			}, debounce);
 		} : undefined}
 		onClear={() => sourceContext.setFilter()}
