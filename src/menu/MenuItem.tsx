@@ -20,7 +20,7 @@ export interface IMenuItemProps extends Partial<MenuItemProps> {
 	/**
 	 * Optional params for link generator.
 	 */
-	query?: IQueryParams;
+	query?: IQueryParams | void;
 }
 
 export const MenuItem: FC<IMenuItemProps> = ({title, href, icon, query, ...props}) => {
@@ -38,6 +38,6 @@ export const MenuItem: FC<IMenuItemProps> = ({title, href, icon, query, ...props
  *
  * Basically it has the same behavior as MenuItem component.
  */
-export function CreateMenuItem(title: string, href: string, icon: ReactNode, query?: IQueryParams, rest?: Partial<IMenuItemProps>) {
+export function CreateMenuItem(title: string, href: string, icon: ReactNode, query?: IQueryParams | void, rest?: Partial<IMenuItemProps>) {
 	return <MenuItem title={title} key={href} href={href} icon={icon} query={query} {...rest}/>;
 }

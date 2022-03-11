@@ -25,7 +25,7 @@ export interface IUploaderProps extends Partial<DraggerProps> {
 	/**
 	 * Optional params for the action.
 	 */
-	query?: IQueryParams;
+	query?: IQueryParams | void;
 }
 
 export const Uploader: FC<IUploaderProps> = ({name, limit, translation, action, query, ...props}) => {

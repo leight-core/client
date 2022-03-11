@@ -10,7 +10,7 @@ export interface ILinkToProps {
 	/**
 	 * Optional params used to generate a link.
 	 */
-	query?: IQueryParams;
+	query?: IQueryParams | void;
 }
 
 /**

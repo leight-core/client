@@ -16,7 +16,7 @@ export interface IButtonLinkProps extends Omit<ButtonProps, "title"> {
 	/**
 	 * Optional params for the link generator.
 	 */
-	query?: IQueryParams;
+	query?: IQueryParams | void;
 }
 
 export const ButtonLink: FC<IButtonLinkProps> = ({href, title, query, ...props}) => {
