@@ -3,9 +3,9 @@ import {Empty, List, ListProps, Table as CoolTable, TablePaginationConfig, Table
 import {FilterValue, SorterResult} from "antd/lib/table/interface";
 import React, {ReactNode} from "react";
 import {useTranslation} from "react-i18next";
-import {IFilter, IndexOf, IOrderBy, IQueryParams, IRecordItem, ISourceContext, ITableChildrenCallback, ITableToFilterCallback} from "@leight-core/api";
+import {IndexOf, IQueryParams, IRecordItem, ISourceContext, ITableChildrenCallback, ITableToFilterCallback} from "@leight-core/api";
 
-export interface ITableProps<TResponse, TFilter extends IFilter | void = void, TOrderBy extends IOrderBy | void = void, TQuery extends IQueryParams | void = void> extends Omit<TableProps<TResponse>, "footer"> {
+export interface ITableProps<TResponse, TFilter = void, TOrderBy = void, TQuery extends IQueryParams | void = void> extends Omit<TableProps<TResponse>, "footer"> {
 	header?: (sourceContext: ISourceContext<TResponse, TFilter, TOrderBy, TQuery>) => ReactNode;
 	footer?: (sourceContext: ISourceContext<TResponse, TFilter, TOrderBy, TQuery>) => ReactNode;
 	children?: ITableChildrenCallback<TResponse, TFilter, TOrderBy, TQuery> | ReactNode;
@@ -15,7 +15,7 @@ export interface ITableProps<TResponse, TFilter extends IFilter | void = void, T
 	forceList?: boolean;
 }
 
-export const Table = <TResponse extends object, TFilter extends IFilter | void = void, TOrderBy extends IOrderBy | void = void, TQuery extends IQueryParams | void = void>(
+export const Table = <TResponse extends object, TFilter = void, TOrderBy = void, TQuery extends IQueryParams | void = void>(
 	{
 		children,
 		header,

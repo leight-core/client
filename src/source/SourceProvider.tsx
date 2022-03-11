@@ -1,9 +1,9 @@
 import {merge, SourceContext} from "@leight-core/client";
-import {IFilter, IOrderBy, IQuery, IQueryHook, IQueryParams, IQueryResult} from '@leight-core/api';
+import {IQuery, IQueryHook, IQueryParams, IQueryResult} from '@leight-core/api';
 import {PropsWithChildren, useEffect, useState} from "react";
 import {UseQueryOptions} from "react-query";
 
-export interface ISourceProviderProps<TResponse, TFilter extends IFilter | void = void, TOrderBy extends IOrderBy | void = void, TQuery extends IQueryParams | void = void> {
+export interface ISourceProviderProps<TResponse, TFilter = void, TOrderBy = void, TQuery extends IQueryParams | void = void> {
 	/**
 	 * Source of the query
 	 */
@@ -23,11 +23,11 @@ export interface ISourceProviderProps<TResponse, TFilter extends IFilter | void 
 	/**
 	 * Default order by when source is loaded.
 	 */
-	defaultOrderBy?: TOrderBy | null;
+	defaultOrderBy?: TOrderBy;
 	/**
 	 * Default filter when source is loaded; it could be overridden later on.
 	 */
-	defaultFilter?: TFilter | null;
+	defaultFilter?: TFilter;
 	/**
 	 * Default query params when source is loaded.
 	 */
@@ -39,18 +39,18 @@ export interface ISourceProviderProps<TResponse, TFilter extends IFilter | void 
 	/**
 	 * Hard filter - all changes are merged against this one.
 	 */
-	filter?: TFilter
+	filter?: TFilter;
 	/**
 	 * Hard order by - all changes are merged with this one.
 	 */
-	orderBy?: TOrderBy
+	orderBy?: TOrderBy;
 	/**
 	 * Hard query - all changes are merge with this one.
 	 */
-	query?: TQuery
+	query?: TQuery;
 }
 
-export const SourceProvider = <TResponse, TFilter extends IFilter | void = void, TOrderBy extends IOrderBy | void = void, TQuery extends IQueryParams | void = void>(
+export const SourceProvider = <TResponse, TFilter = void, TOrderBy = void, TQuery extends IQueryParams | void = void>(
 	{
 		useQuery,
 		live = false,
