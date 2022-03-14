@@ -1,117 +1,60 @@
-import {merge, SourceContext} from "@leight-core/client";
-import {IQuery, IQueryHook, IQueryParams, IQueryResult} from '@leight-core/api';
-import {PropsWithChildren, useEffect, useState} from "react";
+import {merge, SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
+import {IQuery, IQueryHook, IQueryResult} from '@leight-core/api';
+import {PropsWithChildren} from "react";
 import {UseQueryOptions} from "react-query";
 
-export interface ISourceProviderProps<TResponse, TFilter = void, TOrderBy = void, TQuery extends IQueryParams | void = void> {
+export interface ISourceProviderProps<TResponse> {
 	/**
 	 * Source of the query
 	 */
-	useQuery: IQueryHook<IQuery<TFilter, TOrderBy>, IQueryResult<TResponse>, TFilter, TOrderBy, TQuery>;
+	useQuery: IQueryHook<IQuery<any, any>, IQueryResult<TResponse>, any, any, any>;
 	/**
 	 * Enables live refetches of the query
 	 */
 	live?: number | false,
 	/**
-	 * Default (initial) page; if out of range, an error occurs
-	 */
-	defaultPage?: number;
-	/**
-	 * Default page size.
-	 */
-	defaultSize?: number;
-	/**
-	 * Default order by when source is loaded.
-	 */
-	defaultOrderBy?: TOrderBy;
-	/**
-	 * Default filter when source is loaded; it could be overridden later on.
-	 */
-	defaultFilter?: TFilter;
-	/**
-	 * Default query params when source is loaded.
-	 */
-	defaultQuery?: TQuery;
-	/**
 	 * Query options.
 	 */
 	options?: UseQueryOptions<any, any, IQueryResult<TResponse>>;
-	/**
-	 * Hard filter - all changes are merged against this one.
-	 */
-	filter?: TFilter;
-	/**
-	 * Hard order by - all changes are merged with this one.
-	 */
-	orderBy?: TOrderBy;
-	/**
-	 * Hard query - all changes are merge with this one.
-	 */
-	query?: TQuery;
 }
 
-export const SourceProvider = <TResponse, TFilter = void, TOrderBy = void, TQuery extends IQueryParams | void = void>(
+export const SourceProvider = <TResponse, >(
 	{
 		useQuery,
 		live = false,
-		defaultPage,
-		defaultSize,
-		defaultOrderBy,
-		defaultFilter,
-		defaultQuery,
 		options,
 		...props
-	}: PropsWithChildren<ISourceProviderProps<TResponse, TFilter, TOrderBy, TQuery>>
+	}: PropsWithChildren<ISourceProviderProps<TResponse>>
 ) => {
-	const [page, setPage] = useState(defaultPage);
-	const [orderBy, setOrderBy] = useState<TOrderBy | undefined>(merge<TOrderBy, TOrderBy>(defaultOrderBy || {}, props.orderBy || {}));
-	const [filter, setFilter] = useState<TFilter | undefined>(merge<TFilter, TFilter>(defaultFilter || {}, props.filter || {}));
-	const [query, setQuery] = useState<TQuery | undefined>(merge<TQuery, TQuery>(defaultQuery || {}, props.query || {}));
-	const [size, setSize] = useState(defaultSize);
+	const filterContext = useOptionalFilterContext<any>();
+	const orderByContext = useOptionalOrderByContext<any>();
+	const cursorContext = useOptionalCursorContext();
+	const queryParamsContext = useOptionalQueryParamsContext<any>();
 
 	const result = useQuery({
-		size,
-		page,
-		filter,
-		orderBy,
-	}, query, merge({
+		size: cursorContext?.size,
+		page: cursorContext?.page,
+		filter: filterContext?.filter,
+		orderBy: orderByContext?.orderBy,
+	}, queryParamsContext?.queryParams, merge({
 		keepPreviousData: true,
 		refetchInterval: live,
 	}, options || {}));
 
-	useEffect(() => {
-		props.query && setQuery(merge<TQuery, TQuery>(defaultQuery || {}, props.query));
-	}, [props.query]);
-
-	const _setPage = (page: number, size?: number) => {
-		setPage(page);
-		setSize(size || defaultSize);
-	};
-
 	return <SourceContext.Provider
 		value={{
 			result,
-			page,
-			setPage: _setPage,
-			size,
-			setSize,
-			orderBy,
-			setOrderBy: orderBy => setOrderBy({...orderBy, ...props.orderBy}),
-			filter,
-			setFilter: filter => setFilter({...filter, ...props.filter}),
-			query,
-			setQuery: query => setQuery({...query, ...props.query}),
 			pagination: function () {
 				return result.isSuccess ? {
 					size: "small",
 					responsive: true,
-					current: (page || 0) + 1,
+					current: (cursorContext?.page || 0) + 1,
 					total: result.data.total,
 					pageSize: result.data.size || 10,
 					defaultPageSize: result.data.size || 10,
 					showQuickJumper: false,
 					hideOnSinglePage: false,
-					onChange: (current, size) => _setPage(current - 1, size),
+					onChange: (current, size) => cursorContext?.setPage(current - 1, size),
 				} : undefined;
 			},
 			hasData: () => result.isSuccess && result.data.count > 0,

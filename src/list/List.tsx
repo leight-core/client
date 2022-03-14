@@ -1,25 +1,25 @@
-import {IQueryParams, ISourceContext} from "@leight-core/api";
+import {ISourceContext} from "@leight-core/api";
 import {List as CoolList, ListProps} from "antd";
 import React, {PropsWithChildren, ReactNode} from "react";
 import {useSourceContext} from "@leight-core/client";
 
-export interface IListProps<TResponse extends object, TFilter = void, TOrderBy = void, TQuery extends IQueryParams | void = void> extends Partial<ListProps<TResponse>> {
-	header?: (sourceContext: ISourceContext<TResponse, TFilter, TOrderBy, TQuery>) => ReactNode;
-	footer?: (sourceContext: ISourceContext<TResponse, TFilter, TOrderBy, TQuery>) => ReactNode;
+export interface IListProps<TResponse> extends Partial<ListProps<TResponse>> {
+	header?: (sourceContext: ISourceContext<TResponse>) => ReactNode;
+	footer?: (sourceContext: ISourceContext<TResponse>) => ReactNode;
 	children?: (item: TResponse) => ReactNode;
 }
 
 export const ListItem = CoolList.Item;
 export const ListItemMeta = CoolList.Item.Meta;
 
-export const List = <TResponse extends object, TFilter = void, TOrderBy = void, TQuery extends IQueryParams | void = void>(
+export const List = <TResponse, >(
 	{
 		header,
 		footer,
 		children,
 		...props
-	}: PropsWithChildren<IListProps<TResponse, TFilter, TOrderBy, TQuery>>) => {
-	const sourceContext = useSourceContext<TResponse, TFilter, TOrderBy, TQuery>();
+	}: PropsWithChildren<IListProps<TResponse>>) => {
+	const sourceContext = useSourceContext<TResponse>();
 	return <CoolList
 		header={() => header?.(sourceContext)}
 		footer={() => footer?.(sourceContext)}

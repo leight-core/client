@@ -42,11 +42,12 @@ export interface IFilterProps<TFilter = any> {
 	onClear?: () => void;
 	drawerButtonProps?: IDrawerButtonProps;
 	formProps?: IFormProps<TFilter, TFilter>;
+	toFilter: (values: any) => TFilter | undefined;
 }
 
 export type IFilterWithoutTranslationProps<TFilter = any> = Omit<IFilterProps<TFilter>, "translation">;
 
-export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps, formProps, ...props}: PropsWithChildren<IFilterProps<TFilter>>): JSX.Element {
+export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps, formProps, toFilter, ...props}: PropsWithChildren<IFilterProps<TFilter>>): JSX.Element {
 	const {t} = useTranslation();
 	const filterContext = useFilterContext();
 	return <Space align={"baseline"} split={<Divider type={"vertical"}/>}>
@@ -64,7 +65,7 @@ export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps
 					layout={"vertical"}
 					toForm={() => filterContext.filter}
 					onSuccess={({response}) => {
-						filterContext.setFilter(response);
+						filterContext.setFilter(toFilter(response));
 						drawerContext.setVisible(false);
 					}}
 					{...formProps}

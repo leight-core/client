@@ -1,4 +1,4 @@
-import {useOptionalFormContext, useOptionalFormItemContext, useSourceContext, useUpdate} from "@leight-core/client";
+import {useOptionalFilterContext, useOptionalFormContext, useOptionalFormItemContext, useSourceContext, useUpdate} from "@leight-core/client";
 import {IBaseSelectOption, IToOptionMapper} from '@leight-core/api';
 import {Empty, Select, SelectProps} from "antd";
 import React, {PropsWithChildren, useEffect, useRef} from "react";
@@ -52,7 +52,8 @@ export const QuerySourceSelect = <TResponse, >(
 	}: PropsWithChildren<IQuerySourceSelectProps<TResponse>>) => {
 	const tid = useRef<any>();
 	const {t} = useTranslation();
-	const sourceContext = useSourceContext<TResponse, { fulltext?: string }>();
+	const sourceContext = useSourceContext<TResponse>();
+	const filterContext = useOptionalFilterContext<any>();
 	const formContext = useOptionalFormContext();
 	const formItemContext = useOptionalFormItemContext();
 	formItemContext && usePlaceholder && (props.placeholder = formItemContext.label);
@@ -62,7 +63,7 @@ export const QuerySourceSelect = <TResponse, >(
 		]);
 	});
 	useEffect(() => {
-		filter && sourceContext.setFilter({fulltext: value} as any);
+		filter && filterContext?.setFilter({fulltext: value} as any);
 	}, [value]);
 
 	const _onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => {
@@ -82,10 +83,10 @@ export const QuerySourceSelect = <TResponse, >(
 		onSearch={showSearch ? fulltext => {
 			clearTimeout(tid.current);
 			tid.current = setTimeout(() => {
-				sourceContext.setFilter({fulltext});
+				filterContext?.setFilter({fulltext});
 			}, debounce);
 		} : undefined}
-		onClear={() => sourceContext.setFilter()}
+		onClear={() => filterContext?.setFilter()}
 		disabled={!showSearch && disableOnEmpty && sourceContext.result.data && !sourceContext.result.data.count}
 		value={value}
 		{...props}

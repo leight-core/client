@@ -23,7 +23,6 @@ export * from "./page";
 export * from "./responsive";
 export * from "./router";
 export * from "./source";
-export * from "./table";
 export * from "./template";
 export * from "./translation";
 export * from "./uploader";
