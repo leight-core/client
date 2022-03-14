@@ -16,6 +16,7 @@ export * from "./i18n";
 export * from "./icon";
 export * from "./layout";
 export * from "./link";
+export * from "./list";
 export * from "./loader";
 export * from "./menu";
 export * from "./page";
