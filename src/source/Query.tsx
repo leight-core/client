@@ -2,10 +2,10 @@ import {IEntityContext, IQueryHook, IQueryParams} from "@leight-core/api";
 import {PropsWithChildren, ReactNode, useEffect} from "react";
 import {UseQueryOptions} from "react-query";
 
-export interface IQueryProps<TRequest, TResponse, TQuery extends IQueryParams | void = void> {
-	useQuery: IQueryHook<TRequest, TResponse, void, void, TQuery>;
+export interface IQueryProps<TRequest, TResponse, TQueryParams extends IQueryParams | void = void> {
+	useQuery: IQueryHook<TRequest, TResponse, TQueryParams>;
 	request: TRequest;
-	query?: TQuery;
+	queryParams?: TQueryParams;
 	options?: UseQueryOptions<any, any, TResponse>;
 	/**
 	 * Actual children rendered when data are available.
@@ -19,18 +19,18 @@ export interface IQueryProps<TRequest, TResponse, TQuery extends IQueryParams | 
 	onUpdate?: (entity: TResponse) => void;
 }
 
-export const Query = <TRequest, TResponse, TQuery extends IQueryParams | void = void>(
+export const Query = <TRequest, TResponse, TQueryParams extends IQueryParams | void = void>(
 	{
 		useQuery,
 		request,
-		query,
+		queryParams,
 		options,
 		children = () => null,
 		context,
 		onUpdate,
 		placeholder = () => null,
-	}: PropsWithChildren<IQueryProps<TRequest, TResponse, TQuery>>) => {
-	const result = useQuery(request, query, options);
+	}: PropsWithChildren<IQueryProps<TRequest, TResponse, TQueryParams>>) => {
+	const result = useQuery(request, queryParams, options);
 	useEffect(() => {
 		context && result.data && context.update(result.data);
 		result.data && onUpdate?.(result.data);

@@ -7,7 +7,7 @@ export interface ISourceProviderProps<TResponse> {
 	/**
 	 * Source of the query
 	 */
-	useQuery: IQueryHook<IQuery<any, any>, IQueryResult<TResponse>, any, any, any>;
+	useQuery: IQueryHook<IQuery<any, any>, IQueryResult<TResponse>>;
 	/**
 	 * Enables live refetches of the query
 	 */
