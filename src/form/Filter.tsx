@@ -68,7 +68,6 @@ export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps
 						filterContext.setFilter(toFilter(response));
 						drawerContext.setVisible(false);
 					}}
-					mutationQueryParams={undefined}
 					{...formProps}
 				>
 					<FilterInternal

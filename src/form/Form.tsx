@@ -11,7 +11,7 @@ export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryPara
 	 * What to do on form submit.
 	 */
 	useMutation?: IMutationHook<TRequest, TResponse, TQueryParams>;
-	mutationQueryParams: TQueryParams;
+	mutationQueryParams?: TQueryParams;
 	/**
 	 * Map form data to mutation data.
 	 */

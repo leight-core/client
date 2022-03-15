@@ -5,7 +5,7 @@ import {UseQueryOptions} from "react-query";
 export interface IQueryProps<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined> {
 	useQuery: IQueryHook<TRequest, TResponse, TQueryParams>;
 	request: TRequest;
-	queryParams: TQueryParams;
+	queryParams?: TQueryParams;
 	options?: UseQueryOptions<any, any, TResponse>;
 	/**
 	 * Actual children rendered when data are available.
