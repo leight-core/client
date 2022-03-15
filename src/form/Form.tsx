@@ -5,13 +5,13 @@ import {useMutation} from "react-query";
 import {IFormContext, IFormError, IFormErrorHandler, IFormErrorMap, IFormInitialMapper, IFormMutationMapper, IFormOnFailure, IFormOnSuccess, IFormOnValuesChanged, IMutationHook, INavigate, IQueryParams, IToError} from "@leight-core/api";
 import {FormProvider, isCallable, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext} from "@leight-core/client";
 
-export interface IFormProps<TRequest, TResponse, TQuery extends IQueryParams | void = void> extends Partial<Omit<FormProps, "onValuesChange">> {
+export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined> extends Partial<Omit<FormProps, "onValuesChange">> {
 	translation?: string;
 	/**
 	 * What to do on form submit.
 	 */
-	useMutation?: IMutationHook<TRequest, TResponse, TQuery>;
-	mutationQuery?: TQuery;
+	useMutation?: IMutationHook<TRequest, TResponse, TQueryParams>;
+	mutationQueryParams: TQueryParams;
 	/**
 	 * Map form data to mutation data.
 	 */
@@ -36,14 +36,12 @@ export interface IFormProps<TRequest, TResponse, TQuery extends IQueryParams | v
 	onValuesChange?: IFormOnValuesChanged;
 }
 
-const usePassThroughMutation: IMutationHook<any, any, any> = () => useMutation<any, any, any, any>(values => {
-	return new Promise(resolve => resolve(values));
-});
+const usePassThroughMutation: IMutationHook<any, any, any> = () => useMutation<any, any, any, any>(values => new Promise(resolve => resolve(values)));
 
-const FormInternal = <TRequest, TResponse, TQuery extends IQueryParams | void = void>(
+const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(
 	{
 		useMutation = usePassThroughMutation,
-		mutationQuery,
+		mutationQueryParams,
 		toMutation = values => values,
 		toForm = () => null as any,
 		onSuccess = () => null,
@@ -53,7 +51,7 @@ const FormInternal = <TRequest, TResponse, TQuery extends IQueryParams | void = 
 		onValuesChange,
 		children,
 		...props
-	}: PropsWithChildren<IFormProps<TRequest, TResponse, TQuery>>) => {
+	}: PropsWithChildren<IFormProps<TRequest, TResponse, TQueryParams>>) => {
 	const formContext = useFormContext();
 	const blockContext = useBlockContext();
 	const formBlockContext = useFormBlockContext();
@@ -61,16 +59,16 @@ const FormInternal = <TRequest, TResponse, TQuery extends IQueryParams | void = 
 	const doNavigate = useNavigate();
 	const {t} = useTranslation();
 
-	const mutation = useMutation(mutationQuery, {
+	const mutation = useMutation(mutationQueryParams, {
 		onSettled: () => {
 			blockContext.unblock();
 			formBlockContext.unblock();
 		}
 	});
 
-	const navigate: INavigate = (href, query) => {
+	const navigate: INavigate = (href, queryParams) => {
 		blockContext.block();
-		doNavigate(href, query);
+		doNavigate(href, queryParams);
 	};
 
 	function handleError(formError: IFormError | IFormErrorHandler<any, any>, error: any, formContext: IFormContext) {
@@ -124,10 +122,10 @@ const FormInternal = <TRequest, TResponse, TQuery extends IQueryParams | void = 
 	</CoolForm>;
 };
 
-export function Form<TRequest = any, TResponse = void, TQuery extends IQueryParams | void = void>({translation, ...props}: PropsWithChildren<IFormProps<TRequest, TResponse, TQuery>>): JSX.Element {
+export function Form<TRequest = any, TResponse = void, TQueryParams extends IQueryParams | undefined = undefined>({translation, ...props}: PropsWithChildren<IFormProps<TRequest, TResponse, TQueryParams>>): JSX.Element {
 	return <FormProvider translation={translation}>
 		<ItemGroupProvider prefix={[]}>
-			<FormInternal<TRequest, TResponse, TQuery> {...props}/>
+			<FormInternal<TRequest, TResponse, TQueryParams> {...props}/>
 		</ItemGroupProvider>
 	</FormProvider>;
 }

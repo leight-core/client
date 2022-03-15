@@ -51,14 +51,14 @@ export const toPromise = <TRequest, TResponse>(method: Method, url: string, requ
 /**
  * Create react-query hook (~ needs to be used as a hook).
  */
-export function createQueryHook<TRequest, TResponse, TQueryParams extends IQueryParams | void = void>(link: string, method: Method): IQueryHook<TRequest, TResponse, TQueryParams> {
+export function createQueryHook<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(link: string, method: Method): IQueryHook<TRequest, TResponse, TQueryParams> {
 	return (request?, query?, options?, config?) => {
 		const linkContext = useLinkContext();
 		return useQuery([link, {query, request}], () => toPromise<TRequest, TResponse>(method, linkContext.link(link, query), request, config), options)
 	};
 }
 
-export function createMutationHook<TRequest, TResponse, TQueryParams extends IQueryParams | void = void>(link: string, method: Method): IMutationHook<TRequest, TResponse, TQueryParams> {
+export function createMutationHook<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(link: string, method: Method): IMutationHook<TRequest, TResponse, TQueryParams> {
 	return (query?, options?, config?) => {
 		const linkContext = useLinkContext();
 		return useMutation<TResponse, any, TRequest>(["mutation", link, {query}], request => toPromise<TRequest, TResponse>(method, linkContext.link(link, query), request, config), options)
@@ -68,7 +68,7 @@ export function createMutationHook<TRequest, TResponse, TQueryParams extends IQu
 /**
  * Returned method must be used as a hook, but later on requests can be made arbitrary.
  */
-export function createPromiseHook<TRequest, TResponse, TQueryParams extends IQueryParams | void = void>(link: string, method: Method): IHookCallback<TRequest, TResponse, TQueryParams> {
+export function createPromiseHook<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(link: string, method: Method): IHookCallback<TRequest, TResponse, TQueryParams> {
 	/**
 	 * Factory context, nothing interesting here.
 	 */

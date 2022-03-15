@@ -40,7 +40,7 @@ const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 export interface IFilterProps<TFilter = any> extends IFilterInternalProps {
 	translation: string;
 	drawerButtonProps?: IDrawerButtonProps;
-	formProps?: IFormProps<TFilter, TFilter>;
+	formProps?: Partial<IFormProps<TFilter, TFilter>>;
 	toFilter: (values: any) => TFilter | undefined;
 	spaceProps?: Partial<SpaceProps>;
 }
@@ -68,6 +68,7 @@ export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps
 						filterContext.setFilter(toFilter(response));
 						drawerContext.setVisible(false);
 					}}
+					mutationQueryParams={undefined}
 					{...formProps}
 				>
 					<FilterInternal

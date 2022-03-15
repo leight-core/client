@@ -25,10 +25,10 @@ export interface IUploaderProps extends Partial<DraggerProps> {
 	/**
 	 * Optional params for the action.
 	 */
-	query?: IQueryParams | void;
+	queryParams: IQueryParams | undefined;
 }
 
-export const Uploader: FC<IUploaderProps> = ({name, limit, translation, action, query, ...props}) => {
+export const Uploader: FC<IUploaderProps> = ({name, limit, translation, action, queryParams, ...props}) => {
 	const linkContext = useLinkContext();
 	const [loading, setLoading] = useState(false);
 	const [status, setStatus] = useState<any>("active");
@@ -64,7 +64,7 @@ export const Uploader: FC<IUploaderProps> = ({name, limit, translation, action, 
 	return <Upload.Dragger
 		name={name}
 		listType={"text"}
-		action={linkContext.link(action, query)}
+		action={linkContext.link(action, queryParams)}
 		beforeUpload={onBeforeUpload}
 		onChange={onChange}
 		showUploadList={false}
