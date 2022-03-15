@@ -21,8 +21,8 @@ export const List = <TResponse, >(
 	}: PropsWithChildren<IListProps<TResponse>>) => {
 	const sourceContext = useSourceContext<TResponse>();
 	return <CoolList
-		header={() => header?.(sourceContext)}
-		footer={() => footer?.(sourceContext)}
+		header={header?.(sourceContext)}
+		footer={footer?.(sourceContext)}
 		dataSource={sourceContext.data().items}
 		loading={{
 			spinning: sourceContext.result.isLoading,
@@ -30,6 +30,7 @@ export const List = <TResponse, >(
 		}}
 		renderItem={children}
 		pagination={sourceContext.pagination()}
+		size={'large'}
 		{...props}
 	/>
 }

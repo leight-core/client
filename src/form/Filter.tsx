@@ -1,11 +1,11 @@
 import {CloseCircleOutlined, SearchOutlined} from "@ant-design/icons";
-import {Button, Divider, Space} from "antd";
+import {Button, Divider, Space, SpaceProps} from "antd";
 import {FC, PropsWithChildren} from "react";
 import {useTranslation} from "react-i18next";
 import {Centered, DrawerButton, DrawerContext, Form, IDrawerButtonProps, IFormProps, Submit, useFilterContext, useFormContext} from "@leight-core/client";
 
 interface IFilterInternalProps {
-	onClear: () => void;
+	onClear?: () => void;
 }
 
 const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
@@ -22,7 +22,7 @@ const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 					onClick={() => {
 						formContext.reset();
 						filterContext.setFilter({});
-						onClear();
+						onClear?.();
 					}}
 					icon={<CloseCircleOutlined/>}
 				>
@@ -37,20 +37,20 @@ const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 	</>;
 };
 
-export interface IFilterProps<TFilter = any> {
+export interface IFilterProps<TFilter = any> extends IFilterInternalProps {
 	translation: string;
-	onClear?: () => void;
 	drawerButtonProps?: IDrawerButtonProps;
 	formProps?: IFormProps<TFilter, TFilter>;
 	toFilter: (values: any) => TFilter | undefined;
+	spaceProps?: Partial<SpaceProps>;
 }
 
 export type IFilterWithoutTranslationProps<TFilter = any> = Omit<IFilterProps<TFilter>, "translation">;
 
-export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps, formProps, toFilter, ...props}: PropsWithChildren<IFilterProps<TFilter>>): JSX.Element {
+export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps, formProps, toFilter, spaceProps, ...props}: PropsWithChildren<IFilterProps<TFilter>>): JSX.Element {
 	const {t} = useTranslation();
 	const filterContext = useFilterContext();
-	return <Space align={"baseline"} split={<Divider type={"vertical"}/>}>
+	return <Space align={"baseline"} split={<Divider type={"vertical"}/>} {...spaceProps}>
 		<DrawerButton
 			icon={<SearchOutlined/>}
 			type={"link"}
@@ -84,7 +84,7 @@ export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps
 			type={"link"}
 			size={"small"}
 			onClick={() => {
-				filterContext.setFilter({});
+				filterContext.setFilter();
 				onClear && onClear();
 			}}
 			icon={<CloseCircleOutlined/>}

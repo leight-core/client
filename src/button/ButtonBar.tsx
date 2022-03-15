@@ -1,4 +1,4 @@
-import {Centered, useIsMobile} from "@leight-core/client";
+import {useIsMobile} from "@leight-core/client";
 import {Space, SpaceProps} from "antd";
 import {FC} from "react";
 
@@ -8,12 +8,10 @@ export interface IButtonBarProps extends Partial<SpaceProps> {
 
 export const ButtonBar: FC<IButtonBarProps> = ({inline = true, ...props}) => {
 	const isMobile = useIsMobile();
-	return <Centered>
-		<Space
-			size={0}
-			align={"center"}
-			direction={(!isMobile || inline) ? "horizontal" : "vertical"}
-			{...props}
-		/>
-	</Centered>;
+	return <Space
+		size={0}
+		align={"center"}
+		direction={(!isMobile || inline) ? "horizontal" : "vertical"}
+		{...props}
+	/>;
 };
