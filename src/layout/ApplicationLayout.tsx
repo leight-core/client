@@ -26,7 +26,7 @@ export const ApplicationLayout: FC<IApplicationLayoutProps> = ({header, footer, 
 				{header}
 				<Layout>
 					<Layout>
-						<Layout.Content style={{minHeight: "100vh", padding: '0 1em', ...contentStyle}}>
+						<Layout.Content style={{minHeight: "92vh", padding: '0 1em', ...contentStyle}}>
 							<Suspense fallback={<PlaceholderPage/>} {...props}/>
 							{footer && <Layout.Footer>
 								{footer}

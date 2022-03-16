@@ -13,6 +13,7 @@ export interface IPageProps extends IEmptyPageProps {
 	icon?: ReactNode;
 	extra?: ReactNode;
 	header?: ReactNode;
+	headerPostfix?: ReactNode;
 	cardProps?: Partial<CardProps>;
 	headerProps?: IPageHeaderProps;
 }
@@ -25,6 +26,7 @@ export const Page: FC<IPageProps> = (
 		cardProps,
 		header,
 		headerProps,
+		headerPostfix,
 		children,
 		title,
 		onBack,
@@ -35,6 +37,7 @@ export const Page: FC<IPageProps> = (
 	return <EmptyPage title={title} {...props}>
 		{header || <PageHeader
 			onBack={onBack ? () => onBack(navigate) : undefined}
+			headerPostfix={headerPostfix}
 			title={title}
 			icon={icon}
 			extra={extra}
@@ -44,7 +47,7 @@ export const Page: FC<IPageProps> = (
 			{...headerProps}
 		/>}
 		<Card
-			bodyStyle={mobile({padding: "0"}, {padding: "0 8px"})}
+			bodyStyle={mobile({padding: "0"}, {padding: "0 8px", minHeight: '60vh'})}
 			{...cardProps}
 		>
 			{children}
