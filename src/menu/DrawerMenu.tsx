@@ -1,5 +1,5 @@
 import {MenuOutlined} from "@ant-design/icons";
-import {DrawerButton, IDrawerButtonProps, useIsMobile} from "@leight-core/client";
+import {DrawerButton, IDrawerButtonProps, useMobile} from "@leight-core/client";
 import {Menu} from "antd";
 import {PushState} from "antd/lib/drawer";
 import {FC, ReactNode} from "react";
@@ -12,12 +12,12 @@ export interface IDrawerMenuProps extends Partial<IDrawerButtonProps> {
 }
 
 export const DrawerMenu: FC<IDrawerMenuProps> = ({children, header, placement = "left", push = false, ...props}) => {
-	const isMobile = useIsMobile();
+	const mobile = useMobile();
 	return <DrawerButton
 		type={"text"}
 		drawerProps={{
 			title: header,
-			headerStyle: isMobile ? {padding: "8px 4px"} : undefined,
+			headerStyle: mobile({padding: "8px 4px"}),
 			bodyStyle: {padding: 0},
 			placement,
 			push,

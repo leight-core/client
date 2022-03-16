@@ -1,4 +1,4 @@
-import {EmptyPage, IEmptyPageProps, IPageHeaderProps, PageHeader, useIsMobile, useNavigate} from "@leight-core/client";
+import {EmptyPage, IEmptyPageProps, IPageHeaderProps, PageHeader, useMobile, useNavigate} from "@leight-core/client";
 import {BreadcrumbProps, Card, CardProps, Divider} from "antd";
 import Breadcrumb from "antd/lib/breadcrumb";
 import * as React from "react";
@@ -10,12 +10,8 @@ export type IPageBreadcrumb = BreadcrumbProps | React.ReactElement<typeof Breadc
 export interface IPageProps extends IEmptyPageProps {
 	onBack?: (navigate: INavigate) => void;
 	breadcrumbProps?: IPageBreadcrumb;
-	breadcrumbMobileProps?: IPageBreadcrumb;
-	breadcrumbBrowserProps?: IPageBreadcrumb;
 	icon?: ReactNode;
 	extra?: ReactNode;
-	extraMobile?: ReactNode;
-	extraBrowser?: ReactNode;
 	header?: ReactNode;
 	cardProps?: Partial<CardProps>;
 	headerProps?: IPageHeaderProps;
@@ -24,12 +20,8 @@ export interface IPageProps extends IEmptyPageProps {
 export const Page: FC<IPageProps> = (
 	{
 		breadcrumbProps,
-		breadcrumbMobileProps,
-		breadcrumbBrowserProps,
 		icon,
 		extra,
-		extraMobile,
-		extraBrowser,
 		cardProps,
 		header,
 		headerProps,
@@ -38,10 +30,8 @@ export const Page: FC<IPageProps> = (
 		onBack,
 		...props
 	}) => {
-	const isMobile = useIsMobile();
+	const mobile = useMobile();
 	const navigate = useNavigate();
-	extra = extra || (isMobile ? extraMobile : extraBrowser);
-	breadcrumbProps = breadcrumbProps || (isMobile ? breadcrumbMobileProps : breadcrumbBrowserProps);
 	return <EmptyPage title={title} {...props}>
 		{header || <PageHeader
 			onBack={onBack ? () => onBack(navigate) : undefined}
@@ -50,11 +40,11 @@ export const Page: FC<IPageProps> = (
 			extra={extra}
 			ghost={false}
 			breadcrumb={breadcrumbProps}
-			style={isMobile ? {padding: "4px 0 0 12px"} : undefined}
+			style={mobile({padding: "4px 0 0 12px"})}
 			{...headerProps}
 		/>}
 		<Card
-			bodyStyle={isMobile ? {padding: "0"} : {padding: "0 8px"}}
+			bodyStyle={mobile({padding: "0"}, {padding: "0 8px"})}
 			{...cardProps}
 		>
 			{children}

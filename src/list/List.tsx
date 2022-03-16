@@ -26,7 +26,7 @@ export const List = <TResponse, >(
 		dataSource={sourceContext.data().items}
 		loading={{
 			spinning: sourceContext.result.isLoading,
-			delay: 50,
+			delay: 150,
 		}}
 		renderItem={children}
 		pagination={sourceContext.pagination()}

@@ -1,4 +1,4 @@
-import {Drawer, DrawerContext, DrawerProvider, useIsMobile} from "@leight-core/client";
+import {Drawer, DrawerContext, DrawerProvider, useMobile} from "@leight-core/client";
 import {Button, ButtonProps, DrawerProps} from "antd";
 import {PushState} from "antd/lib/drawer";
 import {FC, ReactNode} from "react";
@@ -24,17 +24,17 @@ export interface IDrawerButtonProps extends Partial<ButtonProps> {
  */
 export const DrawerButton: FC<IDrawerButtonProps> = ({children, onClick, label, title, width = 600, height, placement = "left", push = false, fullscreen = false, drawerProps, ...props}) => {
 	const {t} = useTranslation();
-	const isMobile = useIsMobile();
+	const mobile = useMobile();
 	fullscreen && (width = "100vw") && (height = "100vh");
 	return <DrawerProvider>
 		<DrawerContext.Consumer>
 			{drawerContext => <>
 				<Drawer
 					title={title ? t(title) : null}
-					width={isMobile ? "100vw" : width}
+					width={mobile("100vw", width)}
 					height={height}
-					headerStyle={isMobile ? {padding: "8px 4px"} : undefined}
-					bodyStyle={{overflowY: "scroll", padding: isMobile ? "4px" : undefined}}
+					headerStyle={mobile({padding: "8px 4px"})}
+					bodyStyle={{overflowY: "scroll", padding: mobile("4px")}}
 					placement={placement}
 					push={push}
 					{...drawerProps}

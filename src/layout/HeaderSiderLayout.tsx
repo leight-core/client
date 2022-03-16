@@ -1,6 +1,6 @@
-import {LayoutContext, LoaderIcon, PlaceholderPage, useLayoutBlockContext, useLayoutContext, useSiderCollapseContext} from "@leight-core/client";
+import {LoaderIcon, PlaceholderPage, useLayoutBlockContext, useSiderCollapseContext} from "@leight-core/client";
 import {Layout, Spin} from "antd";
-import React, {CSSProperties, FC, ReactNode, Suspense, useEffect, useState} from "react";
+import React, {CSSProperties, FC, ReactNode, Suspense} from "react";
 import {BrowserView, MobileView} from "react-device-detect";
 
 interface ILayoutSiderProps {
@@ -9,9 +9,8 @@ interface ILayoutSiderProps {
 
 const LayoutSider: FC<ILayoutSiderProps> = ({sizeSize = 235, ...props}) => {
 	const menuCollapseContext = useSiderCollapseContext();
-	const layoutContext = useLayoutContext();
 	return <Layout.Sider
-		hidden={layoutContext.fullwidth}
+		hidden={false}
 		theme={"light"}
 		collapsible
 		onCollapse={menuCollapseContext.setCollapsed}
@@ -19,46 +18,6 @@ const LayoutSider: FC<ILayoutSiderProps> = ({sizeSize = 235, ...props}) => {
 		width={sizeSize}
 		{...props}
 	/>;
-};
-
-const HeaderSiderLayoutInternal: FC<IHeaderSiderLayoutProps> = ({header, footer, menu, siderSize, contentStyle, headerStyle, children}) => {
-	const layoutBlockContext = useLayoutBlockContext();
-	return <Layout>
-		<Spin indicator={<LoaderIcon/>} spinning={layoutBlockContext.isBlocked()}>
-			<BrowserView>
-				{header && <Layout.Header style={{backgroundColor: "#fff", padding: 0, ...headerStyle}}>
-					{header}
-				</Layout.Header>}
-				<Layout>
-					<LayoutSider sizeSize={siderSize}>
-						{menu}
-					</LayoutSider>
-					<Layout>
-						<Layout.Content style={{minHeight: "100vh", padding: "1.5em", ...contentStyle}}>
-							<Suspense fallback={<PlaceholderPage/>}>
-								{children}
-							</Suspense>
-							{footer && <Layout.Footer>
-								{footer}
-							</Layout.Footer>}
-						</Layout.Content>
-					</Layout>
-				</Layout>
-			</BrowserView>
-			<MobileView>
-				<Layout>
-					<Layout.Content style={{minHeight: "100vh", ...contentStyle}}>
-						<Suspense fallback={<PlaceholderPage/>}>
-							{children}
-						</Suspense>
-						{footer && <Layout.Footer>
-							{footer}
-						</Layout.Footer>}
-					</Layout.Content>
-				</Layout>
-			</MobileView>
-		</Spin>
-	</Layout>;
 };
 
 export interface IHeaderSiderLayoutProps {
@@ -85,17 +44,38 @@ export interface IHeaderSiderLayoutProps {
 /**
  * Layout with a component header space, left-sided main menu and content. Packed with some interesting features.
  */
-export const HeaderSiderLayout: FC<IHeaderSiderLayoutProps> = props => {
-	const [fullwidth, setFullwidth] = useState<boolean>(false);
-	return <LayoutContext.Provider
-		value={{
-			fullwidth,
-			useEnableFullwidth: (enable = true, restore = true) => useEffect(() => {
-				setFullwidth(enable);
-				return () => setFullwidth(!restore);
-			}, []),
-		}}
-	>
-		<HeaderSiderLayoutInternal {...props}/>
-	</LayoutContext.Provider>;
+export const HeaderSiderLayout: FC<IHeaderSiderLayoutProps> = ({header, footer, siderSize, menu, headerStyle, contentStyle, ...props}) => {
+	const layoutBlockContext = useLayoutBlockContext();
+	return <Layout>
+		<Spin indicator={<LoaderIcon/>} spinning={layoutBlockContext.isBlocked()}>
+			<BrowserView>
+				{header && <Layout.Header style={{backgroundColor: "#fff", padding: 0, ...headerStyle}}>
+					{header}
+				</Layout.Header>}
+				<Layout>
+					<LayoutSider sizeSize={siderSize}>
+						{menu}
+					</LayoutSider>
+					<Layout>
+						<Layout.Content style={{minHeight: "100vh", padding: "1.5em", ...contentStyle}}>
+							<Suspense fallback={<PlaceholderPage/>} {...props}/>
+							{footer && <Layout.Footer>
+								{footer}
+							</Layout.Footer>}
+						</Layout.Content>
+					</Layout>
+				</Layout>
+			</BrowserView>
+			<MobileView>
+				<Layout>
+					<Layout.Content style={{minHeight: "100vh", ...contentStyle}}>
+						<Suspense fallback={<PlaceholderPage/>} {...props}/>
+						{footer && <Layout.Footer>
+							{footer}
+						</Layout.Footer>}
+					</Layout.Content>
+				</Layout>
+			</MobileView>
+		</Spin>
+	</Layout>;
 };

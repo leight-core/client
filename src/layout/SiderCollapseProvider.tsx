@@ -3,12 +3,16 @@ import {FC, useEffect, useState} from "react";
 
 export interface ISiderCollapseProviderProps {
 	defaultCollapsed?: boolean;
+	defaultDisabled?: boolean;
 }
 
-export const SiderCollapseProvider: FC<ISiderCollapseProviderProps> = ({defaultCollapsed = false, ...props}) => {
+export const SiderCollapseProvider: FC<ISiderCollapseProviderProps> = ({defaultCollapsed = false, defaultDisabled = false, ...props}) => {
+	const [disabled, setDisabled] = useState<boolean>(defaultDisabled);
 	const [collapsed, setCollapsed] = useState<boolean>(defaultCollapsed);
 	return <SiderCollapseContext.Provider
 		value={{
+			disabled,
+			setDisabled: (disabled = true) => setDisabled(disabled),
 			collapsed,
 			useCollapse: (collapsed, restore) => {
 				useEffect(() => {
