@@ -54,7 +54,7 @@ export const Page: FC<IPageProps> = (
 			{...headerProps}
 		/>}
 		<Card
-			bodyStyle={isMobile ? {padding: "0"} : {padding: "0"}}
+			bodyStyle={isMobile ? {padding: "0"} : {padding: "0 8px"}}
 			{...cardProps}
 		>
 			{children}

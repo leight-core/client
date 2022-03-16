@@ -32,6 +32,7 @@ export interface IQuerySourceSelectProps<TResponse> extends Partial<Omit<SelectP
 	 */
 	debounce?: number;
 	onSelect?: (value: IQuerySourceValue<TResponse>) => void;
+	labelPrefix?: string;
 }
 
 export const QuerySourceSelect = <TResponse, >(
@@ -48,6 +49,7 @@ export const QuerySourceSelect = <TResponse, >(
 		filter = showSearch,
 		disableOnEmpty = true,
 		onSelect,
+		labelPrefix,
 		...props
 	}: PropsWithChildren<IQuerySourceSelectProps<TResponse>>) => {
 	const tid = useRef<any>();
@@ -71,10 +73,14 @@ export const QuerySourceSelect = <TResponse, >(
 	};
 
 	return sourceContext.result.isSuccess ? <Select<string, IQuerySourceValue<TResponse>>
-		options={sourceContext.result.data.items.map(entity => ({
-			...toOption(entity),
-			entity,
-		}))}
+		options={sourceContext.result.data.items.map(entity => {
+			const option = toOption(entity);
+			return ({
+				value: option.value,
+				label: t((labelPrefix || '') + option.label, option.label),
+				entity,
+			})
+		})}
 		onSelect={_onSelect}
 		loading={sourceContext.result.isFetching}
 		filterOption={() => true}

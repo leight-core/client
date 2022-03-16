@@ -4,7 +4,7 @@ import {broadcastQueryClient} from "react-query/broadcastQueryClient-experimenta
 import {createWebStoragePersistor} from "react-query/createWebStoragePersistor-experimental";
 import {persistQueryClient} from "react-query/persistQueryClient-experimental";
 import axios, {AxiosRequestConfig, AxiosResponse, Method} from "axios";
-import {IHookCallback, IMutationHook, IQueryHook, IQueryParams} from "@leight-core/api";
+import {IBaseSelectOption, IHookCallback, IMutationHook, IQueryHook, IQueryParams} from "@leight-core/api";
 import {useLinkContext} from "../link";
 
 /**
@@ -83,3 +83,5 @@ export function createPromiseHook<TRequest, TResponse, TQueryParams extends IQue
 		return (request?, query?, config?) => toPromise<TRequest, TResponse>(method, linkContext.link(link, query), request, config)
 	};
 }
+
+export const toOption = <TOption extends IBaseSelectOption = IBaseSelectOption>(item: TOption) => item;
