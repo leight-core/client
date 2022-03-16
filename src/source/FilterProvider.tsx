@@ -1,5 +1,5 @@
 import {FilterContext} from "@leight-core/client";
-import {PropsWithChildren, useState} from "react";
+import {PropsWithChildren, useEffect, useState} from "react";
 
 export interface IFilterProviderProps<TFilter = any> {
 	/**
@@ -14,6 +14,12 @@ export interface IFilterProviderProps<TFilter = any> {
 
 export function FilterProvider<TFilter, >({defaultFilter, applyFilter, ...props}: PropsWithChildren<IFilterProviderProps<TFilter>>) {
 	const [filter, setFilter] = useState<TFilter | undefined>(applyFilter || defaultFilter);
+	useEffect(() => {
+		setFilter(defaultFilter);
+	}, [defaultFilter]);
+	useEffect(() => {
+		setFilter(applyFilter);
+	}, [applyFilter]);
 	return <FilterContext.Provider
 		value={{
 			filter,

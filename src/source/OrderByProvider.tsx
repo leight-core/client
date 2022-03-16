@@ -1,5 +1,5 @@
 import {OrderByContext} from "@leight-core/client";
-import {PropsWithChildren, useState} from "react";
+import {PropsWithChildren, useEffect, useState} from "react";
 
 export interface IOrderByProviderProps<TOrderBy = any> {
 	/**
@@ -10,6 +10,9 @@ export interface IOrderByProviderProps<TOrderBy = any> {
 
 export function OrderByProvider<TOrderBy, >({defaultOrderBy, ...props}: PropsWithChildren<IOrderByProviderProps<TOrderBy>>) {
 	const [orderBy, setOrderBy] = useState<TOrderBy | undefined>(defaultOrderBy);
+	useEffect(() => {
+		setOrderBy(defaultOrderBy);
+	}, [defaultOrderBy]);
 	return <OrderByContext.Provider
 		value={{
 			orderBy,
