@@ -1,5 +1,5 @@
 import {EmptyPage, IEmptyPageProps, IPageHeaderProps, PageHeader, useMobile, useNavigate} from "@leight-core/client";
-import {BreadcrumbProps, Card, CardProps, Divider} from "antd";
+import {BreadcrumbProps, Card, CardProps} from "antd";
 import Breadcrumb from "antd/lib/breadcrumb";
 import * as React from "react";
 import {FC, ReactNode} from "react";
@@ -43,7 +43,7 @@ export const Page: FC<IPageProps> = (
 			extra={extra}
 			ghost={false}
 			breadcrumb={breadcrumbProps}
-			style={mobile({padding: "4px 0 0 12px"}, {height: '85px'})}
+			style={mobile({padding: "4px 0 0 12px"})}
 			{...headerProps}
 		/>}
 		<Card
@@ -51,7 +51,9 @@ export const Page: FC<IPageProps> = (
 			{...cardProps}
 		>
 			{children}
-			<Divider/>
+		</Card>
+		<Card bordered={false}>
+			&nbsp;
 		</Card>
 	</EmptyPage>;
 };

@@ -14,7 +14,6 @@ export const Menu: FC<IMenuProps> = ({extraOpenKeys = [], ...props}) => {
 		selectedKeys={menuSelectionContext.selection}
 		defaultOpenKeys={menuCollapseContext.collapsed ? [] : extraOpenKeys}
 		subMenuCloseDelay={0.35}
-		inlineCollapsed={menuCollapseContext.collapsed}
 		{...props}
 	/>;
 };
