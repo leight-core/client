@@ -1,4 +1,4 @@
-import {Centered, formatBytes, useLinkContext} from "@leight-core/client";
+import {Centered, toHumanBytes, useLinkContext} from "@leight-core/client";
 import {message, Progress, Typography, Upload} from "antd";
 import {DraggerProps, RcFile, UploadChangeParam} from "antd/lib/upload";
 import {FC, useState} from "react";
@@ -37,7 +37,7 @@ export const Uploader: FC<IUploaderProps> = ({name, limit, translation, action, 
 	const onBeforeUpload = (file: RcFile): boolean => {
 		const hasValidSize = file.size / 1024 / 1024 < limit;
 		if (!hasValidSize) {
-			message.error(t([translation + ".file-too-large", "component.error.file-too-large"], {size: formatBytes(file.size), limit: formatBytes(limit * 1024 * 1024)}));
+			message.error(t([translation + ".file-too-large", "component.error.file-too-large"], {size: toHumanBytes(file.size), limit: toHumanBytes(limit * 1024 * 1024)}));
 		}
 		return hasValidSize;
 	};
