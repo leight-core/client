@@ -43,7 +43,7 @@ export const Page: FC<IPageProps> = (
 			extra={extra}
 			ghost={false}
 			breadcrumb={breadcrumbProps}
-			style={mobile({padding: "4px 0 0 12px"})}
+			style={mobile({padding: "4px 0 0 12px"}, {height: '85px'})}
 			{...headerProps}
 		/>}
 		<Card
