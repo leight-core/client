@@ -16,6 +16,7 @@ export interface IPageProps extends IEmptyPageProps {
 	headerPostfix?: ReactNode;
 	cardProps?: Partial<CardProps>;
 	headerProps?: IPageHeaderProps;
+	values?: any;
 }
 
 export const Page: FC<IPageProps> = (
@@ -29,6 +30,7 @@ export const Page: FC<IPageProps> = (
 		headerPostfix,
 		children,
 		title,
+		values,
 		onBack,
 		...props
 	}) => {
@@ -39,6 +41,7 @@ export const Page: FC<IPageProps> = (
 			onBack={onBack ? () => onBack(navigate) : undefined}
 			headerPostfix={headerPostfix}
 			title={title}
+			values={values}
 			icon={icon}
 			extra={extra}
 			ghost={false}

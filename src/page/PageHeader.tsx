@@ -6,11 +6,12 @@ import {useTranslation} from "react-i18next";
 export interface IPageHeaderProps extends Partial<CoolPageHeaderProps> {
 	icon?: ReactNode;
 	headerPostfix?: ReactNode;
+	values?: any;
 }
 
-export const PageHeader: FC<IPageHeaderProps> = ({title, icon, headerPostfix, ...props}) => {
+export const PageHeader: FC<IPageHeaderProps> = ({title, icon, headerPostfix, values, ...props}) => {
 	const {t} = useTranslation();
-	const _title = isString(title) ? <span>{t(title + ".title")}</span> : title;
+	const _title = isString(title) ? <span>{t(title + ".title", {data: values})}</span> : title;
 	return <CoolPageHeader
 		title={<Row align={'middle'} style={{width: '60vw', height: '45px'}}>
 			<Col>
