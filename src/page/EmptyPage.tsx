@@ -23,6 +23,7 @@ export interface IEmptyPageProps {
 	 * Selected menu items.
 	 */
 	menuSelection?: string[];
+	values?: any;
 }
 
 const EmptyPageInternal: FC = props => {
@@ -40,6 +41,7 @@ export const EmptyPage: FC<IEmptyPageProps> = (
 		blocked = false,
 		collapsed,
 		menuSelection = [],
+		values,
 		...props
 	}) => {
 	const {t} = useTranslation();
@@ -50,7 +52,7 @@ export const EmptyPage: FC<IEmptyPageProps> = (
 		blockContext.unblock(true);
 	}, []);
 	return <PageProvider>
-		{title && <Head><title key={"title"}>{t(title + ".title")}</title></Head>}
+		{title && <Head><title key={"title"}>{t(title + ".title", {data: values})}</title></Head>}
 		<ScrollToTop/>
 		<BlockProvider locked={blocked}>
 			<EmptyPageInternal {...props}/>

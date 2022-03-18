@@ -36,7 +36,7 @@ export const Page: FC<IPageProps> = (
 	}) => {
 	const mobile = useMobile();
 	const navigate = useNavigate();
-	return <EmptyPage title={title} {...props}>
+	return <EmptyPage title={title} values={values} {...props}>
 		{header || <PageHeader
 			onBack={onBack ? () => onBack(navigate) : undefined}
 			headerPostfix={headerPostfix}
