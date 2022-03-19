@@ -65,7 +65,7 @@ export const QuerySourceSelect = <TResponse, >(
 		]);
 	});
 	useEffect(() => {
-		filter && filterContext?.setFilter({fulltext: value} as any);
+		filter && filterContext?.setFilter({id: value} as any);
 	}, [value]);
 
 	const _onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => {
