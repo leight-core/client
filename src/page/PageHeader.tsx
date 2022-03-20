@@ -1,5 +1,5 @@
 import {isString} from "@leight-core/client";
-import {Col, Divider, PageHeader as CoolPageHeader, PageHeaderProps as CoolPageHeaderProps, Row, Space} from "antd";
+import {Col, PageHeader as CoolPageHeader, PageHeaderProps as CoolPageHeaderProps, Row, Space} from "antd";
 import {FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
@@ -17,9 +17,6 @@ export const PageHeader: FC<IPageHeaderProps> = ({title, icon, headerPostfix, va
 			<Col>
 				<Space>{icon}{_title}</Space>
 			</Col>
-			{headerPostfix && <Col span={1}>
-				<Divider type={'vertical'}/>
-			</Col>}
 			{headerPostfix && <Col flex={'auto'}>
 				{headerPostfix}
 			</Col>}
