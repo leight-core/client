@@ -7,25 +7,18 @@ export interface ICursorProviderProps {
 }
 
 export const CursorProvider: FC<ICursorProviderProps> = ({defaultPage, defaultSize, ...props}) => {
-	const [page, setPage] = useState<number | undefined>(defaultPage);
-	const [size, setSize] = useState<number | undefined>(defaultSize);
+	const [[page, size], setPage] = useState<[number | undefined, number | undefined]>([defaultPage, defaultSize]);
 	useEffect(() => {
-		setPage(defaultPage);
+		setPage([defaultPage, size]);
 	}, [defaultPage]);
 	useEffect(() => {
-		setPage(defaultSize);
+		setPage([page, defaultSize]);
 	}, [defaultSize]);
 	return <CursorContext.Provider
 		value={{
 			page,
 			size,
-			setPage(page?: number, size?: number) {
-				setPage(page);
-				/**
-				 * We must have a page to set the size.
-				 */
-				setSize(page && size);
-			}
+			setPage: (page?: number, size?: number) => setPage([page, size]),
 		}}
 		{...props}
 	/>;
