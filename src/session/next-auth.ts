@@ -20,11 +20,13 @@ export interface IUseSessionRequest {
 export function useSession(
 	{
 		required,
-		redirectTo = "/api/auth/signin?error=SessionExpired",
+		redirectTo = "/api/auth/signin?error=SessionRequired",
 		queryConfig = {},
 	}: IUseSessionRequest = {}) {
 	const router = useRouter()
 	const query = useQuery(["session"], fetchSession, {
+		staleTime: 60 * 100 * 5 * 3,
+		refetchInterval: 60 * 100 * 5,
 		...queryConfig,
 		onSettled(data, error) {
 			queryConfig?.onSettled?.(data, error)
