@@ -15,6 +15,7 @@ export const BootstrapLoader: FC<IBootstrapLoaderProps> = ({session, ...props}) 
 	useBootstrap(setBootstrapConfig);
 	return <SessionProvider
 		session={session}
+		refetchInterval={60}
 		refetchOnWindowFocus={true}
 	>
 		{bootstrapConfig && <ConfigProvider locale={bootstrapConfig.locale.antd} {...props}/>}

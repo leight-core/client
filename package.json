@@ -1,5 +1,5 @@
 {
-	"version": "0.5.44",
+	"version": "0.5.45",
 	"name": "@leight-core/client",
 	"description": "All that shiny client stuff.",
 	"license": "MIT",
@@ -21,7 +21,7 @@
 		"build": "npm run lint && tsc -p tsconfig.json && tsc -p tsconfig.json -m es6 --outDir lib/esm"
 	},
 	"dependencies": {
-		"@leight-core/api": "^0.5.106",
+		"@leight-core/api": "^0.5.113",
 		"react-i18next": "^11.15.7",
 		"react-cookie": "^4.1.1",
 		"react-query": "^3.34.16",
