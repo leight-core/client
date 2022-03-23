@@ -26,6 +26,7 @@ export function useSession(
 	const router = useRouter()
 	const query = useQuery(["session"], fetchSession, {
 		staleTime: 60 * 100 * 5 * 3,
+		refetchOnWindowFocus: 'always',
 		refetchInterval: 60 * 100 * 5,
 		...queryConfig,
 		onSettled(data, error) {
