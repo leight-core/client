@@ -17,6 +17,7 @@ export * from "./interface";
 export * from "./ListIcon";
 export * from "./LoaderIcon";
 export * from "./MenuIcon";
+export * from "./NotificationIcon";
 export * from "./SignInIcon";
 export * from "./SignOutIcon";
 export * from "./SignUpIcon";
