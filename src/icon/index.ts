@@ -9,7 +9,7 @@ export * from "./DeleteItemIcon";
 export * from "./DescriptionIcon";
 export * from "./EditIcon";
 export * from "./ErrorIcon";
-export * from "./ForwardIcon";
+export * from "./GithubIcon";
 export * from "./GroupIcon";
 export * from "./HomeIcon";
 export * from "./interface";
