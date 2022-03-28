@@ -1,6 +1,7 @@
 import {useQuery} from "react-query"
 import {useRouter} from "next/router"
 import {UseQueryOptions} from "react-query/types/react/types";
+import {Session} from "next-auth";
 
 export async function fetchSession() {
 	const res = await fetch("/api/auth/session")
@@ -14,7 +15,7 @@ export async function fetchSession() {
 export interface IUseSessionRequest {
 	required?: boolean;
 	redirectTo?: string;
-	queryConfig?: Omit<UseQueryOptions<any, any, any, any>, 'queryKey' | 'queryFn'>;
+	queryConfig?: Omit<UseQueryOptions<any, any, Session, any>, 'queryKey' | 'queryFn'>;
 }
 
 export function useSession(
@@ -24,7 +25,7 @@ export function useSession(
 		queryConfig = {},
 	}: IUseSessionRequest = {}) {
 	const router = useRouter()
-	const query = useQuery(["session"], fetchSession, {
+	return useQuery<Session>(["session"], fetchSession, {
 		staleTime: 60 * 100 * 5 * 3,
 		refetchOnWindowFocus: 'always',
 		refetchInterval: 60 * 100 * 5,
@@ -35,6 +36,5 @@ export function useSession(
 				router.push(redirectTo);
 			}
 		},
-	})
-	return [query.data, query.status === "loading"]
+	});
 }
