@@ -5,6 +5,7 @@ export * from "./ButtonLink";
 export * from "./CancelOrderButton";
 export * from "./Card";
 export * from "./CopyText";
+export * from "./DeployRefreshManager";
 export * from "./IconText";
 export * from "./ModalButton";
 export * from "./OrderButton";

@@ -1,5 +1,5 @@
 {
-	"version": "0.5.59",
+	"version": "0.5.60",
 	"name": "@leight-core/client",
 	"description": "All that shiny client stuff.",
 	"license": "MIT",
@@ -45,7 +45,7 @@
 	},
 	"peerDependencies": {
 		"@ant-design/icons": "^4.7.0",
-		"antd": "^4.19.3",
+		"antd": "^4.19.4",
 		"react": "^17.0.2",
 		"next": "^12.1.0",
 		"next-auth": "^4.2.1"
