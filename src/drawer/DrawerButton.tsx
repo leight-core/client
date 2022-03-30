@@ -31,7 +31,7 @@ export const DrawerButton: FC<IDrawerButtonProps> = ({children, onClick, label, 
 		<DrawerContext.Consumer>
 			{drawerContext => <>
 				<Drawer
-					title={title ? t(title) : null}
+					title={title ? t(title, {data: values}) : null}
 					width={mobile("100vw", width)}
 					height={height}
 					headerStyle={mobile({padding: "8px 4px"})}
