@@ -8,6 +8,7 @@ import {PlacementType} from "@leight-core/api";
 export interface IDrawerButtonProps extends Partial<ButtonProps> {
 	label?: ReactNode;
 	title?: string;
+	values?: any;
 	/**
 	 * Optional drawer width.
 	 */
@@ -22,7 +23,7 @@ export interface IDrawerButtonProps extends Partial<ButtonProps> {
 /**
  * Default Antd button without any preset; just the drawer is shown on click.
  */
-export const DrawerButton: FC<IDrawerButtonProps> = ({children, onClick, label, title, width = 600, height, placement = "left", push = false, fullscreen = false, drawerProps, ...props}) => {
+export const DrawerButton: FC<IDrawerButtonProps> = ({children, onClick, label, title, values, width = 600, height, placement = "left", push = false, fullscreen = false, drawerProps, ...props}) => {
 	const {t} = useTranslation();
 	const mobile = useMobile();
 	fullscreen && (width = "100vw") && (height = "100vh");
@@ -48,7 +49,7 @@ export const DrawerButton: FC<IDrawerButtonProps> = ({children, onClick, label, 
 					}}
 					{...props}
 				>
-					{title ? t(title) : label}
+					{title ? t(title, {data: values}) : label}
 				</Button>
 			</>}
 		</DrawerContext.Consumer>
