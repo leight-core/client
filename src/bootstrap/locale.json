@@ -1,26 +1,32 @@
 {
 	"cs": {
-		"short": "cs",
-		"long": "cs_CZ"
+		"dayjs": "cs",
+		"moment": "cs",
+		"antd": "cs_CZ"
 	},
 	"cs_CZ": {
-		"short": "cs",
-		"long": "cs_CZ"
+		"dayjs": "cs",
+		"moment": "cs",
+		"antd": "cs_CZ"
 	},
 	"en": {
-		"short": "en",
-		"long": "en_US"
+		"dayjs": "en-gb",
+		"moment": "en-gb",
+		"antd": "en_US"
 	},
 	"en_US": {
-		"short": "en",
-		"long": "en_US"
+		"dayjs": "en-gb",
+		"moment": "en-gb",
+		"antd": "en_US"
 	},
 	"de": {
-		"short": "de",
-		"long": "de_DE"
+		"dayjs": "de",
+		"moment": "de",
+		"antd": "de_DE"
 	},
 	"ru": {
-		"short": "ru",
-		"long": "ru_RU"
+		"dayjs": "ru",
+		"moment": "ru",
+		"antd": "ru_RU"
 	}
 }

@@ -4,7 +4,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 import {initReactI18next} from "react-i18next";
 import enEN from 'antd/lib/locale/en_US';
 import dayjs from "dayjs";
-import localeMap from './locale.json';
+import locales from './locale.json';
 import moment from "moment";
 
 export const bootstrapLocale = async (language: string): Promise<ILocaleConfig> => {
@@ -43,7 +43,7 @@ export const bootstrapLocale = async (language: string): Promise<ILocaleConfig> 
 	dayjs.extend(require("dayjs/plugin/relativeTime"));
 	dayjs.extend(require("dayjs/plugin/utc"));
 
-	const locale = (localeMap as any)[language] || {'short': 'en', 'long': 'en_US'};
+	const locale = (locales as any)[language] || {dayjs: 'en-gb', moment: 'en-gb', antd: 'en_GB'};
 	return new Promise<{ antd: any }>(resolver => {
 		import(`dayjs/locale/${locale.short}.js`)
 			.then(() => dayjs.locale(locale.short))
