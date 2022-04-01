@@ -1,4 +1,4 @@
-import {useOptionalFilterContext, useOptionalFormContext, useOptionalFormItemContext, useSourceContext, useUpdate} from "@leight-core/client";
+import {isString, useOptionalFilterContext, useOptionalFormContext, useOptionalFormItemContext, useSourceContext, useUpdate} from "@leight-core/client";
 import {IBaseSelectOption, IToOptionMapper} from '@leight-core/api';
 import {Empty, Select, SelectProps} from "antd";
 import React, {PropsWithChildren, useEffect, useRef} from "react";
@@ -77,7 +77,7 @@ export const QuerySourceSelect = <TResponse, >(
 			const option = toOption(entity);
 			return ({
 				value: option.value,
-				label: t((labelPrefix || '') + option.label, option.label),
+				label: isString(option.label) ? t((labelPrefix || '') + option.label, option.label) : option.label,
 				entity,
 			})
 		})}
