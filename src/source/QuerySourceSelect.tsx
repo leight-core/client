@@ -89,6 +89,7 @@ export const QuerySourceSelect = <TResponse, >(
 		onSearch={showSearch ? fulltext => {
 			clearTimeout(tid.current);
 			tid.current = setTimeout(() => {
+				console.log('Fulltext', fulltext);
 				filterContext?.setFilter({fulltext});
 			}, debounce);
 		} : undefined}
