@@ -25,7 +25,7 @@ export const List = <TResponse, >(
 		footer={footer?.(sourceContext)}
 		dataSource={sourceContext.data().items}
 		loading={{
-			spinning: sourceContext.result.isFetching,
+			spinning: sourceContext.result.isLoading,
 			delay: 100,
 		}}
 		renderItem={children}
