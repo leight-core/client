@@ -21,7 +21,7 @@
 		"build": "npm run lint && tsc -p tsconfig.json && tsc -p tsconfig.json -m es6 --outDir lib/esm"
 	},
 	"dependencies": {
-		"@leight-core/api": "^0.5.114",
+		"@leight-core/api": "^0.5.117",
 		"react-i18next": "^11.15.7",
 		"react-cookie": "^4.1.1",
 		"react-query": "^3.34.16",
