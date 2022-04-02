@@ -42,7 +42,7 @@ export const QuerySourceSelect = <TResponse, >(
 		 * Value extracted from props for to prevent showing it in the placeholder Select.
 		 */
 		value,
-		debounce = 100,
+		debounce = 200,
 		clearOn = false,
 		usePlaceholder,
 		showSearch = false,
