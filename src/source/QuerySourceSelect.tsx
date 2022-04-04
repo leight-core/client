@@ -68,9 +68,7 @@ export const QuerySourceSelect = <TResponse, >(
 		filter && filterContext?.setFilter({id: value} as any);
 	}, [value]);
 
-	const _onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => {
-		onSelect?.(option);
-	};
+	const _onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => onSelect?.(option);
 
 	return sourceContext.result.isSuccess ? <Select<string, IQuerySourceValue<TResponse>>
 		options={sourceContext.result.data.items.map(entity => {
@@ -88,13 +86,10 @@ export const QuerySourceSelect = <TResponse, >(
 		notFoundContent={<Empty description={t("common.nothing-found")}/>}
 		onSearch={showSearch ? fulltext => {
 			clearTimeout(tid.current);
-			tid.current = setTimeout(() => {
-				console.log('Fulltext', fulltext);
-				filterContext?.setFilter({fulltext});
-			}, debounce);
+			tid.current = setTimeout(() => filterContext?.setFilter({fulltext}), debounce);
 		} : undefined}
 		onClear={() => filterContext?.setFilter()}
-		disabled={!showSearch && disableOnEmpty && sourceContext.result.data && !sourceContext.result.data.count}
+		disabled={!showSearch && disableOnEmpty && !sourceContext.hasData()}
 		value={value}
 		{...props}
 	/> : <Select<string, IQuerySourceValue<TResponse>>
