@@ -58,9 +58,6 @@ export const QuerySourceSelect = <TResponse, >(
 	const filterContext = useOptionalFilterContext<any>();
 	const formContext = useOptionalFormContext();
 	const formItemContext = useOptionalFormItemContext();
-
-	console.log('[Query Source Select] Filter Context', sourceContext.name, filterContext?.name);
-
 	formItemContext && usePlaceholder && (props.placeholder = formItemContext.label);
 	useUpdate([clearOn], () => {
 		clearOn !== false && formItemContext && formContext && formContext.form.setFields([
