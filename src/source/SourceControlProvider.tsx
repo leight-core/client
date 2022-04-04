@@ -3,6 +3,7 @@ import {PropsWithChildren} from "react";
 import {IQueryParams} from "@leight-core/api";
 
 export interface ISourceControlProviderProps<TFilter = any, TOrderBy = any, TQueryParams extends IQueryParams | void = void> {
+	name: string;
 	filterProviderProps?: IFilterProviderProps<TFilter>;
 	orderByProviderProps?: IOrderByProviderProps<TOrderBy>;
 	queryParamsProviderProps?: IQueryParamsProviderProps<TQueryParams>;
@@ -27,6 +28,7 @@ export interface ISourceControlProviderProps<TFilter = any, TOrderBy = any, TQue
 
 export function SourceControlProvider<TFilter = any, TOrderBy = any, TQueryParams extends IQueryParams | void = void>(
 	{
+		name,
 		filterProviderProps,
 		orderByProviderProps,
 		queryParamsProviderProps,
@@ -44,15 +46,18 @@ export function SourceControlProvider<TFilter = any, TOrderBy = any, TQueryParam
 		{...queryParamsProviderProps}
 	>
 		<FilterProvider<TFilter>
+			name={`${name}.Filter`}
 			defaultFilter={defaultFilter}
 			applyFilter={applyFilter}
 			{...filterProviderProps}
 		>
 			<OrderByProvider<TOrderBy>
+				name={`${name}.OrderBy`}
 				defaultOrderBy={defaultOrderBy}
 				{...orderByProviderProps}
 			>
 				<CursorProvider
+					name={`${name}.Cursor`}
 					defaultPage={defaultPage}
 					defaultSize={defaultSize}
 					{...cursorProviderProps}

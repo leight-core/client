@@ -2,6 +2,7 @@ import {FilterContext} from "@leight-core/client";
 import {PropsWithChildren, useEffect, useState} from "react";
 
 export interface IFilterProviderProps<TFilter = any> {
+	name: string;
 	/**
 	 * Default pre-set filter; could be overridden by a user. Apply filter prop takes precedence.
 	 */
@@ -12,7 +13,7 @@ export interface IFilterProviderProps<TFilter = any> {
 	applyFilter?: TFilter;
 }
 
-export function FilterProvider<TFilter, >({defaultFilter, applyFilter, ...props}: PropsWithChildren<IFilterProviderProps<TFilter>>) {
+export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...props}: PropsWithChildren<IFilterProviderProps<TFilter>>) {
 	const [filter, setFilter] = useState<TFilter | undefined>(applyFilter || defaultFilter);
 	useEffect(() => {
 		setFilter(defaultFilter);
@@ -22,6 +23,7 @@ export function FilterProvider<TFilter, >({defaultFilter, applyFilter, ...props}
 	}, [applyFilter]);
 	return <FilterContext.Provider
 		value={{
+			name,
 			filter,
 			setFilter: filter => setFilter({...filter, ...applyFilter}),
 		}}
