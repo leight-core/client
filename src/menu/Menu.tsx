@@ -1,6 +1,6 @@
+import {useMenuSelectionContext, useSiderCollapseContext} from "@leight-core/client";
 import {Menu as CoolMenu, MenuProps} from "antd";
 import React, {FC} from "react";
-import {useMenuSelectionContext, useSiderCollapseContext} from "@leight-core/client";
 
 export interface IMenuProps extends Partial<MenuProps> {
 	extraOpenKeys?: string[];

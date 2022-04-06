@@ -1,7 +1,7 @@
+import {IQueryParams} from "@leight-core/api";
 import {LinkContext} from "@leight-core/client";
 import {compile} from "path-to-regexp";
 import {FC, useRef} from "react";
-import {IQueryParams} from "@leight-core/api";
 
 export interface ILinkProviderProps {
 }
@@ -12,7 +12,7 @@ export const LinkProvider: FC<ILinkProviderProps> = props => {
 	const limit = 10000;
 
 	function generator(path: string) {
-		path = path.replace(/\[(.*?)\]/g, ':$1').replace(/{(.*?)}/g, ':$1');
+		path = path.replace(/\[(.*?)\]/g, ":$1").replace(/{(.*?)}/g, ":$1");
 		if (cache.current[path]) {
 			return cache.current[path];
 		}

@@ -1,10 +1,10 @@
+import {IBaseSelectOption, IHookCallback, IMutationHook, IQueryHook, IQueryParams} from "@leight-core/api";
+import axios, {AxiosRequestConfig, AxiosResponse, Method} from "axios";
 import {useEffect} from "react";
 import {QueryClient, useMutation, useQuery} from "react-query";
 import {broadcastQueryClient} from "react-query/broadcastQueryClient-experimental";
 import {createWebStoragePersistor} from "react-query/createWebStoragePersistor-experimental";
 import {persistQueryClient} from "react-query/persistQueryClient-experimental";
-import axios, {AxiosRequestConfig, AxiosResponse, Method} from "axios";
-import {IBaseSelectOption, IHookCallback, IMutationHook, IQueryHook, IQueryParams} from "@leight-core/api";
 import {useLinkContext} from "../link";
 
 /**
@@ -54,14 +54,14 @@ export const toPromise = <TRequest, TResponse>(method: Method, url: string, requ
 export function createQueryHook<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(link: string, method: Method): IQueryHook<TRequest, TResponse, TQueryParams> {
 	return (request?, query?, options?, config?) => {
 		const linkContext = useLinkContext();
-		return useQuery([link, {query, request}], () => toPromise<TRequest, TResponse>(method, linkContext.link(link, query), request, config), options)
+		return useQuery([link, {query, request}], () => toPromise<TRequest, TResponse>(method, linkContext.link(link, query), request, config), options);
 	};
 }
 
 export function createMutationHook<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(link: string, method: Method): IMutationHook<TRequest, TResponse, TQueryParams> {
 	return (query?, options?, config?) => {
 		const linkContext = useLinkContext();
-		return useMutation<TResponse, any, TRequest>(["mutation", link, {query}], request => toPromise<TRequest, TResponse>(method, linkContext.link(link, query), request, config), options)
+		return useMutation<TResponse, any, TRequest>(["mutation", link, {query}], request => toPromise<TRequest, TResponse>(method, linkContext.link(link, query), request, config), options);
 	};
 }
 
@@ -80,7 +80,7 @@ export function createPromiseHook<TRequest, TResponse, TQueryParams extends IQue
 		/**
 		 * Hook-free context, can be called anywhere.
 		 */
-		return (request?, query?, config?) => toPromise<TRequest, TResponse>(method, linkContext.link(link, query), request, config)
+		return (request?, query?, config?) => toPromise<TRequest, TResponse>(method, linkContext.link(link, query), request, config);
 	};
 }
 

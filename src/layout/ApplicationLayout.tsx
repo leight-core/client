@@ -1,6 +1,6 @@
-import React, {CSSProperties, FC, ReactNode, Suspense} from "react";
 import {LoaderIcon, PlaceholderPage, useLayoutBlockContext} from "@leight-core/client";
 import {Layout, Spin} from "antd";
+import React, {CSSProperties, FC, ReactNode, Suspense} from "react";
 import {BrowserView, MobileView} from "react-device-detect";
 
 export interface IApplicationLayoutProps {
@@ -26,7 +26,7 @@ export const ApplicationLayout: FC<IApplicationLayoutProps> = ({header, footer, 
 				{header}
 				<Layout>
 					<Layout>
-						<Layout.Content style={{minHeight: "92vh", padding: '0 1em', ...contentStyle}}>
+						<Layout.Content style={{minHeight: "92vh", padding: "0 1em", ...contentStyle}}>
 							<Suspense fallback={<PlaceholderPage/>} {...props}/>
 							{footer && <Layout.Footer>
 								{footer}

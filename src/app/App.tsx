@@ -1,10 +1,10 @@
+import {ITranslationsQuery} from "@leight-core/api";
+import {DayjsProvider, I18NextProvider, IResponsiveProviderProps, LayoutBlockProvider, LinkProvider, MenuSelectionProvider, ResponsiveContext, ResponsiveProvider, SiderCollapseProvider, TranslationLoader} from "@leight-core/client";
 import {i18n} from "i18next";
 import {FC, ReactNode} from "react";
 import {CookiesProvider} from "react-cookie";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from "react-query/devtools";
-import {DayjsProvider, I18NextProvider, IResponsiveProviderProps, LayoutBlockProvider, LinkProvider, MenuSelectionProvider, ResponsiveContext, ResponsiveProvider, SiderCollapseProvider, TranslationLoader} from "@leight-core/client";
-import {ITranslationsQuery} from "@leight-core/api";
 
 export interface IAppProps {
 	logo?: ReactNode;

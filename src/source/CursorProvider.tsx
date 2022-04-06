@@ -24,4 +24,4 @@ export const CursorProvider: FC<ICursorProviderProps> = ({name, defaultPage, def
 		}}
 		{...props}
 	/>;
-}
+};

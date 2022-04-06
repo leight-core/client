@@ -1,11 +1,11 @@
 import {IBootstrapConfig} from "@leight-core/api";
-import {Router} from "next/router";
-import NProgress from "nprogress";
 import axios from "axios";
 import axiosRetry from "axios-retry";
-import {bootstrapLocale} from "./bootstrapLocale";
 import i18n from "i18next";
+import {Router} from "next/router";
+import NProgress from "nprogress";
 import {useEffect} from "react";
+import {bootstrapLocale} from "./bootstrapLocale";
 
 export const bootstrap = async (): Promise<IBootstrapConfig> => {
 	Router.events.on("routeChangeStart", () => NProgress.start());
@@ -21,11 +21,11 @@ export const bootstrap = async (): Promise<IBootstrapConfig> => {
 
 	return {
 		locale: await bootstrapLocale(i18n.language),
-	}
-}
+	};
+};
 
 export const useBootstrap = (setBootstrapConfig: (config: IBootstrapConfig) => void) => {
 	useEffect(() => {
 		(async () => setBootstrapConfig(await bootstrap()))();
 	}, []);
-}
+};

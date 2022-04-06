@@ -1,9 +1,9 @@
+import {IQueryParams} from "@leight-core/api";
 import {Centered, toHumanBytes, useLinkContext} from "@leight-core/client";
 import {message, Progress, Typography, Upload} from "antd";
 import {DraggerProps, RcFile, UploadChangeParam} from "antd/lib/upload";
 import {FC, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {IQueryParams} from "@leight-core/api";
 
 export interface IUploaderProps extends Partial<DraggerProps> {
 	/**

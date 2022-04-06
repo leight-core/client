@@ -1,6 +1,6 @@
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
-import axios from "axios";
 import {FingerprintContext} from "@leight-core/client";
+import axios from "axios";
 import {FC} from "react";
 import {useQuery} from "react-query";
 

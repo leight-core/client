@@ -1,7 +1,7 @@
+import {isString, useMobile} from "@leight-core/client";
 import {Card as CoolCard, CardProps as CoolCardProps} from "antd";
 import {FC} from "react";
 import {useTranslation} from "react-i18next";
-import {isString, useMobile} from "@leight-core/client";
 
 export interface ICardProps extends Partial<CoolCardProps> {
 }

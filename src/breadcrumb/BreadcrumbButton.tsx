@@ -1,5 +1,5 @@
-import {FC} from "react";
 import {ButtonLink, IButtonLinkProps} from "@leight-core/client";
+import {FC} from "react";
 
 export interface IBreadcrumbButtonProps extends IButtonLinkProps {
 }

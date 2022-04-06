@@ -1,6 +1,6 @@
+import {IQueryParams} from "@leight-core/api";
 import Link from "next/link";
 import {FC} from "react";
-import {IQueryParams} from "@leight-core/api";
 
 export interface ILinkToProps {
 	/**

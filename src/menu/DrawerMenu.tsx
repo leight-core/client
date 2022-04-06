@@ -1,9 +1,9 @@
 import {MenuOutlined} from "@ant-design/icons";
+import {PlacementType} from "@leight-core/api";
 import {DrawerButton, IDrawerButtonProps, useMobile} from "@leight-core/client";
 import {Menu} from "antd";
 import {PushState} from "antd/lib/drawer";
 import {FC, ReactNode} from "react";
-import {PlacementType} from "@leight-core/api";
 
 export interface IDrawerMenuProps extends Partial<IDrawerButtonProps> {
 	header?: ReactNode;

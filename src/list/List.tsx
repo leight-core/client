@@ -1,7 +1,7 @@
 import {ISourceContext} from "@leight-core/api";
+import {useSourceContext} from "@leight-core/client";
 import {List as CoolList, ListProps} from "antd";
 import React, {PropsWithChildren, ReactNode} from "react";
-import {useSourceContext} from "@leight-core/client";
 
 export interface IListProps<TResponse> extends Partial<ListProps<TResponse>> {
 	header?: (sourceContext: ISourceContext<TResponse>) => ReactNode;
@@ -30,7 +30,7 @@ export const List = <TResponse, >(
 		}}
 		renderItem={children}
 		pagination={sourceContext.pagination()}
-		size={'large'}
+		size={"large"}
 		{...props}
-	/>
-}
+	/>;
+};

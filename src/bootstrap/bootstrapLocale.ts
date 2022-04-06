@@ -1,11 +1,11 @@
 import {ILocaleConfig} from "@leight-core/api";
+import enEN from "antd/lib/locale/en_US";
+import dayjs from "dayjs";
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
-import {initReactI18next} from "react-i18next";
-import enEN from 'antd/lib/locale/en_US';
-import dayjs from "dayjs";
-import locales from './locale.json';
 import moment from "moment";
+import {initReactI18next} from "react-i18next";
+import locales from "./locale.json";
 
 export const bootstrapLocale = async (language: string): Promise<ILocaleConfig> => {
 	await i18n
@@ -43,7 +43,7 @@ export const bootstrapLocale = async (language: string): Promise<ILocaleConfig> 
 	dayjs.extend(require("dayjs/plugin/relativeTime"));
 	dayjs.extend(require("dayjs/plugin/utc"));
 
-	const locale = (locales as any)[language] || {dayjs: 'en-gb', moment: 'en-gb', antd: 'en_GB'};
+	const locale = (locales as any)[language] || {dayjs: "en-gb", moment: "en-gb", antd: "en_GB"};
 	return new Promise<{ antd: any }>(resolver => {
 		import(`dayjs/locale/${locale.dayjs}.js`)
 			.then(() => dayjs.locale(locale.dayjs))

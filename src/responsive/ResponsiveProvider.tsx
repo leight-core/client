@@ -1,6 +1,6 @@
+import {ResponsiveContext} from "@leight-core/client";
 import {FC} from "react";
 import {isBrowser as isCoolBrowser, isMobile as isCoolMobile, isTablet as isCoolTablet} from "react-device-detect";
-import {ResponsiveContext} from "@leight-core/client";
 
 export interface IResponsiveProviderProps {
 	isBrowser?: () => boolean;

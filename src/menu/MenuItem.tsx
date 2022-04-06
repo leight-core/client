@@ -1,8 +1,8 @@
+import {IQueryParams} from "@leight-core/api";
+import {LinkTo} from "@leight-core/client";
 import {Menu, MenuItemProps} from "antd";
 import {FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
-import {LinkTo} from "@leight-core/client";
-import {IQueryParams} from "@leight-core/api";
 
 export interface IMenuItemProps extends Partial<MenuItemProps> {
 	/**

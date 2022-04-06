@@ -1,6 +1,6 @@
+import {ItemGroupProvider, useOptionalItemGroupContext} from "@leight-core/client";
 import {NamePath} from "rc-field-form/lib/interface";
 import {FC} from "react";
-import {ItemGroupProvider, useOptionalItemGroupContext} from "@leight-core/client";
 
 export interface IItemGroupProps {
 	prefix: NamePath;

@@ -1,6 +1,6 @@
+import {ICursorContext} from "@leight-core/api";
 import {useContext, useOptionalContext} from "@leight-core/client";
 import {createContext} from "react";
-import {ICursorContext} from "@leight-core/api";
 
 export const CursorContext = createContext<ICursorContext>(null as any);
 

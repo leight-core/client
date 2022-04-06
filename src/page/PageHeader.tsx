@@ -13,11 +13,11 @@ export const PageHeader: FC<IPageHeaderProps> = ({title, icon, headerPostfix, va
 	const {t} = useTranslation();
 	const _title = isString(title) ? <span>{t(title + ".title", {data: values})}</span> : title;
 	return <CoolPageHeader
-		title={<Row align={'middle'} style={{width: '60vw', height: '45px'}}>
+		title={<Row align={"middle"} style={{width: "60vw", height: "45px"}}>
 			<Col>
 				<Space>{icon}{_title}</Space>
 			</Col>
-			{headerPostfix && <Col flex={'auto'}>
+			{headerPostfix && <Col flex={"auto"}>
 				{headerPostfix}
 			</Col>}
 		</Row>}

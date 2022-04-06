@@ -1,8 +1,8 @@
-import {FC, useEffect, useState} from "react";
-import {Trans, useTranslation} from "react-i18next";
+import {ReloadOutlined} from "@ant-design/icons";
 import {IQueryHook} from "@leight-core/api";
 import {Button, Modal} from "antd";
-import {ReloadOutlined} from "@ant-design/icons";
+import {FC, useEffect, useState} from "react";
+import {Trans, useTranslation} from "react-i18next";
 
 export interface IDeployRefreshManagerProps {
 	useVersionQuery: IQueryHook<void, string>;

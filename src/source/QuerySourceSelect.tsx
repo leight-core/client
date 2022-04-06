@@ -1,5 +1,5 @@
+import {IBaseSelectOption, IToOptionMapper} from "@leight-core/api";
 import {isString, useOptionalFilterContext, useOptionalFormContext, useOptionalFormItemContext, useSourceContext, useUpdate} from "@leight-core/client";
-import {IBaseSelectOption, IToOptionMapper} from '@leight-core/api';
 import {Empty, Select, SelectProps} from "antd";
 import React, {PropsWithChildren, useEffect, useRef} from "react";
 import {useTranslation} from "react-i18next";
@@ -75,9 +75,9 @@ export const QuerySourceSelect = <TResponse, >(
 			const option = toOption(entity);
 			return ({
 				value: option.value,
-				label: isString(option.label) ? t((labelPrefix || '') + option.label, option.label) : option.label,
+				label: isString(option.label) ? t((labelPrefix || "") + option.label, option.label) : option.label,
 				entity,
-			})
+			});
 		})}
 		onSelect={_onSelect}
 		loading={sourceContext.result.isFetching}

@@ -1,21 +1,21 @@
-import {useQuery} from "react-query"
-import {useRouter} from "next/router"
-import {UseQueryOptions} from "react-query/types/react/types";
 import {Session} from "next-auth";
+import {useRouter} from "next/router";
+import {useQuery} from "react-query";
+import {UseQueryOptions} from "react-query/types/react/types";
 
 export async function fetchSession() {
-	const res = await fetch("/api/auth/session")
-	const session = await res.json()
+	const res = await fetch("/api/auth/session");
+	const session = await res.json();
 	if (Object.keys(session).length) {
-		return session
+		return session;
 	}
-	return null
+	return null;
 }
 
 export interface IUseSessionRequest {
 	required?: boolean;
 	redirectTo?: string;
-	queryConfig?: Omit<UseQueryOptions<any, any, Session, any>, 'queryKey' | 'queryFn'>;
+	queryConfig?: Omit<UseQueryOptions<any, any, Session, any>, "queryKey" | "queryFn">;
 }
 
 export function useSession(
@@ -24,14 +24,14 @@ export function useSession(
 		redirectTo = "/api/auth/signin?error=SessionRequired",
 		queryConfig = {},
 	}: IUseSessionRequest = {}) {
-	const router = useRouter()
+	const router = useRouter();
 	return useQuery<Session>(["session"], fetchSession, {
 		staleTime: 60 * 100 * 5 * 3,
-		refetchOnWindowFocus: 'always',
+		refetchOnWindowFocus: "always",
 		refetchInterval: 60 * 100 * 5,
 		...queryConfig,
 		onSettled(data, error) {
-			queryConfig?.onSettled?.(data, error)
+			queryConfig?.onSettled?.(data, error);
 			if (!data && required) {
 				router.push(redirectTo);
 			}

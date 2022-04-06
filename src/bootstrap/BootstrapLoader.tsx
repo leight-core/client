@@ -1,10 +1,10 @@
-import {useBootstrap} from "@leight-core/client";
-import {FC, useState} from "react";
 import {IBootstrapConfig} from "@leight-core/api";
+import {useBootstrap} from "@leight-core/client";
 import {ConfigProvider} from "antd";
 import type {ConfigProviderProps} from "antd/lib/config-provider";
-import {SessionProvider} from "next-auth/react";
 import {Session} from "next-auth";
+import {SessionProvider} from "next-auth/react";
+import {FC, useState} from "react";
 
 export interface IBootstrapLoaderProps extends ConfigProviderProps {
 	session?: Session | null;
@@ -19,5 +19,5 @@ export const BootstrapLoader: FC<IBootstrapLoaderProps> = ({session, ...props}) 
 		refetchOnWindowFocus={true}
 	>
 		{bootstrapConfig && <ConfigProvider locale={bootstrapConfig.locale.antd} {...props}/>}
-	</SessionProvider>
-}
+	</SessionProvider>;
+};

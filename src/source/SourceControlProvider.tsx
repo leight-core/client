@@ -1,6 +1,6 @@
+import {IQueryParams} from "@leight-core/api";
 import {CursorProvider, FilterProvider, ICursorProviderProps, IFilterProviderProps, IOrderByProviderProps, IQueryParamsProviderProps, OrderByProvider, QueryParamsProvider} from "@leight-core/client";
 import {PropsWithChildren} from "react";
-import {IQueryParams} from "@leight-core/api";
 
 export interface ISourceControlProviderProps<TFilter = any, TOrderBy = any, TQueryParams extends IQueryParams | void = void> {
 	name: string;

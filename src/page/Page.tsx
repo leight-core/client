@@ -1,9 +1,9 @@
+import {INavigate} from "@leight-core/api";
 import {EmptyPage, IEmptyPageProps, IPageHeaderProps, PageHeader, useMobile, useNavigate} from "@leight-core/client";
 import {BreadcrumbProps, Card, CardProps} from "antd";
 import Breadcrumb from "antd/lib/breadcrumb";
 import * as React from "react";
 import {FC, ReactNode} from "react";
-import {INavigate} from "@leight-core/api";
 
 export type IPageBreadcrumb = BreadcrumbProps | React.ReactElement<typeof Breadcrumb>;
 
@@ -50,7 +50,7 @@ export const Page: FC<IPageProps> = (
 			{...headerProps}
 		/>}
 		<Card
-			bodyStyle={mobile({padding: "0"}, {padding: "0 8px", paddingBottom: "16px", minHeight: '60vh'})}
+			bodyStyle={mobile({padding: "0"}, {padding: "0 8px", paddingBottom: "16px", minHeight: "60vh"})}
 			{...cardProps}
 		>
 			{children}
