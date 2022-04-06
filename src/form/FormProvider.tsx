@@ -1,8 +1,8 @@
+import {IFormContext, IFormErrors, IFormFields} from "@leight-core/api";
 import {FormBlockProvider, FormContext, FormUtils} from "@leight-core/client";
 import {Form as CoolForm, message} from "antd";
-import React, {FC, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {IFormErrors, IFormFields} from "@leight-core/api";
 
 export interface IFormProviderProps {
 	translation?: string;
@@ -13,7 +13,7 @@ export const FormProvider: FC<IFormProviderProps> = ({translation, ...props}) =>
 	const [errors, setErrors] = useState<IFormErrors>();
 	const [form] = CoolForm.useForm();
 
-	const setErrorsInternal = (errors: IFormErrors) => {
+	const setErrorsInternal: IFormContext["setErrors"] = (errors: IFormErrors) => {
 		setErrors(errors);
 		errors.message && message.error(t("error." + errors.message));
 		form.setFields(((errors || {}).errors || []).map(item => ({
@@ -22,7 +22,13 @@ export const FormProvider: FC<IFormProviderProps> = ({translation, ...props}) =>
 		})));
 	};
 
-	const resetErrors = () => FormUtils.fields(form).then((fields: IFormFields[]) => fields.map(([field]) => form.setFields([{errors: [], name: field}])));
+	const canSubmit: IFormContext["canSubmit"] = (then = () => undefined) => {
+		const promise = FormUtils.canSubmit(form);
+		promise.then(then);
+		return promise;
+	};
+
+	const resetErrors: IFormContext["resetErrors"] = () => FormUtils.fields(form).then((fields: IFormFields[]) => fields.map(([field]) => form.setFields([{errors: [], name: field}])));
 
 	return <FormBlockProvider>
 		<FormContext.Provider
@@ -36,11 +42,13 @@ export const FormProvider: FC<IFormProviderProps> = ({translation, ...props}) =>
 				values: form.getFieldsValue,
 				resetErrors,
 				refresh: () => form.validateFields().then(resetErrors, resetErrors),
-				canSubmit: (then?: (canSubmit: boolean) => void) => {
-					const promise = FormUtils.canSubmit(form);
-					then && promise.then(then);
-					return promise;
-				},
+				canSubmit,
+				useCanSubmit: (then = () => undefined, deps = []) => {
+					useEffect(() => {
+						form.validateFields().then(() => then?.(true)).catch(() => then?.(false));
+						resetErrors();
+					}, deps);
+				}
 			}}
 			{...props}
 		/>

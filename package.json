@@ -21,7 +21,7 @@
 		"build": "npm run lint && tsc -p tsconfig.json && tsc -p tsconfig.json -m es6 --outDir lib/esm"
 	},
 	"dependencies": {
-		"@leight-core/api": "^0.5.119",
+		"@leight-core/api": "^0.5.120",
 		"react-i18next": "^11.15.7",
 		"react-cookie": "^4.1.1",
 		"react-query": "^3.34.16",
@@ -45,7 +45,7 @@
 	},
 	"peerDependencies": {
 		"@ant-design/icons": "^4.7.0",
-		"antd": "^4.19.4",
+		"antd": "^4.19.5",
 		"react": "17.0.2",
 		"react-dom": "17.0.2",
 		"next": "^12.1.3",
