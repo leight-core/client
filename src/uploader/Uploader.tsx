@@ -1,5 +1,5 @@
 import {IQueryParams} from "@leight-core/api";
-import {Centered, toHumanBytes, useLinkContext} from "@leight-core/client";
+import {Centered, toHumanBytes, toLink} from "@leight-core/client";
 import {message, Progress, Typography, Upload} from "antd";
 import {DraggerProps, RcFile, UploadChangeParam} from "antd/lib/upload";
 import {FC, useState} from "react";
@@ -29,7 +29,6 @@ export interface IUploaderProps extends Partial<DraggerProps> {
 }
 
 export const Uploader: FC<IUploaderProps> = ({name, limit, translation, action, queryParams, ...props}) => {
-	const linkContext = useLinkContext();
 	const [loading, setLoading] = useState(false);
 	const [status, setStatus] = useState<any>("active");
 	const [progress, setProgress] = useState(0);
@@ -64,7 +63,7 @@ export const Uploader: FC<IUploaderProps> = ({name, limit, translation, action, 
 	return <Upload.Dragger
 		name={name}
 		listType={"text"}
-		action={linkContext.link(action, queryParams)}
+		action={toLink(action, queryParams)}
 		beforeUpload={onBeforeUpload}
 		onChange={onChange}
 		showUploadList={false}
