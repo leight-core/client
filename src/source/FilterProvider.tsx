@@ -15,6 +15,7 @@ export interface IFilterProviderProps<TFilter = any> {
 
 export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...props}: PropsWithChildren<IFilterProviderProps<TFilter>>) {
 	const [filter, setFilter] = useState<TFilter | undefined>(applyFilter || defaultFilter);
+	const [toggleFilterStatus, setToggleFilterStatus] = useState<{ [index in string]: boolean }>({});
 	useEffect(() => {
 		setFilter(defaultFilter);
 	}, [defaultFilter]);
@@ -25,7 +26,15 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...
 		value={{
 			name,
 			filter,
+			toggleFilterStatus,
 			setFilter: filter => setFilter({...filter, ...applyFilter}),
+			applyFilter: apply => setFilter({...filter, ...apply, ...applyFilter}),
+			toggleFilter: (filter, name, toggle) => {
+				console.log("Status", toggleFilterStatus);
+				setToggleFilterStatus(status => ({...status, [name]: (toggle === undefined ? !status[name] : toggle)}));
+				console.log("Status After", toggleFilterStatus);
+				return toggleFilterStatus[name];
+			}
 		}}
 		{...props}
 	/>;
