@@ -1,4 +1,4 @@
-import {ISelectionBoolType, ISelectionType, SelectionBoolTypeMap} from "@leight-core/api";
+import {ISelectionType} from "@leight-core/api";
 import {SelectionContext} from "@leight-core/client";
 import {PropsWithChildren, useEffect, useState} from "react";
 
@@ -7,10 +7,6 @@ export interface ISelectionProviderProps<TSelection = any> {
 	 * Selection type.
 	 */
 	type?: ISelectionType;
-	/**
-	 * Bool type cycle.
-	 */
-	bool?: ISelectionBoolType;
 	/**
 	 * Default pre-set selection; could be overridden by a user. Apply selection prop takes precedence.
 	 */
@@ -21,7 +17,7 @@ export interface ISelectionProviderProps<TSelection = any> {
 	applySelection?: { [index in string]: TSelection };
 }
 
-export function SelectionProvider<TSelection, >({type, bool = "true/false/undefined", defaultSelection, applySelection, ...props}: PropsWithChildren<ISelectionProviderProps<TSelection>>) {
+export function SelectionProvider<TSelection, >({type = "none", defaultSelection, applySelection, ...props}: PropsWithChildren<ISelectionProviderProps<TSelection>>) {
 	const [selection, setSelection] = useState<{ [index in string]: TSelection | undefined }>(applySelection || defaultSelection || {});
 	useEffect(() => {
 		setSelection(defaultSelection || {});
@@ -36,14 +32,13 @@ export function SelectionProvider<TSelection, >({type, bool = "true/false/undefi
 			toSelection: () => Object.keys(selection).filter(key => !!selection[key]),
 			onSelect: (id, selection) => {
 				setSelection(prev => {
-					const _bool = SelectionBoolTypeMap[bool][`${prev[id]}`];
 					switch (type) {
 						case "none":
 							return {};
 						case "single":
-							return {[id]: _bool ? selection : undefined};
+							return {[id]: !prev[id] ? selection : undefined};
 						case "multi":
-							return {...prev, [id]: _bool ? selection : undefined};
+							return {...prev, [id]: !prev[id] ? selection : undefined};
 					}
 					return {};
 				});
