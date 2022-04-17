@@ -1,4 +1,4 @@
-import {ISelectionType} from "@leight-core/api";
+import {ISelectionContext, ISelectionType} from "@leight-core/api";
 import {SelectionContext} from "@leight-core/client";
 import {PropsWithChildren, useEffect, useState} from "react";
 
@@ -25,24 +25,30 @@ export function SelectionProvider<TSelection, >({type = "none", defaultSelection
 	useEffect(() => {
 		setSelection(applySelection || {});
 	}, [applySelection]);
+
+	const onSelect: ISelectionContext<any>["onSelect"] = (id, selection) => {
+		setSelection(prev => {
+			switch (type) {
+				case "none":
+					return {};
+				case "single":
+					return {[id]: !prev[id] ? selection : undefined};
+				case "multi":
+					return {...prev, [id]: !prev[id] ? selection : undefined};
+			}
+			return {};
+		});
+	};
+	const isSelected: ISelectionContext<any>["isSelected"] = id => !!selection[id];
+
 	return <SelectionContext.Provider
 		value={{
-			isSelected: id => !!selection[id],
+			isSelected,
 			asSelection: () => selection,
 			toSelection: () => Object.keys(selection).filter(key => !!selection[key]),
-			onSelect: (id, selection) => {
-				setSelection(prev => {
-					switch (type) {
-						case "none":
-							return {};
-						case "single":
-							return {[id]: !prev[id] ? selection : undefined};
-						case "multi":
-							return {...prev, [id]: !prev[id] ? selection : undefined};
-					}
-					return {};
-				});
-			},
+			onSelect,
+			onSelectItem: item => onSelect(item.id, item),
+			isSelectedItem: item => isSelected(item.id),
 		}}
 		{...props}
 	/>;
