@@ -1,4 +1,4 @@
 // @ts-ignore
-import {rundef as CoolRundef} from "rundef";
+import CoolRundef from "rundef";
 
-export const rundef = (obj: any) => CoolRundef(obj);
+export const rundef = (obj: any) => CoolRundef(obj, false, true);
