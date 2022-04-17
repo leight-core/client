@@ -1,12 +1,12 @@
 import {PlacementType} from "@leight-core/api";
-import {Drawer, DrawerContext, DrawerProvider, useMobile} from "@leight-core/client";
+import {Drawer, DrawerContext, DrawerProvider, isString, useMobile} from "@leight-core/client";
 import {Button, ButtonProps, DrawerProps} from "antd";
 import {PushState} from "antd/lib/drawer";
 import {FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IDrawerButtonProps extends Partial<ButtonProps> {
-	label?: ReactNode;
+	label?: ReactNode | string;
 	title?: string;
 	values?: any;
 	/**
@@ -49,7 +49,7 @@ export const DrawerButton: FC<IDrawerButtonProps> = ({children, onClick, label, 
 					}}
 					{...props}
 				>
-					{title ? t(title, {data: values}) : label}
+					{label ? (isString(label) ? t(label as string, {data: values}) : label) : (title ? t(title, {data: values}) : undefined)}
 				</Button>
 			</>}
 		</DrawerContext.Consumer>
