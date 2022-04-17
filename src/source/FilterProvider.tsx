@@ -1,5 +1,6 @@
-import {FilterContext} from "@leight-core/client";
+import {FilterContext, rundef} from "@leight-core/client";
 import deepmerge from "deepmerge";
+import empty from "is-empty";
 import {PropsWithChildren, useEffect, useState} from "react";
 
 export interface IFilterProviderProps<TFilter = any> {
@@ -29,6 +30,7 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...
 			setFilter: filter => setFilter({...filter, ...applyFilter}),
 			applyFilter: apply => setFilter({...filter, ...apply, ...applyFilter}),
 			mergeFilter: apply => setFilter({...deepmerge<TFilter, TFilter>(filter || {}, apply), ...applyFilter}),
+			isEmpty: () => empty(rundef(filter)),
 		}}
 		{...props}
 	/>;
