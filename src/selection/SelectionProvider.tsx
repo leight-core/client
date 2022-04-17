@@ -56,7 +56,7 @@ export function SelectionProvider<TSelection, >({type = "none", defaultSelection
 				if (isEmpty()) {
 					throw new Error("Selection is empty!");
 				}
-				return toSelection()[0];
+				return selection[toSelection()[0]];
 			}
 		}}
 		{...props}
