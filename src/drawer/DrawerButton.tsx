@@ -49,7 +49,7 @@ export const DrawerButton: FC<IDrawerButtonProps> = ({children, onClick, label, 
 					}}
 					{...props}
 				>
-					{label ? (isString(label) ? t(label as string, {data: values}) : label) : (title ? t(title, {data: values}) : undefined)}
+					{isString(label) ? t(label as string, {data: values}) : label}
 				</Button>
 			</>}
 		</DrawerContext.Consumer>
