@@ -41,6 +41,7 @@ export function SelectionProvider<TSelection, >({type = "none", defaultSelection
 	};
 	const isSelected: ISelectionContext<any>["isSelected"] = id => !!selection[id];
 	const toSelection: ISelectionContext<any>["toSelection"] = () => Object.keys(selection).filter(key => !!selection[key]);
+	const isEmpty: ISelectionContext<any>["isEmpty"] = () => toSelection().length === 0;
 
 	return <SelectionContext.Provider
 		value={{
@@ -50,7 +51,13 @@ export function SelectionProvider<TSelection, >({type = "none", defaultSelection
 			onSelect,
 			onSelectItem: item => onSelect(item.id, item),
 			isSelectedItem: item => isSelected(item.id),
-			isEmpty: () => toSelection().length === 0,
+			isEmpty,
+			toSingle: () => {
+				if (isEmpty()) {
+					throw new Error("Selection is empty!");
+				}
+				return toSelection()[0];
+			}
 		}}
 		{...props}
 	/>;
