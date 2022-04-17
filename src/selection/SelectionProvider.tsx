@@ -1,5 +1,6 @@
 import {ISelectionContext, ISelectionType} from "@leight-core/api";
-import {SelectionContext} from "@leight-core/client";
+import {rundef, SelectionContext} from "@leight-core/client";
+import empty from "is-empty";
 import {PropsWithChildren, useEffect, useState} from "react";
 
 export interface ISelectionProviderProps<TSelection = any> {
@@ -49,6 +50,7 @@ export function SelectionProvider<TSelection, >({type = "none", defaultSelection
 			onSelect,
 			onSelectItem: item => onSelect(item.id, item),
 			isSelectedItem: item => isSelected(item.id),
+			isEmpty: () => empty(rundef(selection || {})),
 		}}
 		{...props}
 	/>;
