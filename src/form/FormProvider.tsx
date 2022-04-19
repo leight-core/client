@@ -47,7 +47,7 @@ export const FormProvider: FC<IFormProviderProps> = ({translation, ...props}) =>
 					useEffect(() => {
 						form.validateFields().then(() => then(true)).catch(() => then(false));
 						resetErrors();
-					}, deps);
+					}, [JSON.stringify(form.getFieldsValue())].concat(deps));
 				}
 			}}
 			{...props}
