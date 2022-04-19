@@ -1,6 +1,6 @@
-import {ISelectionContext, ISelectionType} from "@leight-core/api";
+import {ISelection, ISelectionContext, ISelectionType} from "@leight-core/api";
 import {SelectionContext} from "@leight-core/client";
-import {PropsWithChildren, useEffect, useState} from "react";
+import {PropsWithChildren, useEffect, useRef, useState} from "react";
 
 export interface ISelectionProviderProps<TSelection = any> {
 	/**
@@ -19,6 +19,8 @@ export interface ISelectionProviderProps<TSelection = any> {
 
 export function SelectionProvider<TSelection, >({type = "none", defaultSelection, applySelection, ...props}: PropsWithChildren<ISelectionProviderProps<TSelection>>) {
 	const [selection, setSelection] = useState<{ [index in string]: TSelection | undefined }>(applySelection || defaultSelection || {});
+	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>([]);
+
 	useEffect(() => {
 		setSelection(defaultSelection || {});
 	}, [defaultSelection]);
@@ -26,7 +28,7 @@ export function SelectionProvider<TSelection, >({type = "none", defaultSelection
 		setSelection(applySelection || {});
 	}, [applySelection]);
 
-	const onSelect: ISelectionContext<any>["onSelect"] = (id, selection) => {
+	const select: ISelectionContext<TSelection>["select"] = (id, selection) => {
 		setSelection(prev => {
 			switch (type) {
 				case "none":
@@ -39,24 +41,38 @@ export function SelectionProvider<TSelection, >({type = "none", defaultSelection
 			return {};
 		});
 	};
-	const isSelected: ISelectionContext<any>["isSelected"] = id => !!selection[id];
-	const toSelection: ISelectionContext<any>["toSelection"] = () => Object.keys(selection).filter(key => !!selection[key]);
-	const isEmpty: ISelectionContext<any>["isEmpty"] = () => toSelection().length === 0;
+	const isSelected: ISelectionContext<TSelection>["isSelected"] = id => !!selection[id];
+	const toSelection: ISelectionContext<TSelection>["toSelection"] = () => Object.keys(selection).filter(key => !!selection[key]);
+	const isEmpty: ISelectionContext<TSelection>["isEmpty"] = () => toSelection().length === 0;
+	const toSingle: ISelectionContext<TSelection>["toSingle"] = () => {
+		if (isEmpty()) {
+			throw new Error("Selection is empty!");
+		}
+		return toSelection()[0];
+	};
+	const _selection = () => ({
+		isEmpty: isEmpty(),
+		single: selection[toSingle()],
+		selected: toSelection(),
+		items: toSelection().reduce((prev, current) => ({...prev, [current]: selection[current]}), {}),
+	});
 
 	return <SelectionContext.Provider
 		value={{
 			isSelected,
 			asSelection: () => selection,
 			toSelection,
-			onSelect,
-			onSelectItem: item => onSelect(item.id, item),
+			select,
+			item: item => select(item.id, item),
 			isSelectedItem: item => isSelected(item.id),
 			isEmpty,
-			toSingle: () => {
-				if (isEmpty()) {
-					throw new Error("Selection is empty!");
-				}
-				return selection[toSelection()[0]];
+			toSingle,
+			onSelection: callback => onSelectionEvents.current.push(callback),
+			selection: _selection,
+			toSingleItem: () => selection[toSingle()],
+			handleSelection: () => {
+				const selection = _selection();
+				onSelectionEvents.current.map(callback => callback(selection));
 			}
 		}}
 		{...props}
