@@ -22,7 +22,7 @@
 	},
 	"dependencies": {
 		"@fingerprintjs/fingerprintjs": "^3.3.3",
-		"@leight-core/api": "^0.5.137",
+		"@leight-core/api": "^0.5.138",
 		"axios": "^0.26.1",
 		"axios-retry": "^3.2.4",
 		"cancelable-promise": "^4.3.0",

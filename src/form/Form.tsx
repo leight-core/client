@@ -1,11 +1,26 @@
-import {IFormContext, IFormError, IFormErrorHandler, IFormErrorMap, IFormInitialMapper, IFormMutationMapper, IFormOnFailure, IFormOnSuccess, IFormOnValuesChanged, IMutationHook, INavigate, IQueryParams, IToError} from "@leight-core/api";
+import {
+	IFormContext,
+	IFormError,
+	IFormErrorHandler,
+	IFormErrorMap,
+	IFormInitialMapper,
+	IFormMutationMapper,
+	IFormOnChanged,
+	IFormOnFailure,
+	IFormOnSuccess,
+	IFormOnValuesChanged,
+	IMutationHook,
+	INavigate,
+	IQueryParams,
+	IToError
+} from "@leight-core/api";
 import {FormProvider, isCallable, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext} from "@leight-core/client";
 import {Form as CoolForm, FormProps, message, Spin} from "antd";
 import React, {PropsWithChildren} from "react";
 import {useTranslation} from "react-i18next";
 import {useMutation} from "react-query";
 
-export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined> extends Partial<Omit<FormProps, "onValuesChange">> {
+export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined> extends Partial<Omit<FormProps, "onValuesChange" | "onChange">> {
 	translation?: string;
 	/**
 	 * What to do on form submit.
@@ -34,6 +49,7 @@ export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryPara
 	toError?: (error: IToError<any, any>) => IFormErrorMap<any>;
 	closeDrawer?: boolean;
 	onValuesChange?: IFormOnValuesChanged;
+	onChange?: IFormOnChanged;
 }
 
 const usePassThroughMutation: IMutationHook<any, any, any> = () => useMutation<any, any, any, any>(values => new Promise(resolve => resolve(values)));
@@ -49,6 +65,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams | u
 		onFailure,
 		closeDrawer = true,
 		onValuesChange,
+		onChange,
 		children,
 		...props
 	}: PropsWithChildren<IFormProps<TRequest, TResponse, TQueryParams>>) => {
@@ -113,6 +130,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams | u
 		labelAlign={"left"}
 		scrollToFirstError
 		initialValues={toForm()}
+		onFieldsChange={() => onChange?.({values: formContext.values(), formContext})}
 		onValuesChange={(changed, values) => onValuesChange?.({values, changed, formContext})}
 		{...props}
 	>
