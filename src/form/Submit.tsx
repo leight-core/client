@@ -1,6 +1,6 @@
 import {useFormContext} from "@leight-core/client";
 import {Button, ButtonProps, Form} from "antd";
-import React, {FC, useEffect, useState} from "react";
+import React, {FC, useState} from "react";
 import {useTranslation} from "react-i18next";
 
 export interface ISubmitProps extends Partial<ButtonProps> {
@@ -19,17 +19,10 @@ interface IInternalProps {
 }
 
 const Internal: FC<IInternalProps> = ({label, ...props}) => {
+	const {t} = useTranslation();
 	const [canSubmit, setCanSubmit] = useState(false);
 	const formContext = useFormContext();
-
-	const {t} = useTranslation();
-	useEffect(() => {
-		/**
-		 * Because we need to ensure all item forms are created, "canSubmit" works asynchronously.
-		 */
-		const promise = formContext.canSubmit(setCanSubmit);
-		return () => promise.cancel();
-	});
+	formContext.useCanSubmit(setCanSubmit);
 	return <Button
 		htmlType={"submit"}
 		type={"primary"}

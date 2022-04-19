@@ -45,7 +45,7 @@ export const FormProvider: FC<IFormProviderProps> = ({translation, ...props}) =>
 				canSubmit,
 				useCanSubmit: (then = () => undefined, deps = []) => {
 					useEffect(() => {
-						form.validateFields().then(() => then?.(true)).catch(() => then?.(false));
+						form.validateFields().then(() => then(true)).catch(() => then(false));
 						resetErrors();
 					}, deps);
 				}

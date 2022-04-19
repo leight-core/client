@@ -45,6 +45,7 @@ export const FormUtils = {
 	 */
 	hasMissingValues: function (form: FormInstance): CancelablePromise<boolean> {
 		return new CancelablePromise((resolve: ICancelableResolveCallback) => this.required(form).then((required: IFormFields[]) => {
+			console.log("FormUtils.required", required);
 			resolve(!!required.map(([name]) => name).map(name => form.getFieldValue(name)).filter(value => !value).length);
 		}));
 	},
@@ -65,6 +66,8 @@ export const FormUtils = {
 	 */
 	canSubmit: function (form: FormInstance): CancelablePromise<boolean> {
 		return new CancelablePromise((resolve: ICancelableResolveCallback) => this.hasMissingValues(form).then((bool: boolean) => {
+			console.log("FormUtils.hasMissingValues", bool);
+			console.log("FormUtils.hasErrors", this.hasErrors(form));
 			resolve(!bool && !this.hasErrors(form));
 		}));
 	},
