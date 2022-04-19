@@ -84,6 +84,7 @@ export const QuerySourceSelect = <TResponse, >(
 		filterOption={() => true}
 		showSearch={showSearch}
 		notFoundContent={<Empty description={t("common.nothing-found")}/>}
+		style={{width: "100%"}}
 		onSearch={showSearch ? fulltext => {
 			clearTimeout(tid.current);
 			tid.current = setTimeout(() => filterContext?.setFilter({fulltext}), debounce);
@@ -96,6 +97,7 @@ export const QuerySourceSelect = <TResponse, >(
 		showSearch={showSearch}
 		loading={sourceContext.result.isLoading}
 		disabled={disableOnEmpty}
+		style={{width: "100%"}}
 		onSelect={_onSelect}
 		{...props}
 	/>;
