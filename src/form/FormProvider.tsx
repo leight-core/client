@@ -43,11 +43,11 @@ export const FormProvider: FC<IFormProviderProps> = ({translation, ...props}) =>
 				resetErrors,
 				refresh: () => form.validateFields().then(resetErrors, resetErrors),
 				canSubmit,
-				useCanSubmit: (then = () => undefined, deps = []) => {
+				useCanSubmit: (then = () => undefined, deps) => {
 					useEffect(() => {
 						form.validateFields().then(() => then(true)).catch(() => then(false));
 						resetErrors();
-					}, [JSON.stringify(form.getFieldsValue())].concat(deps));
+					}, deps || [JSON.stringify(form.getFieldsValue())]);
 				}
 			}}
 			{...props}
