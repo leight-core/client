@@ -29,6 +29,7 @@ export const ModalButton: FC<IModalButtonProps> = ({button, onOk, ...props}) => 
 			visible={show}
 			onCancel={() => setShow(false)}
 			onOk={onOk ? () => onOk(setShow) : () => setShow(false)}
+			cancelText={t("common.modal.cancel.button")}
 			{...props}
 		/>
 	</>;
