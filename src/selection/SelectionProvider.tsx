@@ -52,7 +52,13 @@ export function SelectionProvider<TSelection, >({type = "none", defaultSelection
 	};
 	const _selection = () => ({
 		isEmpty: isEmpty(),
-		single: selection[toSingle()],
+		single: (() => {
+			try {
+				return selection[toSingle()];
+			} catch (e) {
+				// swallow "Selection Empty" error
+			}
+		})(),
 		selected: toSelection(),
 		items: toSelection().reduce((prev, current) => ({...prev, [current]: selection[current]}), {}),
 	});
