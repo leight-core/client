@@ -79,7 +79,8 @@ export function SelectionProvider<TSelection, >({type = "none", defaultSelection
 			handleSelection: () => {
 				const selection = _selection();
 				onSelectionEvents.current.map(callback => callback(selection));
-			}
+			},
+			clear: () => setSelection({}),
 		}}
 		{...props}
 	/>;
