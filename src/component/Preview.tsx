@@ -1,14 +1,14 @@
 import {List, ListProps} from "antd";
-import {FC, PropsWithChildren, ReactNode} from "react";
+import {FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IPreviewProps extends Partial<Omit<ListProps<any>, "children">> {
 	translation?: string;
 	hideEmpty?: boolean;
-	children: { [index in string]: ReactNode };
+	children: Record<string, ReactNode>;
 }
 
-export const Preview: FC<PropsWithChildren<IPreviewProps>> = ({translation, hideEmpty = false, children, ...props}) => {
+export const Preview: FC<IPreviewProps> = ({translation, hideEmpty = false, children, ...props}) => {
 	const {t} = useTranslation();
 	return <List
 		itemLayout={"vertical"}

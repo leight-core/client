@@ -10,15 +10,15 @@ export interface ISelectionProviderProps<TSelection = any> {
 	/**
 	 * Default pre-set selection; could be overridden by a user. Apply selection prop takes precedence.
 	 */
-	defaultSelection?: { [index in string]: TSelection };
+	defaultSelection?: Record<string, TSelection>;
 	/**
 	 * Apply the given selection all the times (regardless of values set by a user)
 	 */
-	applySelection?: { [index in string]: TSelection };
+	applySelection?: Record<string, TSelection>;
 }
 
 export function SelectionProvider<TSelection, >({type = "none", defaultSelection, applySelection, ...props}: PropsWithChildren<ISelectionProviderProps<TSelection>>) {
-	const [selection, setSelection] = useState<{ [index in string]: TSelection | undefined }>(applySelection || defaultSelection || {});
+	const [selection, setSelection] = useState<Record<string, TSelection | undefined>>(applySelection || defaultSelection || {});
 	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>([]);
 
 	useEffect(() => {
