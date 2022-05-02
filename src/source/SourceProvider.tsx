@@ -3,7 +3,7 @@ import {merge, SourceContext, useOptionalCursorContext, useOptionalFilterContext
 import {PropsWithChildren} from "react";
 import {UseQueryOptions} from "react-query";
 
-export interface ISourceProviderProps<TResponse> {
+export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	name: string;
 	/**
 	 * Source of the query
@@ -17,7 +17,7 @@ export interface ISourceProviderProps<TResponse> {
 	 * Query options.
 	 */
 	options?: UseQueryOptions<any, any, IQueryResult<TResponse>>;
-}
+}>;
 
 export const SourceProvider = <TResponse, >(
 	{
@@ -26,7 +26,7 @@ export const SourceProvider = <TResponse, >(
 		live = false,
 		options,
 		...props
-	}: PropsWithChildren<ISourceProviderProps<TResponse>>
+	}: ISourceProviderProps<TResponse>
 ) => {
 	const filterContext = useOptionalFilterContext<any>();
 	const orderByContext = useOptionalOrderByContext<any>();

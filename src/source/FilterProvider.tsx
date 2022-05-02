@@ -3,7 +3,7 @@ import deepmerge from "deepmerge";
 import empty from "is-empty";
 import {PropsWithChildren, useEffect, useState} from "react";
 
-export interface IFilterProviderProps<TFilter = any> {
+export type IFilterProviderProps<TFilter = any> = PropsWithChildren<{
 	name: string;
 	/**
 	 * Default pre-set filter; could be overridden by a user. Apply filter prop takes precedence.
@@ -13,9 +13,9 @@ export interface IFilterProviderProps<TFilter = any> {
 	 * Apply the given filter all the times (regardless of values set by a user)
 	 */
 	applyFilter?: TFilter;
-}
+}>;
 
-export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...props}: PropsWithChildren<IFilterProviderProps<TFilter>>) {
+export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...props}: IFilterProviderProps<TFilter>) {
 	const [filter, setFilter] = useState<TFilter | undefined>(applyFilter || defaultFilter);
 	useEffect(() => {
 		setFilter(defaultFilter);
