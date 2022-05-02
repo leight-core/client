@@ -1,7 +1,7 @@
 import {ISourceContext} from "@leight-core/api";
 import {useSourceContext} from "@leight-core/client";
 import {List as CoolList, ListProps} from "antd";
-import React, {PropsWithChildren, ReactNode} from "react";
+import React, {ReactNode} from "react";
 
 export interface IListProps<TResponse> extends Partial<Omit<ListProps<TResponse>, "children" | "header" | "footer">> {
 	header?: (sourceContext: ISourceContext<TResponse>) => ReactNode;
@@ -18,7 +18,7 @@ export const List = <TResponse, >(
 		footer,
 		children,
 		...props
-	}: PropsWithChildren<IListProps<TResponse>>) => {
+	}: IListProps<TResponse>) => {
 	const sourceContext = useSourceContext<TResponse>();
 	return <CoolList
 		header={header?.(sourceContext)}
