@@ -15,12 +15,12 @@ import {
 	IToError
 } from "@leight-core/api";
 import {FormProvider, isCallable, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext} from "@leight-core/client";
-import {Form as CoolForm, FormProps, message, Spin} from "antd";
-import React, {PropsWithChildren} from "react";
+import {Form as CoolForm, message, Spin} from "antd";
+import React, {ComponentProps} from "react";
 import {useTranslation} from "react-i18next";
 import {useMutation} from "react-query";
 
-export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined> extends Partial<Omit<FormProps, "onValuesChange" | "onChange">> {
+export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined> extends Partial<Omit<ComponentProps<typeof CoolForm>, "onValuesChange" | "onChange">> {
 	translation?: string;
 	/**
 	 * What to do on form submit.
@@ -68,7 +68,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams | u
 		onChange,
 		children,
 		...props
-	}: PropsWithChildren<IFormProps<TRequest, TResponse, TQueryParams>>) => {
+	}: IFormProps<TRequest, TResponse, TQueryParams>) => {
 	const formContext = useFormContext();
 	const blockContext = useBlockContext();
 	const formBlockContext = useFormBlockContext();
@@ -140,7 +140,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams | u
 	</CoolForm>;
 };
 
-export function Form<TRequest = any, TResponse = void, TQueryParams extends IQueryParams | undefined = undefined>({translation, ...props}: PropsWithChildren<IFormProps<TRequest, TResponse, TQueryParams>>): JSX.Element {
+export function Form<TRequest = any, TResponse = void, TQueryParams extends IQueryParams | undefined = undefined>({translation, ...props}: IFormProps<TRequest, TResponse, TQueryParams>): JSX.Element {
 	return <FormProvider translation={translation}>
 		<ItemGroupProvider prefix={[]}>
 			<FormInternal<TRequest, TResponse, TQueryParams> {...props}/>
