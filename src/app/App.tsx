@@ -1,12 +1,12 @@
 import {ITranslationsQuery} from "@leight-core/api";
 import {DayjsProvider, I18NextProvider, IResponsiveProviderProps, LayoutBlockProvider, MenuSelectionProvider, ResponsiveContext, ResponsiveProvider, SiderCollapseProvider, TranslationLoader} from "@leight-core/client";
 import {i18n} from "i18next";
-import {FC, ReactNode} from "react";
+import {FC, PropsWithChildren, ReactNode} from "react";
 import {CookiesProvider} from "react-cookie";
 import {QueryClient, QueryClientProvider} from "react-query";
 import {ReactQueryDevtools} from "react-query/devtools";
 
-export interface IAppProps {
+export type IAppProps = PropsWithChildren<{
 	logo?: ReactNode;
 	useTranslationQuery?: ITranslationsQuery;
 	queryClient: QueryClient;
@@ -14,7 +14,7 @@ export interface IAppProps {
 	i18next: i18n;
 	defaultCollapsed?: boolean;
 	responsiveProviderProps?: IResponsiveProviderProps;
-}
+}>;
 
 /**
  * Common default Application:
