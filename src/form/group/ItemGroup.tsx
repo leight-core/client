@@ -1,11 +1,11 @@
 import {ItemGroupProvider, useOptionalItemGroupContext} from "@leight-core/client";
 import {NamePath} from "rc-field-form/lib/interface";
-import {FC} from "react";
+import {FC, PropsWithChildren} from "react";
 
-export interface IItemGroupProps {
+export type IItemGroupProps = PropsWithChildren<{
 	prefix: NamePath;
 	translation?: string;
-}
+}>;
 
 /**
  * Simple component used to add prefixes to FormItems (so it's possible to arbitrary alter field names).

@@ -1,5 +1,4 @@
 import {BarsOutlined} from "@ant-design/icons";
-import {IIconProps} from "@leight-core/client";
-import {FC} from "react";
+import {ComponentProps, FC} from "react";
 
-export const ContextMenuIcon: FC<IIconProps> = BarsOutlined;
+export const ContextMenuIcon: FC<ComponentProps<typeof BarsOutlined>> = BarsOutlined;

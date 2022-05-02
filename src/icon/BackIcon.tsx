@@ -1,5 +1,4 @@
 import {ArrowLeftOutlined} from "@ant-design/icons";
-import {IIconProps} from "@leight-core/client";
-import {FC} from "react";
+import {ComponentProps, FC} from "react";
 
-export const BackIcon: FC<IIconProps> = ArrowLeftOutlined;
+export const BackIcon: FC<ComponentProps<typeof ArrowLeftOutlined>> = ArrowLeftOutlined;

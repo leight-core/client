@@ -4,9 +4,9 @@ import {Button, Divider, Space, SpaceProps} from "antd";
 import {FC, PropsWithChildren} from "react";
 import {useTranslation} from "react-i18next";
 
-interface IFilterInternalProps {
+type IFilterInternalProps = PropsWithChildren<{
 	onClear?: () => void;
-}
+}>;
 
 const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 	const {t} = useTranslation();

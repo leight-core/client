@@ -1,9 +1,9 @@
 import {LoaderIcon, PlaceholderPage, useLayoutBlockContext} from "@leight-core/client";
 import {Layout, Spin} from "antd";
-import React, {CSSProperties, FC, ReactNode, Suspense} from "react";
+import React, {CSSProperties, FC, PropsWithChildren, ReactNode, Suspense} from "react";
 import {BrowserView, MobileView} from "react-device-detect";
 
-export interface IApplicationLayoutProps {
+export type IApplicationLayoutProps = PropsWithChildren<{
 	/**
 	 * Page (component layout) header.
 	 */
@@ -16,7 +16,7 @@ export interface IApplicationLayoutProps {
 	 * Optional styling of layout content.
 	 */
 	contentStyle?: CSSProperties;
-}
+}>;
 
 export const ApplicationLayout: FC<IApplicationLayoutProps> = ({header, footer, contentStyle, ...props}) => {
 	const layoutBlockContext = useLayoutBlockContext();

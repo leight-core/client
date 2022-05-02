@@ -1,9 +1,8 @@
 import {useOptionalFormItemContext} from "@leight-core/client";
 import {Input} from "antd";
-import {PasswordProps} from "antd/lib/input";
-import {FC, forwardRef} from "react";
+import {ComponentProps, FC, forwardRef} from "react";
 
-export interface IPasswordInputProps extends Partial<PasswordProps> {
+export interface IPasswordInputProps extends Partial<ComponentProps<typeof Input.Password>> {
 	usePlaceholder?: boolean;
 }
 

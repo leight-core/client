@@ -1,20 +1,10 @@
 import {Col, Row} from "antd";
-import React, {FC} from "react";
+import React, {ComponentProps, FC} from "react";
 
-export interface IPushRightProps {
-	span?: number;
-}
+export type IPushRightProps = ComponentProps<typeof Col>;
 
-export const PushRight: FC<IPushRightProps> = (
-	{
-		children,
-		span
-	}) => {
-	return (
-		<Row align={"middle"} justify={"end"}>
-			<Col span={span}>
-				{children}
-			</Col>
-		</Row>
-	);
+export const PushRight: FC<IPushRightProps> = props => {
+	return <Row align={"middle"} justify={"end"}>
+		<Col {...props}/>
+	</Row>;
 };

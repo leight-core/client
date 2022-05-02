@@ -1,11 +1,11 @@
 import {CursorContext} from "@leight-core/client";
-import {FC, useEffect, useState} from "react";
+import {FC, PropsWithChildren, useEffect, useState} from "react";
 
-export interface ICursorProviderProps {
+export type ICursorProviderProps = PropsWithChildren<{
 	name: string;
 	defaultPage?: number;
 	defaultSize?: number;
-}
+}>;
 
 export const CursorProvider: FC<ICursorProviderProps> = ({name, defaultPage, defaultSize, ...props}) => {
 	const [[page, size], setPage] = useState<[number | undefined, number | undefined]>([defaultPage, defaultSize]);

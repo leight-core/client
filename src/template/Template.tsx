@@ -1,9 +1,9 @@
 import {Centered, useIsBrowser, useIsMobile} from "@leight-core/client";
-import {Result, ResultProps} from "antd";
-import {FC, ReactNode} from "react";
+import {Result} from "antd";
+import {ComponentProps, FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface ITemplateProps extends Partial<ResultProps> {
+export interface ITemplateProps extends Partial<ComponentProps<typeof Result>> {
 	label?: string;
 	span?: number;
 	forceIcon?: boolean;

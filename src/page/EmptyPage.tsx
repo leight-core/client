@@ -1,10 +1,10 @@
 import {BlockProvider, PageProvider, ScrollToTop, useBlockContext, useLayoutBlockContext, useMenuSelectionContext, useSiderCollapseContext} from "@leight-core/client";
 import {Spin} from "antd";
 import Head from "next/head";
-import {FC, useEffect} from "react";
+import {FC, PropsWithChildren, useEffect} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface IEmptyPageProps {
+export type IEmptyPageProps = PropsWithChildren<{
 	/**
 	 * If provided, page title will be updated (tab name). Must be explicitly provided to change a title.
 	 */
@@ -24,12 +24,14 @@ export interface IEmptyPageProps {
 	 */
 	menuSelection?: string[];
 	values?: any;
-}
+}>;
 
-const EmptyPageInternal: FC = props => {
+const EmptyPageInternal: FC<PropsWithChildren<any>> = ({children}) => {
 	const {t} = useTranslation();
 	const blockContext = useBlockContext();
-	return <Spin spinning={blockContext.isBlocked()} indicator={null as any} tip={t("component.loading") as string} {...props}/>;
+	return <Spin spinning={blockContext.isBlocked()} indicator={null as any} tip={t("component.loading") as string}>
+		{children}
+	</Spin>;
 };
 
 /**

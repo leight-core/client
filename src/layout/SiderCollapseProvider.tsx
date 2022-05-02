@@ -1,10 +1,10 @@
 import {SiderCollapseContext} from "@leight-core/client";
-import {FC, useEffect, useState} from "react";
+import {FC, PropsWithChildren, useEffect, useState} from "react";
 
-export interface ISiderCollapseProviderProps {
+export type ISiderCollapseProviderProps = PropsWithChildren<{
 	defaultCollapsed?: boolean;
 	defaultDisabled?: boolean;
-}
+}>;
 
 export const SiderCollapseProvider: FC<ISiderCollapseProviderProps> = ({defaultCollapsed = false, defaultDisabled = false, ...props}) => {
 	const [disabled, setDisabled] = useState<boolean>(defaultDisabled);

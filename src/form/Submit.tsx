@@ -1,9 +1,9 @@
 import {useFormContext} from "@leight-core/client";
-import {Button, ButtonProps, Form} from "antd";
-import React, {FC, useState} from "react";
+import {Button, Form} from "antd";
+import React, {ComponentProps, FC, useState} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface ISubmitProps extends Partial<ButtonProps> {
+export interface ISubmitProps extends Partial<ComponentProps<typeof Button>> {
 	/**
 	 * Disable Form.Item styling.
 	 */

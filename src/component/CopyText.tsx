@@ -1,14 +1,14 @@
 import {Typography} from "antd";
-import {FC} from "react";
+import {FC, PropsWithChildren} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface ICopyTextProps {
+export type ICopyTextProps = PropsWithChildren<{
 	copy: string;
 	/**
 	 * Translation label for copy tooltips
 	 */
 	tooltip: string;
-}
+}>;
 
 export const CopyText: FC<ICopyTextProps> = ({children, tooltip, copy}) => {
 	const {t} = useTranslation();

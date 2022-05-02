@@ -1,12 +1,12 @@
 import {BlockContext, BlockContextClass} from "@leight-core/client";
-import {FC, useState} from "react";
+import {FC, PropsWithChildren, useState} from "react";
 
-export interface IBlockProviderProps {
+export type IBlockProviderProps = PropsWithChildren<{
 	/**
 	 * Default blocking state; "false" if not specified.
 	 */
 	locked?: boolean;
-}
+}>;
 
 export const BlockProvider: FC<IBlockProviderProps> = ({locked = false, ...props}) => {
 	return <BlockContext.Provider

@@ -1,9 +1,9 @@
-import React, {FC} from "react";
+import React, {FC, PropsWithChildren} from "react";
 import {LoaderIcon} from "./LoaderIcon";
 
-export interface ISpinner {
+export type ISpinner = PropsWithChildren<{
 	done?: boolean,
-}
+}>;
 
 /**
  * Spinner is simple placeholder component - until truthy "done" is not true, spinner icon is shown.

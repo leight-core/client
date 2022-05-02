@@ -1,8 +1,7 @@
 import {DrawerContext} from "@leight-core/client";
-import {FC, useState} from "react";
+import {FC, PropsWithChildren, useState} from "react";
 
-export interface IDrawerProviderProps {
-}
+export type IDrawerProviderProps = PropsWithChildren<any>;
 
 export const DrawerProvider: FC<IDrawerProviderProps> = props => {
 	const [visible, setVisible] = useState<boolean>(false);

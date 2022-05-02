@@ -1,8 +1,8 @@
 import {IQueryParams} from "@leight-core/api";
 import Link from "next/link";
-import {FC} from "react";
+import {FC, PropsWithChildren} from "react";
 
-export interface ILinkToProps {
+export type ILinkToProps = PropsWithChildren<{
 	/**
 	 * Target href; could be template path, will be expanded by a LinkContext.
 	 */
@@ -11,7 +11,7 @@ export interface ILinkToProps {
 	 * Optional params used to generate a link.
 	 */
 	query?: IQueryParams | void;
-}
+}>;
 
 /**
  * Wrapper component over Next Link with underlying <a> with children passed through.

@@ -1,10 +1,10 @@
 import {AntDesignOutlined} from "@ant-design/icons";
 import {Centered, isCallable, LoaderIcon} from "@leight-core/client";
 import {Card, Col, Divider, Layout, LayoutProps, Result, Row, Typography} from "antd";
-import {PropsWithChildren, ReactNode} from "react";
+import {ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface ILoaderLayoutProps<TResult = void> extends Partial<LayoutProps> {
+export interface ILoaderLayoutProps<TResult = any> extends Partial<Omit<LayoutProps, "children">> {
 	logo?: ReactNode;
 	icon: ReactNode;
 	result?: TResult;
@@ -14,7 +14,7 @@ export interface ILoaderLayoutProps<TResult = void> extends Partial<LayoutProps>
 	children?: ReactNode | ((result: TResult) => ReactNode);
 }
 
-export const LoaderLayout = <TResult, >({logo, icon, result, errorText, loading, isError, children, ...props}: PropsWithChildren<ILoaderLayoutProps<TResult>>) => {
+export const LoaderLayout = <TResult, >({logo, icon, result, errorText, loading, isError, children, ...props}: ILoaderLayoutProps<TResult>) => {
 	const {t} = useTranslation();
 	return <>
 		{loading && <Layout style={{height: "100vh"}} {...props}>

@@ -1,12 +1,12 @@
 import {ResponsiveContext} from "@leight-core/client";
-import {FC} from "react";
+import {FC, PropsWithChildren} from "react";
 import {isBrowser as isCoolBrowser, isMobile as isCoolMobile, isTablet as isCoolTablet} from "react-device-detect";
 
-export interface IResponsiveProviderProps {
+export type IResponsiveProviderProps = PropsWithChildren<{
 	isBrowser?: () => boolean;
 	isMobile?: () => boolean;
 	isTablet?: () => boolean;
-}
+}>;
 
 export const ResponsiveProvider: FC<IResponsiveProviderProps> = ({isBrowser, isMobile, isTablet, ...props}) => {
 	isBrowser = isBrowser || (() => isCoolBrowser || isCoolTablet);

@@ -1,5 +1,4 @@
 import {PlusCircleOutlined} from "@ant-design/icons";
-import {IIconProps} from "@leight-core/client";
-import {FC} from "react";
+import {ComponentProps, FC} from "react";
 
-export const CreateItemIcon: FC<IIconProps> = PlusCircleOutlined;
+export const CreateItemIcon: FC<ComponentProps<typeof PlusCircleOutlined>> = PlusCircleOutlined;

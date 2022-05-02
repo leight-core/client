@@ -20,5 +20,5 @@ export function useInterval(callback: IIntervalCallback, delay?: number, deps: D
 			const id = setInterval(tick, delay);
 			return () => clearInterval(id);
 		}
-	}, [delay].concat(deps));
+	}, ([delay] as DependencyList).concat(deps));
 }

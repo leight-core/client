@@ -1,5 +1,4 @@
 import {EditOutlined} from "@ant-design/icons";
-import {IIconProps} from "@leight-core/client";
-import {FC} from "react";
+import {ComponentProps, FC} from "react";
 
-export const CreateIcon: FC<IIconProps> = EditOutlined;
+export const CreateIcon: FC<ComponentProps<typeof EditOutlined>> = EditOutlined;

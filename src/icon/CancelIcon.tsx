@@ -1,5 +1,4 @@
 import {CloseOutlined} from "@ant-design/icons";
-import {IIconProps} from "@leight-core/client";
-import {FC} from "react";
+import {ComponentProps, FC} from "react";
 
-export const CancelIcon: FC<IIconProps> = CloseOutlined;
+export const CancelIcon: FC<ComponentProps<typeof CloseOutlined>> = CloseOutlined;

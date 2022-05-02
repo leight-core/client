@@ -3,7 +3,7 @@ import {useSourceContext} from "@leight-core/client";
 import {List as CoolList, ListProps} from "antd";
 import React, {PropsWithChildren, ReactNode} from "react";
 
-export interface IListProps<TResponse> extends Partial<ListProps<TResponse>> {
+export interface IListProps<TResponse> extends Partial<Omit<ListProps<TResponse>, "children" | "header" | "footer">> {
 	header?: (sourceContext: ISourceContext<TResponse>) => ReactNode;
 	footer?: (sourceContext: ISourceContext<TResponse>) => ReactNode;
 	children?: (item: TResponse) => ReactNode;
