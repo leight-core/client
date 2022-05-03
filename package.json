@@ -1,5 +1,5 @@
 {
-	"version": "0.5.115",
+	"version": "0.5.116",
 	"name": "@leight-core/client",
 	"description": "All that shiny client stuff.",
 	"license": "MIT",
@@ -43,7 +43,7 @@
 		"react-device-detect": "^2.2.2",
 		"react-i18next": "^11.16.7",
 		"react-query": "^3.38.1",
-		"rundef": "^1.2.6"
+		"fast-clean": "^1.2.1"
 	},
 	"peerDependencies": {
 		"@ant-design/icons": "^4.7.0",

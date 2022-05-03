@@ -1,4 +1,5 @@
-// @ts-ignore
-import CoolRundef from "rundef";
+import cleaner from "fast-clean";
 
-export const rundef = (obj: any) => CoolRundef(obj || {}, false, true);
+export const rundef = (obj: any) => cleaner.clean(obj || {}, {
+	nullCleaner: false,
+});
