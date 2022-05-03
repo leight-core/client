@@ -21,7 +21,7 @@ const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 					size={"middle"}
 					onClick={() => {
 						formContext.reset();
-						filterContext.setFilter({});
+						filterContext.setFilter();
 						onClear?.();
 					}}
 					icon={<CloseCircleOutlined/>}
@@ -40,13 +40,12 @@ const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 export interface IFilterProps<TFilter = any> extends IFilterInternalProps {
 	translation: string;
 	drawerButtonProps?: IDrawerButtonProps;
+	spaceProps?: Partial<SpaceProps>;
 	formProps?: Partial<IFormProps<TFilter, TFilter>>;
 
 	toFilter(values: any): TFilter | undefined;
 
 	toForm?(filter?: TFilter): any;
-
-	spaceProps?: Partial<SpaceProps>;
 }
 
 export type IFilterWithoutTranslationProps<TFilter = any> = Omit<IFilterProps<TFilter>, "translation">;
@@ -90,7 +89,7 @@ export function Filter<TFilter = any>({translation, onClear, drawerButtonProps, 
 			size={"small"}
 			onClick={() => {
 				filterContext.setFilter();
-				onClear && onClear();
+				onClear?.();
 			}}
 			icon={<CloseCircleOutlined/>}
 		>

@@ -17,20 +17,26 @@ export type IFilterProviderProps<TFilter = any> = PropsWithChildren<{
 
 export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...props}: IFilterProviderProps<TFilter>) {
 	const [filter, setFilter] = useState<TFilter | undefined>(applyFilter || defaultFilter);
+
+	const _setFilter = (value?: TFilter) => {
+		const filter = rundef(value);
+		setFilter(empty(filter) ? undefined : filter);
+	};
+
 	useEffect(() => {
-		setFilter(defaultFilter);
+		_setFilter(defaultFilter);
 	}, [defaultFilter]);
 	useEffect(() => {
-		setFilter(applyFilter);
+		_setFilter(applyFilter);
 	}, [applyFilter]);
 	return <FilterContext.Provider
 		value={{
 			name,
 			filter,
-			setFilter: filter => setFilter({...filter, ...applyFilter}),
-			applyFilter: apply => setFilter({...filter, ...apply, ...applyFilter}),
-			mergeFilter: apply => setFilter({...deepmerge<TFilter, TFilter>(filter || {}, apply), ...applyFilter}),
-			isEmpty: () => empty(rundef(filter)),
+			setFilter: filter => _setFilter({...filter, ...applyFilter}),
+			applyFilter: apply => _setFilter({...filter, ...apply, ...applyFilter}),
+			mergeFilter: apply => _setFilter({...deepmerge<TFilter, TFilter>(filter || {}, apply), ...applyFilter}),
+			isEmpty: () => empty(filter),
 		}}
 		{...props}
 	/>;
