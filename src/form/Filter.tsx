@@ -89,7 +89,7 @@ export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps
 			}}
 			icon={<CloseCircleOutlined/>}
 		>
-			{t("common.filter.close")}
+			{t("common.filter.clear")}
 		</Button>
 	</Space>;
 }
