@@ -29,7 +29,7 @@ const Internal: FC<IInternalProps> = ({label, canSubmit = true, ...props}) => {
 		htmlType={"submit"}
 		type={"primary"}
 		disabled={!(submit && canSubmit)}
-		children={t(formContext.translation ? formContext.translation + "." + label : label)}
+		children={t(formContext.translation ? formContext.translation + "." + label : label, label)}
 		{...props}
 	/>;
 };
