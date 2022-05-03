@@ -41,15 +41,19 @@ export interface IFilterProps<TFilter = any> extends IFilterInternalProps {
 	translation: string;
 	drawerButtonProps?: IDrawerButtonProps;
 	formProps?: Partial<IFormProps<TFilter, TFilter>>;
-	toFilter: (values: any) => TFilter | undefined;
+
+	toFilter(values: any): TFilter | undefined;
+
+	toForm?(filter: TFilter): any;
+
 	spaceProps?: Partial<SpaceProps>;
 }
 
 export type IFilterWithoutTranslationProps<TFilter = any> = Omit<IFilterProps<TFilter>, "translation">;
 
-export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps, formProps, toFilter, spaceProps, ...props}: PropsWithChildren<IFilterProps<TFilter>>): JSX.Element {
+export function Filter<TFilter = any>({translation, onClear, drawerButtonProps, formProps, toForm = filter => filter, toFilter, spaceProps, ...props}: IFilterProps<TFilter>): JSX.Element {
 	const {t} = useTranslation();
-	const filterContext = useFilterContext();
+	const filterContext = useFilterContext<TFilter>();
 	return <Space align={"baseline"} split={<Divider type={"vertical"}/>} {...spaceProps}>
 		<DrawerButton
 			icon={<SearchOutlined/>}
@@ -63,7 +67,7 @@ export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps
 			<DrawerContext.Consumer>
 				{drawerContext => <Form<TFilter, TFilter>
 					layout={"vertical"}
-					toForm={() => filterContext.filter}
+					toForm={() => toForm(filterContext.filter)}
 					onSuccess={({response}) => {
 						filterContext.setFilter(toFilter(response));
 						drawerContext.setVisible(false);
