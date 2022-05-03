@@ -44,7 +44,7 @@ export interface IFilterProps<TFilter = any> extends IFilterInternalProps {
 
 	toFilter(values: any): TFilter | undefined;
 
-	toForm?(filter: TFilter): any;
+	toForm?(filter?: TFilter): any;
 
 	spaceProps?: Partial<SpaceProps>;
 }
