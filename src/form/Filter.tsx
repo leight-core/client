@@ -17,7 +17,7 @@ const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 		<Divider/>
 		<Centered>
 			<Space align={"baseline"} split={<Divider type={"vertical"}/>}>
-				<Button
+				{!filterContext.isEmpty() && <Button
 					size={"middle"}
 					onClick={() => {
 						formContext.reset();
@@ -27,7 +27,7 @@ const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 					icon={<CloseCircleOutlined/>}
 				>
 					{t("common.filter.clear")}
-				</Button>
+				</Button>}
 				<Submit
 					icon={<SearchOutlined/>}
 					label={"common.filter.submit"}
@@ -80,7 +80,7 @@ export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps
 				</Form>}
 			</DrawerContext.Consumer>
 		</DrawerButton>
-		<Button
+		{!filterContext.isEmpty() && <Button
 			type={"link"}
 			size={"small"}
 			onClick={() => {
@@ -90,6 +90,6 @@ export function Filter<TFilter = any, >({translation, onClear, drawerButtonProps
 			icon={<CloseCircleOutlined/>}
 		>
 			{t("common.filter.clear")}
-		</Button>
+		</Button>}
 	</Space>;
 }
