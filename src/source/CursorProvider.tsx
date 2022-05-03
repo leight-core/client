@@ -20,7 +20,7 @@ export const CursorProvider: FC<ICursorProviderProps> = ({name, defaultPage, def
 			name,
 			page,
 			size,
-			setPage: (page?: number, size?: number) => setPage([page, size]),
+			setPage: (page?: number, size: number | undefined = defaultSize) => setPage([page, size]),
 		}}
 		{...props}
 	/>;

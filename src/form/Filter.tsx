@@ -1,5 +1,5 @@
 import {CloseCircleOutlined, SearchOutlined} from "@ant-design/icons";
-import {Centered, DrawerButton, DrawerContext, Form, IDrawerButtonProps, IFormProps, Submit, useFilterContext, useFormContext} from "@leight-core/client";
+import {Centered, DrawerButton, DrawerContext, Form, IDrawerButtonProps, IFormProps, Submit, useFilterContext, useFormContext, useOptionalCursorContext} from "@leight-core/client";
 import {Button, Divider, Space, SpaceProps} from "antd";
 import {FC, PropsWithChildren} from "react";
 import {useTranslation} from "react-i18next";
@@ -53,6 +53,7 @@ export type IFilterWithoutTranslationProps<TFilter = any> = Omit<IFilterProps<TF
 export function Filter<TFilter = any>({translation, onClear, drawerButtonProps, formProps, toForm = filter => filter, toFilter, spaceProps, ...props}: IFilterProps<TFilter>): JSX.Element {
 	const {t} = useTranslation();
 	const filterContext = useFilterContext<TFilter>();
+	const cursorContext = useOptionalCursorContext();
 	return <Space align={"baseline"} split={<Divider type={"vertical"}/>} {...spaceProps}>
 		<DrawerButton
 			icon={<SearchOutlined/>}
@@ -68,6 +69,7 @@ export function Filter<TFilter = any>({translation, onClear, drawerButtonProps, 
 					layout={"vertical"}
 					toForm={() => toForm(filterContext.filter)}
 					onSuccess={({response}) => {
+						cursorContext?.setPage(0);
 						filterContext.setFilter(toFilter(response));
 						drawerContext.setVisible(false);
 					}}
