@@ -68,7 +68,7 @@ export function SelectionProvider<TSelection, >({type = "none", defaultEnabled =
 	return <SelectionContext.Provider
 		value={{
 			enable: (enable = true) => {
-				!enable && setSelection({});
+				setSelection({});
 				setEnabled(enable);
 			},
 			isEnabled: () => enabled,
