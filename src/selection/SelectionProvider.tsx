@@ -75,7 +75,7 @@ export function SelectionProvider<TSelection, >({type = "none", defaultEnabled =
 			isSelected,
 			asSelection: () => selection,
 			toSelection,
-			toItems: () => Object.values(selection),
+			toItems: () => Object.values(selection).filter(item => !!item),
 			select,
 			item: item => select(item.id, item),
 			isSelectedItem: item => isSelected(item.id),
