@@ -7,6 +7,7 @@ export type ISelectionProviderProps<TSelection = any> = PropsWithChildren<{
 	 * Selection type.
 	 */
 	type?: ISelectionType;
+	defaultEnabled?: boolean;
 	/**
 	 * Default pre-set selection; could be overridden by a user. Apply selection prop takes precedence.
 	 */
@@ -17,7 +18,8 @@ export type ISelectionProviderProps<TSelection = any> = PropsWithChildren<{
 	applySelection?: Record<string, TSelection>;
 }>;
 
-export function SelectionProvider<TSelection, >({type = "none", defaultSelection, applySelection, ...props}: ISelectionProviderProps<TSelection>) {
+export function SelectionProvider<TSelection, >({type = "none", defaultEnabled = type !== "none", defaultSelection, applySelection, ...props}: ISelectionProviderProps<TSelection>) {
+	const [enabled, setEnabled] = useState(defaultEnabled && type !== "none");
 	const [selection, setSelection] = useState<Record<string, TSelection | undefined>>(applySelection || defaultSelection || {});
 	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>([]);
 
@@ -43,7 +45,7 @@ export function SelectionProvider<TSelection, >({type = "none", defaultSelection
 	};
 	const isSelected: ISelectionContext<TSelection>["isSelected"] = id => !!selection[id];
 	const toSelection: ISelectionContext<TSelection>["toSelection"] = () => Object.keys(selection).filter(key => !!selection[key]);
-	const isEmpty: ISelectionContext<TSelection>["isEmpty"] = () => toSelection().length === 0;
+	const isEmpty: ISelectionContext<TSelection>["isEmpty"] = () => !toSelection().length;
 	const toSingle: ISelectionContext<TSelection>["toSingle"] = () => {
 		if (isEmpty()) {
 			throw new Error("Selection is empty!");
@@ -65,6 +67,8 @@ export function SelectionProvider<TSelection, >({type = "none", defaultSelection
 
 	return <SelectionContext.Provider
 		value={{
+			enable: (enable = true) => setEnabled(enable),
+			isEnabled: () => enabled,
 			isSelected,
 			asSelection: () => selection,
 			toSelection,
