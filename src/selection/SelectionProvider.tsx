@@ -2,7 +2,7 @@ import {ISelection, ISelectionContext, ISelectionType} from "@leight-core/api";
 import {SelectionContext} from "@leight-core/client";
 import {PropsWithChildren, useEffect, useRef, useState} from "react";
 
-export interface ISelectionProviderProps<TSelection = any> {
+export type ISelectionProviderProps<TSelection = any> = PropsWithChildren<{
 	/**
 	 * Selection type.
 	 */
@@ -15,9 +15,9 @@ export interface ISelectionProviderProps<TSelection = any> {
 	 * Apply the given selection all the times (regardless of values set by a user)
 	 */
 	applySelection?: Record<string, TSelection>;
-}
+}>;
 
-export function SelectionProvider<TSelection, >({type = "none", defaultSelection, applySelection, ...props}: PropsWithChildren<ISelectionProviderProps<TSelection>>) {
+export function SelectionProvider<TSelection, >({type = "none", defaultSelection, applySelection, ...props}: ISelectionProviderProps<TSelection>) {
 	const [selection, setSelection] = useState<Record<string, TSelection | undefined>>(applySelection || defaultSelection || {});
 	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>([]);
 
