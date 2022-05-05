@@ -6,7 +6,7 @@ import {useTranslation} from "react-i18next";
 
 export interface ILoaderLayoutProps<TResult = any> extends Partial<Omit<LayoutProps, "children">> {
 	logo?: ReactNode;
-	icon: ReactNode;
+	icon?: ReactNode;
 	result?: TResult;
 	loading: boolean;
 	isError?: boolean;
