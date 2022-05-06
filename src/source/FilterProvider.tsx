@@ -17,10 +17,12 @@ export type IFilterProviderProps<TFilter = any> = PropsWithChildren<{
 
 export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...props}: IFilterProviderProps<TFilter>) {
 	const [filter, setFilter] = useState<TFilter | undefined>(applyFilter || defaultFilter);
+	const [source, setSource] = useState();
 
-	const _setFilter = (value?: TFilter) => {
+	const _setFilter = (value?: TFilter, source?: any) => {
 		const filter = rundef(value);
 		setFilter(empty(filter) ? undefined : filter);
+		setSource(source);
 	};
 
 	useEffect(() => {
@@ -33,7 +35,8 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...
 		value={{
 			name,
 			filter,
-			setFilter: filter => _setFilter({...filter, ...applyFilter}),
+			source,
+			setFilter: (filter, source) => _setFilter({...filter, ...applyFilter}, source),
 			applyFilter: apply => _setFilter({...filter, ...apply, ...applyFilter}),
 			mergeFilter: apply => _setFilter({...deepmerge<TFilter, TFilter>(filter || {}, apply), ...applyFilter}),
 			isEmpty: () => empty(filter),

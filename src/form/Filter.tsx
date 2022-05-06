@@ -45,7 +45,7 @@ export interface IFilterProps<TFilter = any> extends IFilterInternalProps {
 
 	toFilter(values: any): TFilter | undefined;
 
-	toForm?(filter?: TFilter): any;
+	toForm?(filter?: TFilter, source?: any): any;
 }
 
 export type IFilterWithoutTranslationProps<TFilter = any> = Omit<IFilterProps<TFilter>, "translation">;
@@ -67,10 +67,10 @@ export function Filter<TFilter = any>({translation, onClear, drawerButtonProps, 
 			<DrawerContext.Consumer>
 				{drawerContext => <Form<TFilter, TFilter>
 					layout={"vertical"}
-					toForm={() => toForm(filterContext.filter)}
+					toForm={() => filterContext.source || toForm(filterContext.filter, filterContext.source)}
 					onSuccess={({response}) => {
 						cursorContext?.setPage(0);
-						filterContext.setFilter(toFilter(response));
+						filterContext.setFilter(toFilter(response), response);
 						drawerContext.setVisible(false);
 					}}
 					translation={translation + ".filter"}
