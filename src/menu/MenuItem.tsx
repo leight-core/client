@@ -1,10 +1,9 @@
 import {IQueryParams} from "@leight-core/api";
 import {LinkTo} from "@leight-core/client";
-import {Menu, MenuItemProps} from "antd";
 import {FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface IMenuItemProps extends Partial<MenuItemProps> {
+export interface IMenuItemProps {
 	/**
 	 * Menu item title, goes through translation.
 	 */
@@ -14,22 +13,16 @@ export interface IMenuItemProps extends Partial<MenuItemProps> {
 	 */
 	href: string;
 	/**
-	 * Menu icon
-	 */
-	icon: ReactNode;
-	/**
 	 * Optional params for link generator.
 	 */
 	query?: IQueryParams | void;
 }
 
-export const MenuItem: FC<IMenuItemProps> = ({title, href, icon, query, ...props}) => {
+export const MenuItem: FC<IMenuItemProps> = ({title, href, query}) => {
 	const {t} = useTranslation();
-	return <Menu.Item icon={icon} key={href} {...props}>
-		<LinkTo href={href} query={query}>
-			{t(title)}
-		</LinkTo>
-	</Menu.Item>;
+	return <LinkTo href={href} query={query}>
+		{t(title)}
+	</LinkTo>;
 };
 
 /**
@@ -38,6 +31,9 @@ export const MenuItem: FC<IMenuItemProps> = ({title, href, icon, query, ...props
  *
  * Basically it has the same behavior as MenuItem component.
  */
-export function CreateMenuItem(title: string, href: string, icon: ReactNode, query?: IQueryParams | void, rest?: Partial<IMenuItemProps>) {
-	return <MenuItem title={title} key={href} href={href} icon={icon} query={query} {...rest}/>;
+export function CreateMenuItem(title: string, href: string, icon: ReactNode, query?: IQueryParams | void) {
+	return {
+		icon,
+		label: <MenuItem title={title} href={href} query={query}/>,
+	};
 }
