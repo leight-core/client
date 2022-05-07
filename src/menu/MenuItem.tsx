@@ -34,6 +34,7 @@ export const MenuItem: FC<IMenuItemProps> = ({title, href, query}) => {
 export function CreateMenuItem(title: string, href: string, icon: ReactNode, query?: IQueryParams | void) {
 	return {
 		icon,
+		key: title,
 		label: <MenuItem title={title} href={href} query={query}/>,
 	};
 }
