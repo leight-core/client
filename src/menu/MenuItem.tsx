@@ -2,7 +2,7 @@ import {IQueryParams} from "@leight-core/api";
 import {LinkTo} from "@leight-core/client";
 import {ItemType} from "antd/lib/menu/hooks/useItems";
 import {FC, ReactNode} from "react";
-import {useTranslation} from "react-i18next";
+import {Trans, useTranslation} from "react-i18next";
 
 export interface IMenuItemProps {
 	/**
@@ -37,6 +37,16 @@ export function CreateMenuItem(title: string, href: string, icon: ReactNode, que
 		icon,
 		key: title,
 		label: <MenuItem title={title} href={href} query={query}/>,
+		...rest,
+	};
+}
+
+export function CreateMenuGroup(title: string, icon: ReactNode, items: ItemType[], rest?: Partial<ItemType>): ItemType {
+	return {
+		icon,
+		key: title,
+		label: <Trans i18nKey={title}/>,
+		children: items,
 		...rest,
 	};
 }
