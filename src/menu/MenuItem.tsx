@@ -1,5 +1,6 @@
 import {IQueryParams} from "@leight-core/api";
 import {LinkTo} from "@leight-core/client";
+import {ItemType} from "antd/lib/menu/hooks/useItems";
 import {FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
@@ -31,10 +32,11 @@ export const MenuItem: FC<IMenuItemProps> = ({title, href, query}) => {
  *
  * Basically it has the same behavior as MenuItem component.
  */
-export function CreateMenuItem(title: string, href: string, icon: ReactNode, query?: IQueryParams | void) {
+export function CreateMenuItem(title: string, href: string, icon: ReactNode, query?: IQueryParams | void, rest?: Partial<ItemType>): ItemType {
 	return {
 		icon,
 		key: title,
 		label: <MenuItem title={title} href={href} query={query}/>,
+		...rest,
 	};
 }
