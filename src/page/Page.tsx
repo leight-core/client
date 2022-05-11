@@ -16,7 +16,7 @@ export interface IPageProps extends IEmptyPageProps {
 	/**
 	 * When specified, help icon shows up with `withHelp.title` and `withHelp.content` Trans component used as DrawerButton.
 	 */
-	withHelp?: { title: string; subtitle?: string; content: string; drawerButtonProps?: Partial<IDrawerButtonProps> };
+	withHelp?: { translation: string; drawerButtonProps?: Partial<IDrawerButtonProps> };
 	extra?: ReactNode;
 	header?: ReactNode;
 	headerPostfix?: ReactNode;
@@ -45,18 +45,17 @@ export const Page: FC<IPageProps> = (
 	const navigate = useNavigate();
 	if (!headerPostfix && withHelp) {
 		headerPostfix = <DrawerButton
-			title={`${withHelp}.title`}
+			title={`${withHelp.translation}.title`}
 			icon={<QuestionCircleOutlined/>}
 			{...withHelp.drawerButtonProps}
 		>
 			<Template
 				icon={icon}
-				title={withHelp.title}
-				subTitle={withHelp.subtitle}
+				label={withHelp.translation}
 				span={24}
 				extra={<Divider type={"horizontal"}/>}
 			>
-				<Trans i18nKey={`${withHelp}.content`}/>
+				<Trans i18nKey={`${withHelp.translation}.content`}/>
 			</Template>
 		</DrawerButton>;
 	}
