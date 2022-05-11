@@ -49,6 +49,7 @@ export const Page: FC<IPageProps> = (
 			icon={<QuestionCircleOutlined/>}
 			type={"link"}
 			size={"large"}
+			width={720}
 			tooltip={`${withHelp.translation}.help.tooltip`}
 			{...withHelp.drawerButtonProps}
 		>
