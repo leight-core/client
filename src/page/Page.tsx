@@ -1,9 +1,11 @@
+import {QuestionCircleOutlined} from "@ant-design/icons";
 import {INavigate} from "@leight-core/api";
-import {EmptyPage, IEmptyPageProps, IPageHeaderProps, PageHeader, useMobile, useNavigate} from "@leight-core/client";
-import {BreadcrumbProps, Card, CardProps} from "antd";
+import {DrawerButton, EmptyPage, IDrawerButtonProps, IEmptyPageProps, IPageHeaderProps, PageHeader, Template, useMobile, useNavigate} from "@leight-core/client";
+import {BreadcrumbProps, Card, CardProps, Divider} from "antd";
 import Breadcrumb from "antd/lib/breadcrumb";
 import * as React from "react";
 import {FC, ReactNode} from "react";
+import {Trans} from "react-i18next";
 
 export type IPageBreadcrumb = BreadcrumbProps | React.ReactElement<typeof Breadcrumb>;
 
@@ -11,6 +13,10 @@ export interface IPageProps extends IEmptyPageProps {
 	onBack?: (navigate: INavigate) => void;
 	breadcrumbProps?: IPageBreadcrumb;
 	icon?: ReactNode;
+	/**
+	 * When specified, help icon shows up with `withHelp.title` and `withHelp.content` Trans component used as DrawerButton.
+	 */
+	withHelp?: { title: string; subtitle?: string; content: string; drawerButtonProps?: Partial<IDrawerButtonProps> };
 	extra?: ReactNode;
 	header?: ReactNode;
 	headerPostfix?: ReactNode;
@@ -23,6 +29,7 @@ export const Page: FC<IPageProps> = (
 	{
 		breadcrumbProps,
 		icon,
+		withHelp,
 		extra,
 		cardProps,
 		header,
@@ -36,6 +43,23 @@ export const Page: FC<IPageProps> = (
 	}) => {
 	const mobile = useMobile();
 	const navigate = useNavigate();
+	if (!headerPostfix && withHelp) {
+		headerPostfix = <DrawerButton
+			title={`${withHelp}.title`}
+			icon={<QuestionCircleOutlined/>}
+			{...withHelp.drawerButtonProps}
+		>
+			<Template
+				icon={icon}
+				title={withHelp.title}
+				subTitle={withHelp.subtitle}
+				span={24}
+				extra={<Divider type={"horizontal"}/>}
+			>
+				<Trans i18nKey={`${withHelp}.content`}/>
+			</Template>
+		</DrawerButton>;
+	}
 	return <EmptyPage title={title} values={values} {...props}>
 		{header || <PageHeader
 			onBack={onBack ? () => onBack(navigate) : undefined}
