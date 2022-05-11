@@ -14,13 +14,15 @@ export const PageHeader: FC<IPageHeaderProps> = ({title, icon, headerPostfix, va
 	const $title = isString(title) ? <span>{t(title + ".title", {data: values})}</span> : title;
 	return <CoolPageHeader
 		title={<Row align={"middle"} style={{width: "60vw", height: "45px"}}>
-			<Col span={24}>
+			<Col>
 				<Space align={"baseline"}>
 					{icon}
 					{$title}
-					{headerPostfix}
 				</Space>
 			</Col>
+			{headerPostfix && <Col flex={"auto"}>
+				{headerPostfix}
+			</Col>}
 		</Row>}
 		{...props}
 	/>;

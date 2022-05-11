@@ -1,10 +1,11 @@
 import {IQueryParams} from "@leight-core/api";
-import {Button, ButtonProps} from "antd";
+import {isString} from "@leight-core/client";
+import {Button} from "antd";
 import Link from "next/link";
-import React, {FC} from "react";
+import React, {ComponentProps, FC} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface IButtonLinkProps extends Omit<ButtonProps, "title"> {
+export interface IButtonLinkProps extends Partial<ComponentProps<typeof Button>> {
 	/**
 	 * Href goes to generate method (clever link).
 	 */
@@ -12,32 +13,34 @@ export interface IButtonLinkProps extends Omit<ButtonProps, "title"> {
 	/**
 	 * Title of a button.
 	 */
-	title?: string | null;
+	label?: string | null;
 	/**
 	 * Optional params for the link generator.
 	 */
 	query?: IQueryParams | void;
 }
 
-export const ButtonLink: FC<IButtonLinkProps> = ({href, title, query, ...props}) => {
+export const ButtonLink: FC<IButtonLinkProps> = ({href, label, query, ...props}) => {
 	const {t} = useTranslation();
 	try {
 		return <Link href={{pathname: href, query: query || undefined}}>
 			<Button
-				type={"primary"}
+				type={"link"}
+				size={"large"}
 				{...props}
 			>
-				{title ? t(title) : null}
+				{isString(label) ? t(label as string) : label}
 			</Button>
 		</Link>;
 	} catch (e) {
 		console.warn(`Cannot generate link [${href}] for ButtonLink. Params:`, query, e);
 		return <Button
-			type={"primary"}
+			type={"link"}
+			size={"large"}
 			disabled
 			{...props}
 		>
-			{title ? t(title) : null}
+			{isString(label) ? t(label as string) : label}
 		</Button>;
 	}
 };
