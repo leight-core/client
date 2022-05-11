@@ -47,6 +47,9 @@ export const Page: FC<IPageProps> = (
 		headerPostfix = <DrawerButton
 			title={`${withHelp.translation}.title`}
 			icon={<QuestionCircleOutlined/>}
+			type={"link"}
+			size={"large"}
+			tooltip={`${withHelp.translation}.help.tooltip`}
 			{...withHelp.drawerButtonProps}
 		>
 			<Template
