@@ -16,9 +16,9 @@ const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 		{children}
 		<Divider/>
 		<Centered>
-			<Space align={"baseline"} split={<Divider type={"vertical"}/>}>
+			<Space align={"baseline"} split={<Divider type={"vertical"}/>} size={"large"}>
 				{!filterContext.isEmpty() && <Button
-					size={"middle"}
+					type={"link"}
 					onClick={() => {
 						formContext.reset();
 						filterContext.setFilter();
