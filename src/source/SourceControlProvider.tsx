@@ -36,8 +36,8 @@ export function SourceControlProvider<TFilter = any, TOrderBy = any, TQueryParam
 		defaultFilter,
 		applyFilter,
 		defaultOrderBy,
-		defaultPage = 0,
-		defaultSize = 10,
+		defaultPage,
+		defaultSize,
 		defaultQueryParams,
 		children,
 	}: ISourceControlProviderProps<TFilter, TOrderBy, TQueryParams>) {
