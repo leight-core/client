@@ -1,5 +1,5 @@
 import {QuestionCircleOutlined} from "@ant-design/icons";
-import {INavigate} from "@leight-core/api";
+import {INavigate, IQueryParams} from "@leight-core/api";
 import {DrawerButton, EmptyPage, IDrawerButtonProps, IEmptyPageProps, IPageHeaderProps, PageHeader, Template, useMobile, useNavigate} from "@leight-core/client";
 import {BreadcrumbProps, Card, CardProps, Divider} from "antd";
 import Breadcrumb from "antd/lib/breadcrumb";
@@ -10,7 +10,7 @@ import {Trans} from "react-i18next";
 export type IPageBreadcrumb = BreadcrumbProps | React.ReactElement<typeof Breadcrumb>;
 
 export interface IPageProps extends IEmptyPageProps {
-	onBack?: (navigate: INavigate) => void;
+	onBack?: (navigate: INavigate<IQueryParams>) => void;
 	breadcrumbProps?: IPageBreadcrumb;
 	icon?: ReactNode;
 	/**
@@ -42,7 +42,7 @@ export const Page: FC<IPageProps> = (
 		...props
 	}) => {
 	const mobile = useMobile();
-	const navigate = useNavigate();
+	const navigate = useNavigate<IQueryParams>();
 	if (!headerPostfix && withHelp) {
 		headerPostfix = <DrawerButton
 			title={`${withHelp.translation}.title`}
