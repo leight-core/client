@@ -1,6 +1,7 @@
 import {IQuery, IQueryHook, IQueryResult} from "@leight-core/api";
 import {merge, SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
 import {PropsWithChildren} from "react";
+import {useTranslation} from "react-i18next";
 import {UseQueryOptions} from "react-query";
 
 export type ISourceProviderProps<TResponse> = PropsWithChildren<{
@@ -28,6 +29,7 @@ export const SourceProvider = <TResponse, >(
 		...props
 	}: ISourceProviderProps<TResponse>
 ) => {
+	const {t} = useTranslation();
 	const filterContext = useOptionalFilterContext<any>();
 	const orderByContext = useOptionalOrderByContext<any>();
 	const cursorContext = useOptionalCursorContext();
@@ -48,14 +50,15 @@ export const SourceProvider = <TResponse, >(
 			name,
 			result,
 			pagination: () => result.isSuccess ? {
-				size: "small",
 				responsive: true,
 				current: (cursorContext?.page || 0) + 1,
 				total: result.data.total,
-				pageSize: cursorContext?.size || 5,
-				defaultPageSize: cursorContext?.size || 5,
+				pageSize: cursorContext?.size || 10,
+				defaultPageSize: cursorContext?.size || 10,
+				showSizeChanger: false,
 				showQuickJumper: false,
 				hideOnSinglePage: false,
+				showTotal: (total, [from, to]) => t(`${name}.list.total`, {data: {total, from, to}}),
 				onChange: (current, size) => cursorContext?.setPage(current - 1, size),
 			} : undefined,
 			hasData: () => result.isSuccess && result.data.count > 0,
