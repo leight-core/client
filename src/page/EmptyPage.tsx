@@ -10,6 +10,12 @@ export type IEmptyPageProps = PropsWithChildren<{
 	 */
 	title?: string;
 	/**
+	 * Page Tab (browser tab/window name) title.
+	 *
+	 * If complex translation is used, this should be used with simple text.
+	 */
+	tabTitle?: string;
+	/**
 	 * Should the sider be collapsed?
 	 */
 	collapsed?: boolean;
@@ -40,6 +46,7 @@ const EmptyPageInternal: FC<PropsWithChildren<any>> = ({children}) => {
 export const EmptyPage: FC<IEmptyPageProps> = (
 	{
 		title,
+		tabTitle,
 		blocked = false,
 		collapsed,
 		menuSelection = [],
@@ -54,7 +61,7 @@ export const EmptyPage: FC<IEmptyPageProps> = (
 		blockContext.unblock(true);
 	}, []);
 	return <PageProvider>
-		{title && <Head><title key={"title"}>{t(title + ".title", {data: values})}</title></Head>}
+		{(tabTitle || title) && <Head><title key={"title"}>{t(tabTitle || (title + ".title"), {data: values})}</title></Head>}
 		<ScrollToTop/>
 		<BlockProvider locked={blocked}>
 			<EmptyPageInternal {...props}/>
