@@ -24,6 +24,10 @@ export interface IPageProps extends IEmptyPageProps {
 	cardProps?: Partial<CardProps>;
 	headerProps?: IPageHeaderProps;
 	values?: any;
+	/**
+	 * Components used for translation interpolation. See react-i18n Trans docs.
+	 */
+	components?: IPageHeaderProps["components"];
 }
 
 export const Page: FC<IPageProps> = (
@@ -40,6 +44,7 @@ export const Page: FC<IPageProps> = (
 		children,
 		title,
 		values,
+		components,
 		onBack,
 		...props
 	}) => {
@@ -71,6 +76,7 @@ export const Page: FC<IPageProps> = (
 			headerPostfix={headerPostfix}
 			title={title}
 			values={values}
+			components={components}
 			icon={icon}
 			extra={extra && extraSize ? <div style={{width: `${extraSize}em`}}>{extra}</div> : extra}
 			ghost={false}
