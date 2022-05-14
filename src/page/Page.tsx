@@ -18,6 +18,7 @@ export interface IPageProps extends IEmptyPageProps {
 	 */
 	withHelp?: { translation: string; drawerButtonProps?: Partial<IDrawerButtonProps> };
 	extra?: ReactNode;
+	extraSize?: number;
 	header?: ReactNode;
 	headerPostfix?: ReactNode;
 	cardProps?: Partial<CardProps>;
@@ -31,6 +32,7 @@ export const Page: FC<IPageProps> = (
 		icon,
 		withHelp,
 		extra,
+		extraSize,
 		cardProps,
 		header,
 		headerProps,
@@ -70,7 +72,7 @@ export const Page: FC<IPageProps> = (
 			title={title}
 			values={values}
 			icon={icon}
-			extra={extra}
+			extra={extra && extraSize ? <div style={{width: `${extraSize}em`}}>{extra}</div> : extra}
 			ghost={false}
 			breadcrumb={breadcrumbProps}
 			style={mobile({padding: "4px 0 0 12px"})}
