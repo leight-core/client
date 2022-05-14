@@ -90,6 +90,7 @@ export function Filter<TFilter = any>({translation, onClear, drawerButtonProps, 
 			type={"link"}
 			size={"small"}
 			onClick={() => {
+				cursorContext?.setPage(0);
 				filterContext.setFilter();
 				onClear?.();
 			}}

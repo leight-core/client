@@ -16,30 +16,50 @@ export type IFilterProviderProps<TFilter = any> = PropsWithChildren<{
 }>;
 
 export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...props}: IFilterProviderProps<TFilter>) {
+	/**
+	 * Currently set filter; applied with defaults/applied.
+	 */
 	const [filter, setFilter] = useState<TFilter | undefined>(applyFilter || defaultFilter);
+	/**
+	 * Filter set by the user; this is useful to distinguish isEmpty() which could contain applied filters which
+	 * should not be visible by the user
+	 */
+	const [request, setRequest] = useState<TFilter | undefined>();
+	/**
+	 * When used in a form, for example, this is the source used to build-up this filter.
+	 */
 	const [source, setSource] = useState();
 
-	const _setFilter = (value?: TFilter, source?: any) => {
+	const $setFilter = (value?: TFilter, source?: any) => {
 		const filter = rundef(value);
 		setFilter(empty(filter) ? undefined : filter);
 		setSource(source);
 	};
 
 	useEffect(() => {
-		_setFilter(defaultFilter);
+		$setFilter(defaultFilter);
 	}, [defaultFilter]);
 	useEffect(() => {
-		_setFilter(applyFilter);
+		$setFilter(applyFilter);
 	}, [applyFilter]);
 	return <FilterContext.Provider
 		value={{
 			name,
 			filter,
 			source,
-			setFilter: (filter, source) => _setFilter({...filter, ...applyFilter}, source),
-			applyFilter: apply => _setFilter({...filter, ...apply, ...applyFilter}),
-			mergeFilter: apply => _setFilter({...deepmerge<TFilter, TFilter>(filter || {}, apply), ...applyFilter}),
-			isEmpty: () => empty(filter),
+			setFilter: (filter, source) => {
+				setRequest(filter);
+				$setFilter({...filter, ...applyFilter}, source);
+			},
+			applyFilter: apply => {
+				setRequest(apply);
+				$setFilter({...filter, ...apply, ...applyFilter});
+			},
+			mergeFilter: apply => {
+				setRequest(apply);
+				$setFilter(deepmerge(deepmerge<TFilter, TFilter>(filter || {}, apply), applyFilter));
+			},
+			isEmpty: () => empty(request),
 		}}
 		{...props}
 	/>;
