@@ -27,7 +27,7 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...
 	/**
 	 * Currently set filter; applied with defaults/applied.
 	 */
-	const [filter, setFilter] = useState<TFilter | undefined>(deepmerge(state?.filter || {}, applyFilter || defaultFilter));
+	const [filter, setFilter] = useState<TFilter | undefined>(deepmerge(state?.filter || {}, applyFilter || defaultFilter || {}));
 	/**
 	 * Filter set by the user; this is useful to distinguish isEmpty() which could contain applied filters which
 	 * should not be visible by the user
@@ -38,7 +38,7 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...
 	 */
 	const [source, setSource] = useState(state?.source);
 
-	const $setFilter = (value?: TFilter, request?: TFilter, source?: any,) => {
+	const $setFilter = (value?: TFilter, request?: TFilter, source?: any) => {
 		const filter = rundef(value);
 		setFilter(empty(filter) ? undefined : filter);
 		setRequest(request);
