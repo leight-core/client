@@ -8,6 +8,7 @@ export * from "./NumberRange";
 export * from "./percent";
 export * from "./Random";
 export * from "./rundef";
+export * from "./sleep";
 export * from "./toHumanBytes";
 export * from "./toHumanNumber";
 export * from "./useInterval";
