@@ -1,5 +1,5 @@
 import {CloseCircleOutlined, SearchOutlined} from "@ant-design/icons";
-import {Centered, DrawerButton, Form, IDrawerButtonProps, IFormProps, Submit, useDrawerContext, useFilterContext, useFormContext, useOptionalCursorContext} from "@leight-core/client";
+import {Centered, DrawerButton, Form, IDrawerButtonProps, IFormProps, Submit, useFilterContext, useFormContext, useOptionalCursorContext, useOptionalDrawerContext} from "@leight-core/client";
 import {Button, Divider, Space, SpaceProps} from "antd";
 import {FC, PropsWithChildren} from "react";
 import {useTranslation} from "react-i18next";
@@ -47,7 +47,7 @@ type IFilterFormProps<TFilter> = {
 } & IFilterInternalProps;
 
 const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter => filter, toFilter, ...props}: IFilterFormProps<TFilter>) => {
-	const drawerContext = useDrawerContext();
+	const drawerContext = useOptionalDrawerContext();
 	const filterContext = useFilterContext<TFilter>();
 	const cursorContext = useOptionalCursorContext();
 
@@ -57,14 +57,14 @@ const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter
 		onSuccess={({response}) => {
 			cursorContext?.setPage(0);
 			filterContext.setFilter(toFilter(response), response);
-			drawerContext.setVisible(false);
+			drawerContext?.setVisible(false);
 		}}
 		translation={translation + ".filter"}
 		{...formProps}
 	>
 		<FilterInternal
 			onClear={() => {
-				drawerContext && drawerContext.setVisible(false);
+				drawerContext?.setVisible(false);
 				onClear && onClear();
 			}}
 			{...props}
