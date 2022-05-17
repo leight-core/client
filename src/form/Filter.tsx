@@ -1,5 +1,5 @@
 import {CloseCircleOutlined, SearchOutlined} from "@ant-design/icons";
-import {Centered, DrawerButton, DrawerContext, Form, IDrawerButtonProps, IFormProps, Submit, useFilterContext, useFormContext, useOptionalCursorContext} from "@leight-core/client";
+import {Centered, DrawerButton, Form, IDrawerButtonProps, IFormProps, Submit, useDrawerContext, useFilterContext, useFormContext, useOptionalCursorContext} from "@leight-core/client";
 import {Button, Divider, Space, SpaceProps} from "antd";
 import {FC, PropsWithChildren} from "react";
 import {useTranslation} from "react-i18next";
@@ -37,66 +37,91 @@ const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 	</>;
 };
 
-export interface IFilterProps<TFilter = any> extends IFilterInternalProps {
+type IFilterFormProps<TFilter> = {
 	translation: string;
-	drawerButtonProps?: IDrawerButtonProps;
-	spaceProps?: Partial<SpaceProps>;
 	formProps?: Partial<IFormProps<TFilter, TFilter>>;
 
 	toFilter(values: any): TFilter | undefined;
 
 	toForm?(filter?: TFilter, source?: any): any;
-}
+} & IFilterInternalProps;
+
+const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter => filter, toFilter, ...props}: IFilterFormProps<TFilter>) => {
+	const drawerContext = useDrawerContext();
+	const filterContext = useFilterContext<TFilter>();
+	const cursorContext = useOptionalCursorContext();
+
+	return <Form<TFilter, TFilter>
+		layout={"vertical"}
+		toForm={() => filterContext.source || toForm(filterContext.filter, filterContext.source)}
+		onSuccess={({response}) => {
+			cursorContext?.setPage(0);
+			filterContext.setFilter(toFilter(response), response);
+			drawerContext.setVisible(false);
+		}}
+		translation={translation + ".filter"}
+		{...formProps}
+	>
+		<FilterInternal
+			onClear={() => {
+				drawerContext && drawerContext.setVisible(false);
+				onClear && onClear();
+			}}
+			{...props}
+		/>
+	</Form>;
+};
+
+export type IFilterProps<TFilter = any> = {
+	inline?: boolean;
+	translation: string;
+	drawerButtonProps?: IDrawerButtonProps;
+	spaceProps?: Partial<SpaceProps>;
+} & IFilterFormProps<TFilter>
 
 export type IFilterWithoutTranslationProps<TFilter = any> = Omit<IFilterProps<TFilter>, "translation">;
 
-export function Filter<TFilter = any>({translation, onClear, drawerButtonProps, formProps, toForm = filter => filter, toFilter, spaceProps, ...props}: IFilterProps<TFilter>): JSX.Element {
+export function Filter<TFilter = any>({inline = false, translation, onClear, drawerButtonProps, formProps, toForm = filter => filter, toFilter, spaceProps, ...props}: IFilterProps<TFilter>): JSX.Element {
 	const {t} = useTranslation();
 	const filterContext = useFilterContext<TFilter>();
 	const cursorContext = useOptionalCursorContext();
-	return <Space align={"baseline"} split={<Divider type={"vertical"}/>} {...spaceProps}>
-		<DrawerButton
-			icon={<SearchOutlined/>}
-			type={"link"}
-			size={"small"}
-			title={translation + ".filter.title"}
-			label={translation + ".filter.title"}
-			width={750}
-			{...drawerButtonProps}
-		>
-			<DrawerContext.Consumer>
-				{drawerContext => <Form<TFilter, TFilter>
-					layout={"vertical"}
-					toForm={() => filterContext.source || toForm(filterContext.filter, filterContext.source)}
-					onSuccess={({response}) => {
-						cursorContext?.setPage(0);
-						filterContext.setFilter(toFilter(response), response);
-						drawerContext.setVisible(false);
-					}}
-					translation={translation + ".filter"}
-					{...formProps}
-				>
-					<FilterInternal
-						onClear={() => {
-							drawerContext && drawerContext.setVisible(false);
-							onClear && onClear();
-						}}
-						{...props}
-					/>
-				</Form>}
-			</DrawerContext.Consumer>
-		</DrawerButton>
-		{!filterContext.isEmpty() && <Button
-			type={"link"}
-			size={"small"}
-			onClick={() => {
-				cursorContext?.setPage(0);
-				filterContext.setFilter();
-				onClear?.();
-			}}
-			icon={<CloseCircleOutlined/>}
-		>
-			{t("common.filter.clear")}
-		</Button>}
-	</Space>;
+	return inline ?
+		<FilterForm
+			translation={translation}
+			formProps={formProps}
+			toForm={toForm}
+			toFilter={toFilter}
+			{...props}
+		/> :
+		<Space align={"baseline"} split={<Divider type={"vertical"}/>} {...spaceProps}>
+			<DrawerButton
+				icon={<SearchOutlined/>}
+				type={"link"}
+				size={"small"}
+				title={translation + ".filter.title"}
+				label={translation + ".filter.title"}
+				width={750}
+				{...drawerButtonProps}
+			>
+				<FilterForm
+					translation={translation}
+					formProps={formProps}
+					toForm={toForm}
+					toFilter={toFilter}
+					{...props}
+				/>
+			</DrawerButton>
+			{!filterContext.isEmpty() && <Button
+				type={"link"}
+				size={"small"}
+				onClick={() => {
+					cursorContext?.setPage(0);
+					filterContext.setFilter();
+					onClear?.();
+				}}
+				icon={<CloseCircleOutlined/>}
+			>
+				{t("common.filter.clear")}
+			</Button>}
+		</Space>;
 }
