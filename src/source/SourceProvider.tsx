@@ -1,5 +1,6 @@
 import {IQuery, IQueryHook, IQueryResult} from "@leight-core/api";
-import {merge, SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
+import {SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
+import {merge} from "@leight-core/utils";
 import {PropsWithChildren} from "react";
 import {useTranslation} from "react-i18next";
 import {UseQueryOptions} from "react-query";

@@ -1,4 +1,4 @@
-import {isString} from "@leight-core/client";
+import {isString} from "@leight-core/utils";
 import {Button, ButtonProps, Modal, ModalProps} from "antd";
 import {FC, useState} from "react";
 import {useTranslation} from "react-i18next";

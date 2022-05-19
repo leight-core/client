@@ -1,5 +1,6 @@
 import {PlacementType} from "@leight-core/api";
-import {Drawer, DrawerContext, DrawerProvider, isString, useMobile} from "@leight-core/client";
+import {Drawer, DrawerContext, DrawerProvider, useMobile} from "@leight-core/client";
+import {isString} from "@leight-core/utils";
 import {Button, ButtonProps, DrawerProps, Tooltip} from "antd";
 import {PushState} from "antd/lib/drawer";
 import {FC, ReactNode} from "react";

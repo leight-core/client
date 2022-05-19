@@ -1,5 +1,5 @@
 import {RightCircleOutlined} from "@ant-design/icons";
-import {NumberRange} from "@leight-core/client";
+import {numbersOf} from "@leight-core/utils";
 import {Result, ResultProps, Typography} from "antd";
 import {FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
@@ -49,7 +49,7 @@ export const BulletCard: FC<IBulletCardProps> = (
 		style={{paddingTop: 0}}
 		{...props}
 	>
-		{NumberRange(count).map(index => (
+		{numbersOf(count).map(index => (
 			<Typography.Paragraph key={index}>
 				{bullet()}&nbsp;{t(title + ".list.item-" + index)}
 			</Typography.Paragraph>

@@ -1,4 +1,5 @@
-import {isString, useMobile} from "@leight-core/client";
+import {useMobile} from "@leight-core/client";
+import {isString} from "@leight-core/utils";
 import {Card as CoolCard, CardProps as CoolCardProps} from "antd";
 import {FC} from "react";
 import {useTranslation} from "react-i18next";

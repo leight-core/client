@@ -14,7 +14,8 @@ import {
 	IQueryParams,
 	IToError
 } from "@leight-core/api";
-import {FormProvider, isCallable, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext} from "@leight-core/client";
+import {FormProvider, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext} from "@leight-core/client";
+import {isCallable} from "@leight-core/utils";
 import {Form as CoolForm, message, Spin} from "antd";
 import React, {ComponentProps} from "react";
 import {useTranslation} from "react-i18next";

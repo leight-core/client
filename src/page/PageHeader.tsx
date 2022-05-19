@@ -1,4 +1,4 @@
-import {isString} from "@leight-core/client";
+import {isString} from "@leight-core/utils";
 import {Col, PageHeader as CoolPageHeader, PageHeaderProps as CoolPageHeaderProps, Row, Space} from "antd";
 import {ComponentProps, FC, ReactNode} from "react";
 import {Trans, useTranslation} from "react-i18next";

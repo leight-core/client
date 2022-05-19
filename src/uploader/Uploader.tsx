@@ -1,5 +1,6 @@
 import {IQueryParams} from "@leight-core/api";
-import {Centered, toHumanBytes, toLink} from "@leight-core/client";
+import {Centered, toLink} from "@leight-core/client";
+import {toHumanBytes} from "@leight-core/utils";
 import {message, Progress, Typography, Upload} from "antd";
 import {RcFile, UploadChangeParam} from "antd/lib/upload";
 import {ComponentProps, FC, useState} from "react";

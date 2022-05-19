@@ -1,4 +1,4 @@
-import {isString} from "@leight-core/client";
+import {isString} from "@leight-core/utils";
 import {Space, SpaceProps} from "antd";
 import {FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";

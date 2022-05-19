@@ -1,5 +1,5 @@
 import {IQueryParams} from "@leight-core/api";
-import {isString} from "@leight-core/client";
+import {isString} from "@leight-core/utils";
 import {Button} from "antd";
 import Link from "next/link";
 import React, {ComponentProps, FC} from "react";
