@@ -1,4 +1,4 @@
-import {IQuery, IQueryHook, IQueryResult} from "@leight-core/api";
+import {IQuery, IQueryHook} from "@leight-core/api";
 import {SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
 import {merge} from "@leight-core/utils";
 import {PropsWithChildren} from "react";
@@ -10,7 +10,7 @@ export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	/**
 	 * Source of the query
 	 */
-	useQuery: IQueryHook<IQuery<any, any>, IQueryResult<TResponse>>;
+	useQuery: IQueryHook<IQuery<any, any>, TResponse[]>;
 	/**
 	 * Enables live refetches of the query
 	 */
@@ -18,7 +18,7 @@ export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	/**
 	 * Query options.
 	 */
-	options?: UseQueryOptions<any, any, IQueryResult<TResponse>>;
+	options?: UseQueryOptions<any, any, TResponse[]>;
 }>;
 
 export const SourceProvider = <TResponse, >(
@@ -53,7 +53,7 @@ export const SourceProvider = <TResponse, >(
 			pagination: () => result.isSuccess ? {
 				responsive: true,
 				current: (cursorContext?.page || 0) + 1,
-				total: result.data.total,
+				total: 999,
 				pageSize: cursorContext?.size || 10,
 				defaultPageSize: cursorContext?.size || 10,
 				showSizeChanger: false,
@@ -62,9 +62,9 @@ export const SourceProvider = <TResponse, >(
 				showTotal: (total, [from, to]) => t(`${name}.list.total`, {data: {total, from, to}}),
 				onChange: (current, size) => cursorContext?.setPage(current - 1, size),
 			} : undefined,
-			hasData: () => result.isSuccess && result.data.count > 0,
-			map: mapper => result.isSuccess ? result.data.items.map(mapper) : [],
-			data: () => result.isSuccess ? result.data : {items: [], size: 0, count: 0, total: 0, pages: 0},
+			hasData: () => result.isSuccess && result.data.length > 0,
+			map: mapper => result.isSuccess ? result.data.map(mapper) : [],
+			data: () => result.isSuccess ? result.data : [],
 		}}
 		{...props}
 	/>;

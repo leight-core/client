@@ -23,7 +23,7 @@ export const List = <TResponse, >(
 	return <CoolList
 		header={header?.(sourceContext)}
 		footer={footer?.(sourceContext)}
-		dataSource={sourceContext.data().items}
+		dataSource={sourceContext.data()}
 		loading={{
 			spinning: sourceContext.result.isFetching,
 		}}

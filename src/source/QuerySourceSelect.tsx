@@ -72,7 +72,7 @@ export const QuerySourceSelect = <TResponse, >(
 	const _onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => onSelect?.(option);
 
 	return sourceContext.result.isSuccess ? <Select<string, IQuerySourceValue<TResponse>>
-		options={sourceContext.result.data.items.map(entity => {
+		options={sourceContext.result.data.map(entity => {
 			const option = toOption(entity);
 			return ({
 				value: option.value,
