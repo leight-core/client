@@ -8,8 +8,6 @@ export * from "./CopyText";
 export * from "./DeployRefreshManager";
 export * from "./IconText";
 export * from "./ModalButton";
-export * from "./OrderButton";
-export * from "./OrderButtonBar";
 export * from "./Placeholder";
 export * from "./Preview";
 export * from "./ResultSpinner";

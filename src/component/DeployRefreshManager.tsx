@@ -12,7 +12,7 @@ export const DeployRefreshManager: FC<IDeployRefreshManagerProps> = ({useVersion
 	const {t} = useTranslation();
 	const [version, setVersion] = useState(false);
 	const versionQuery = useVersionQuery(undefined, undefined, {
-		refetchInterval: 5000,
+		refetchInterval: 60 * 60 * 1000,
 		refetchOnWindowFocus: true,
 		refetchOnReconnect: true,
 	});

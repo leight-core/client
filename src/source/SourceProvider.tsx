@@ -12,6 +12,10 @@ export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	 */
 	useQuery: IQueryHook<IQuery<any, any>, TResponse[]>;
 	/**
+	 * Query used to count backend items by the given query (for pagination).
+	 */
+	useCountQuery: IQueryHook<IQuery<any, any>, number>;
+	/**
 	 * Enables live refetches of the query
 	 */
 	live?: number | false,
@@ -25,6 +29,7 @@ export const SourceProvider = <TResponse, >(
 	{
 		name,
 		useQuery,
+		useCountQuery,
 		live = false,
 		options,
 		...props
@@ -36,7 +41,7 @@ export const SourceProvider = <TResponse, >(
 	const cursorContext = useOptionalCursorContext();
 	const queryParamsContext = useOptionalQueryParamsContext<any>();
 
-	const result = useQuery({
+	const data = useQuery({
 		size: cursorContext?.size,
 		page: cursorContext?.page,
 		filter: filterContext?.filter,
@@ -45,15 +50,20 @@ export const SourceProvider = <TResponse, >(
 		keepPreviousData: true,
 		refetchInterval: live,
 	}, options || {}));
+	const count = useCountQuery({
+		filter: filterContext?.filter,
+	}, undefined, {
+		keepPreviousData: true,
+	});
 
 	return <SourceContext.Provider
 		value={{
 			name,
-			result,
-			pagination: () => result.isSuccess ? {
+			result: data,
+			pagination: () => count.isSuccess ? {
 				responsive: true,
 				current: (cursorContext?.page || 0) + 1,
-				total: 999,
+				total: count.data,
 				pageSize: cursorContext?.size || 10,
 				defaultPageSize: cursorContext?.size || 10,
 				showSizeChanger: false,
@@ -62,9 +72,9 @@ export const SourceProvider = <TResponse, >(
 				showTotal: (total, [from, to]) => t(`${name}.list.total`, {data: {total, from, to}}),
 				onChange: (current, size) => cursorContext?.setPage(current - 1, size),
 			} : undefined,
-			hasData: () => result.isSuccess && result.data.length > 0,
-			map: mapper => result.isSuccess ? result.data.map(mapper) : [],
-			data: () => result.isSuccess ? result.data : [],
+			hasData: () => data.isSuccess && data.data.length > 0,
+			map: mapper => data.isSuccess ? data.data.map(mapper) : [],
+			data: () => data.isSuccess ? data.data : [],
 		}}
 		{...props}
 	/>;
