@@ -3,7 +3,7 @@ import {SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOp
 import {merge} from "@leight-core/utils";
 import {PropsWithChildren} from "react";
 import {useTranslation} from "react-i18next";
-import {UseQueryOptions} from "react-query";
+import {useQuery as useCoolQuery, UseQueryOptions} from "react-query";
 
 export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	name: string;
@@ -14,7 +14,7 @@ export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	/**
 	 * Query used to count backend items by the given query (for pagination).
 	 */
-	useCountQuery: IQueryHook<IQuery<any, any>, number>;
+	useCountQuery?: IQueryHook<IQuery<any, any>, number>;
 	/**
 	 * Enables live refetches of the query
 	 */
@@ -23,6 +23,7 @@ export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	 * Query options.
 	 */
 	options?: UseQueryOptions<any, any, TResponse[]>;
+	withPagination?: boolean;
 }>;
 
 export const SourceProvider = <TResponse, >(
@@ -30,6 +31,7 @@ export const SourceProvider = <TResponse, >(
 		name,
 		useQuery,
 		useCountQuery,
+		withPagination = false,
 		live = false,
 		options,
 		...props
@@ -40,6 +42,15 @@ export const SourceProvider = <TResponse, >(
 	const orderByContext = useOptionalOrderByContext<any>();
 	const cursorContext = useOptionalCursorContext();
 	const queryParamsContext = useOptionalQueryParamsContext<any>();
+
+	if (!withPagination) {
+		useCountQuery = undefined;
+	}
+	if (!useCountQuery) {
+		useCountQuery = () => useCoolQuery<number>({
+			queryFn: () => 0,
+		});
+	}
 
 	const data = useQuery({
 		size: cursorContext?.size,
@@ -60,7 +71,7 @@ export const SourceProvider = <TResponse, >(
 		value={{
 			name,
 			result: data,
-			pagination: () => count.isSuccess ? {
+			pagination: () => withPagination && count.isSuccess ? {
 				responsive: true,
 				current: (cursorContext?.page || 0) + 1,
 				total: count.data,
