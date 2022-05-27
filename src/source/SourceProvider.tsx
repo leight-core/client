@@ -65,6 +65,7 @@ export const SourceProvider = <TResponse, >(
 		filter: filterContext?.filter,
 	}, undefined, {
 		keepPreviousData: true,
+		refetchInterval: live,
 	});
 
 	return <SourceContext.Provider
