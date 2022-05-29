@@ -80,7 +80,7 @@ export const SourceProvider = <TResponse, >(
 				defaultPageSize: cursorContext?.size || 10,
 				showSizeChanger: false,
 				showQuickJumper: false,
-				hideOnSinglePage: false,
+				hideOnSinglePage: true,
 				showTotal: (total, [from, to]) => t(`${name}.list.total`, {data: {total, from, to}}),
 				onChange: (current, size) => cursorContext?.setPage(current - 1, size),
 			} : undefined,
