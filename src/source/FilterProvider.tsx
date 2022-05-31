@@ -1,6 +1,5 @@
 import {FilterContext} from "@leight-core/client";
-import {cleanOf} from "@leight-core/utils";
-import deepmerge from "deepmerge";
+import {cleanOf, merge} from "@leight-core/utils";
 import empty from "is-empty";
 import {PropsWithChildren, useState} from "react";
 
@@ -37,21 +36,14 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...
 		setRequest(request);
 		setSource(source);
 	};
-
-	// useEffect(() => {
-	// 	$setFilter(defaultFilter);
-	// }, [defaultFilter]);
-	// useEffect(() => {
-	// 	$setFilter(applyFilter);
-	// }, [applyFilter]);
 	return <FilterContext.Provider
 		value={{
 			name,
 			filter,
 			source,
 			setFilter: (filter, source) => $setFilter({...filter, ...applyFilter}, filter, source),
-			applyFilter: apply => $setFilter({...filter, ...apply, ...applyFilter}, apply),
-			mergeFilter: apply => $setFilter(deepmerge(deepmerge<TFilter, TFilter>(filter || {}, apply), applyFilter), apply),
+			applyFilter: (apply, source) => $setFilter({...filter, ...apply, ...applyFilter}, apply, source),
+			mergeFilter: (apply, source) => $setFilter(merge<any, any>(merge<any, any>(filter || {}, apply || {}), applyFilter || {}), apply, source),
 			isEmpty: () => empty(request),
 		}}
 		{...props}
