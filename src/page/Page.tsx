@@ -81,7 +81,7 @@ export const Page: FC<IPageProps> = (
 			extra={extra && extraSize ? <div style={{width: `${extraSize}em`}}>{extra}</div> : extra}
 			ghost={false}
 			breadcrumb={breadcrumbProps}
-			style={mobile({padding: "4px 0 0 12px"})}
+			style={mobile({padding: "4px 0 0 12px"}, {padding: "0 1em"})}
 			{...headerProps}
 		/>}
 		<Card
