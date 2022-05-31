@@ -12,4 +12,3 @@ export * from "./Placeholder";
 export * from "./Preview";
 export * from "./ResultSpinner";
 export * from "./ScrollToTop";
-export * from "./TabTitle";
