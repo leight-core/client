@@ -63,7 +63,7 @@ export const SourceProvider = <TResponse, >(
 	}, options || {}));
 	const count = useCountQuery({
 		filter: filterContext?.filter,
-	}, undefined, {
+	}, queryParamsContext?.queryParams, {
 		keepPreviousData: true,
 		refetchInterval: live,
 	});
