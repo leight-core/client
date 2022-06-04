@@ -1,6 +1,6 @@
 import {useFormContext} from "@leight-core/client";
 import {Button, Form} from "antd";
-import React, {ComponentProps, FC, useState} from "react";
+import React, {ComponentProps, FC} from "react";
 import {useTranslation} from "react-i18next";
 
 export interface ISubmitProps extends Partial<ComponentProps<typeof Button>> {
@@ -22,13 +22,11 @@ interface IInternalProps {
 
 const Internal: FC<IInternalProps> = ({label, canSubmit = true, ...props}) => {
 	const {t} = useTranslation();
-	const [submit, setSubmit] = useState(false);
 	const formContext = useFormContext();
-	formContext.useCanSubmit(setSubmit);
 	return <Button
 		htmlType={"submit"}
 		type={"primary"}
-		disabled={!(submit && canSubmit)}
+		disabled={!canSubmit}
 		children={t(formContext.translation ? formContext.translation + "." + label : label, label)}
 		{...props}
 	/>;
@@ -58,11 +56,11 @@ const Internal: FC<IInternalProps> = ({label, canSubmit = true, ...props}) => {
  * - https://ant.design/components/button/
  * - https://ant.design/components/form/#API
  */
-export const Submit: FC<ISubmitProps> = ({noStyle, label, ...props}) => {
+export const Submit: FC<ISubmitProps> = ({noStyle, ...props}) => {
 	return <Form.Item
 		shouldUpdate
 		noStyle={noStyle}
 	>
-		{() => <Internal label={label} {...props}/>}
+		{() => <Internal {...props}/>}
 	</Form.Item>;
 };
