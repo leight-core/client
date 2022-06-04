@@ -17,6 +17,7 @@ export type ISourceControlProviderProps<TFilter = any, TOrderBy = any, TQueryPar
 	 * Apply the given filter all the times (regardless of values set by a user)
 	 */
 	applyFilter?: TFilter;
+	defaultSource?: any;
 	/**
 	 * Default pre-set order; could be overridden by a user. Apply filter prop takes precedence.
 	 */
@@ -35,6 +36,7 @@ export function SourceControlProvider<TFilter = any, TOrderBy = any, TQueryParam
 		cursorProviderProps,
 		defaultFilter,
 		applyFilter,
+		defaultSource,
 		defaultOrderBy,
 		defaultPage,
 		defaultSize,
@@ -49,6 +51,7 @@ export function SourceControlProvider<TFilter = any, TOrderBy = any, TQueryParam
 			name={`${name}.Filter`}
 			defaultFilter={defaultFilter}
 			applyFilter={applyFilter}
+			defaultSource={defaultSource}
 			{...filterProviderProps}
 		>
 			<OrderByProvider<TOrderBy>

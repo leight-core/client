@@ -13,9 +13,10 @@ export type IFilterProviderProps<TFilter = any> = PropsWithChildren<{
 	 * Apply the given filter all the times (regardless of values set by a user)
 	 */
 	applyFilter?: TFilter;
+	defaultSource?: any;
 }>;
 
-export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...props}: IFilterProviderProps<TFilter>) {
+export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, defaultSource, ...props}: IFilterProviderProps<TFilter>) {
 	/**
 	 * Currently set filter; applied with defaults/applied.
 	 */
@@ -28,7 +29,7 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, ...
 	/**
 	 * When used in a form, for example, this is the source used to build-up this filter.
 	 */
-	const [source, setSource] = useState();
+	const [source, setSource] = useState(defaultSource);
 
 	const $setFilter = (value?: TFilter, request?: TFilter, source?: any) => {
 		const filter = cleanOf(value);
