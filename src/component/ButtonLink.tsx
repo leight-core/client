@@ -2,7 +2,7 @@ import {IQueryParams} from "@leight-core/api";
 import {isString} from "@leight-core/utils";
 import {Button} from "antd";
 import Link from "next/link";
-import React, {ComponentProps, FC} from "react";
+import React, {ComponentProps, FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IButtonLinkProps extends Partial<ComponentProps<typeof Button>> {
@@ -13,7 +13,7 @@ export interface IButtonLinkProps extends Partial<ComponentProps<typeof Button>>
 	/**
 	 * Title of a button.
 	 */
-	label?: string | null;
+	label?: ReactNode;
 	/**
 	 * Optional params for the link generator.
 	 */
