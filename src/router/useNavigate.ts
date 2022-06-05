@@ -1,7 +1,7 @@
 import {INavigate, IQueryParams} from "@leight-core/api";
 import {useRouter} from "next/router";
 
-export const useNavigate = <TQueryParams extends IQueryParams | undefined = undefined>(): INavigate<TQueryParams> => {
+export const useNavigate = <TQueryParams extends IQueryParams = any>(): INavigate<TQueryParams> => {
 	const router = useRouter();
 	return (href: string, queryParams?: TQueryParams) => {
 		router
