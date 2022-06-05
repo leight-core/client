@@ -62,7 +62,7 @@ export const EmptyPage: FC<IEmptyPageProps> = (
 	}, []);
 	tabTitle = tabTitle || (title ? `${title}.title` : undefined);
 	return <PageProvider>
-		{(tabTitle || title) && <Head><title key={"title"}>{t(tabTitle || `${title}.title`, {values})}</title></Head>}
+		{(tabTitle || title) && <Head><title key={"title"}>{t(tabTitle || `${title}.title`, values)}</title></Head>}
 		<ScrollToTop/>
 		<BlockProvider locked={blocked}>
 			<EmptyPageInternal {...props}/>
