@@ -56,8 +56,7 @@ const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter
 		toForm={() => filterContext.source || toForm(filterContext.filter, filterContext.source)}
 		onSuccess={({response}) => {
 			cursorContext?.setPage(0);
-			// filterContext.setFilter(toFilter(response), response);
-			filterContext.mergeFilter(toFilter(response), response);
+			filterContext.setFilter(toFilter(response), response);
 			drawerContext?.setVisible(false);
 		}}
 		translation={translation + ".filter"}
