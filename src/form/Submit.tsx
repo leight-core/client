@@ -12,21 +12,18 @@ export interface ISubmitProps extends Partial<ComponentProps<typeof Button>> {
 	 * Title on the button; goes through react-i18next.
 	 */
 	label: string | string[];
-	canSubmit?: boolean;
 }
 
 interface IInternalProps {
 	label: string | string[];
-	canSubmit?: boolean;
 }
 
-const Internal: FC<IInternalProps> = ({label, canSubmit = true, ...props}) => {
+const Internal: FC<IInternalProps> = ({label, ...props}) => {
 	const {t} = useTranslation();
 	const formContext = useFormContext();
 	return <Button
 		htmlType={"submit"}
 		type={"primary"}
-		disabled={!canSubmit}
 		children={t(formContext.translation ? formContext.translation + "." + label : label, label)}
 		{...props}
 	/>;
