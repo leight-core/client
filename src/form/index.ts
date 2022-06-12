@@ -8,7 +8,6 @@ export * from "./FormContext";
 export * from "./FormItem";
 export * from "./FormItemContext";
 export * from "./FormItemProvider";
-export * from "./FormList";
 export * from "./FormProvider";
 export * from "./FormUtils";
 export * from "./Submit";
