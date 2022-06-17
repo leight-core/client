@@ -1,6 +1,5 @@
 import {FilterContext} from "@leight-core/client";
-import {cleanOf, merge} from "@leight-core/utils";
-import empty from "is-empty";
+import {cleanOf, isEmpty, merge} from "@leight-core/utils";
 import {PropsWithChildren, useEffect, useState} from "react";
 
 export type IFilterProviderProps<TFilter = any> = PropsWithChildren<{
@@ -33,7 +32,7 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, def
 
 	const $setFilter = (value?: TFilter, request?: TFilter, source?: any) => {
 		const filter = cleanOf(value);
-		setFilter(empty(filter) ? undefined : filter);
+		setFilter(isEmpty(filter) ? undefined : filter);
 		setRequest(request);
 		setSource(source);
 	};
@@ -50,7 +49,7 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, def
 			setFilter: (filter, source) => $setFilter({...filter, ...applyFilter}, filter, source),
 			applyFilter: (apply, source) => $setFilter({...filter, ...apply, ...applyFilter}, apply, source),
 			mergeFilter: (apply, source) => $setFilter(merge<any, any>(merge<any, any>(filter || {}, apply || {}), applyFilter || {}), apply, source),
-			isEmpty: () => empty(request),
+			isEmpty: () => isEmpty(request),
 		}}
 		{...props}
 	/>;
