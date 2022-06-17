@@ -21,7 +21,7 @@ import React, {ComponentProps} from "react";
 import {useTranslation} from "react-i18next";
 import {useMutation} from "react-query";
 
-export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined> extends Partial<Omit<ComponentProps<typeof CoolForm>, "onValuesChange" | "onChange">> {
+export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryParams = any> extends Partial<Omit<ComponentProps<typeof CoolForm>, "onValuesChange" | "onChange">> {
 	translation?: string;
 	/**
 	 * What to do on form submit.
@@ -53,9 +53,9 @@ export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryPara
 	onChange?: IFormOnChanged;
 }
 
-const usePassThroughMutation: IMutationHook<any, any, any> = () => useMutation<any, any, any, any>(values => new Promise(resolve => resolve(values)));
+const usePassThroughMutation: IMutationHook<any, any> = () => useMutation<any, any, any, any>(values => new Promise(resolve => resolve(values)));
 
-const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(
+const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams = any>(
 	{
 		useMutation = usePassThroughMutation,
 		mutationQueryParams,
@@ -141,7 +141,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams | u
 	</CoolForm>;
 };
 
-export function Form<TRequest = any, TResponse = void, TQueryParams extends IQueryParams | undefined = undefined>({translation, ...props}: IFormProps<TRequest, TResponse, TQueryParams>): JSX.Element {
+export function Form<TRequest = any, TResponse = void, TQueryParams extends IQueryParams = any>({translation, ...props}: IFormProps<TRequest, TResponse, TQueryParams>): JSX.Element {
 	return <FormProvider translation={translation}>
 		<ItemGroupProvider prefix={[]}>
 			<FormInternal<TRequest, TResponse, TQueryParams> {...props}/>

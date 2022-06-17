@@ -1,5 +1,5 @@
 {
-	"version": "0.6.25",
+	"version": "0.6.26",
 	"name": "@leight-core/client",
 	"description": "All that shiny client stuff.",
 	"license": "MIT",
@@ -22,7 +22,7 @@
 	},
 	"dependencies": {
 		"@fingerprintjs/fingerprintjs": "^3.3.3",
-		"@leight-core/api": "^0.6.66",
+		"@leight-core/api": "^0.6.69",
 		"@leight-core/utils": "^0.5.19",
 		"axios": "^0.27.2",
 		"axios-retry": "^3.2.5",

@@ -51,13 +51,13 @@ export const toPromise = <TRequest, TResponse>(method: Method, url: string, requ
 /**
  * Create react-query hook (~ needs to be used as a hook).
  */
-export function createQueryHook<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(link: string, method: Method): IQueryHook<TRequest, TResponse, TQueryParams> {
+export function createQueryHook<TRequest, TResponse, TQueryParams extends IQueryParams = any>(link: string, method: Method): IQueryHook<TRequest, TResponse, TQueryParams> {
 	return (request?, query?, options?, config?) => {
 		return useQuery([link, {query, request}], () => toPromise<TRequest, TResponse>(method, toLink(link, query), request, config), options);
 	};
 }
 
-export function createMutationHook<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(link: string, method: Method): IMutationHook<TRequest, TResponse, TQueryParams> {
+export function createMutationHook<TRequest, TResponse, TQueryParams extends IQueryParams = any>(link: string, method: Method): IMutationHook<TRequest, TResponse, TQueryParams> {
 	return (query?, options?, config?) => {
 		return useMutation<TResponse, any, TRequest>(["mutation", link, {query}], request => toPromise<TRequest, TResponse>(method, toLink(link, query), request, config), options);
 	};
@@ -66,17 +66,17 @@ export function createMutationHook<TRequest, TResponse, TQueryParams extends IQu
 /**
  * Returned method must be used as a hook, but later on requests can be made arbitrary.
  */
-export function createPromiseHook<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(link: string, method: Method): IHookCallback<TRequest, TResponse, TQueryParams> {
+export function createPromiseHook<TRequest, TResponse, TQueryParams extends IQueryParams = any>(link: string, method: Method): IHookCallback<TRequest, TResponse, TQueryParams> {
 	/**
 	 * Factory context, nothing interesting here.
 	 */
 	return () => createPromise(link, method);
 }
 
-export function createPromise<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(link: string, method: Method): IPromiseCallback<TRequest, TResponse, TQueryParams> {
+export function createPromise<TRequest, TResponse, TQueryParams extends IQueryParams = any>(link: string, method: Method): IPromiseCallback<TRequest, TResponse, TQueryParams> {
 	return (request?, query?, config?) => toPromise<TRequest, TResponse>(method, toLink<TQueryParams>(link, query), request, config);
 }
 
-// export function createPromise<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>
+// export function createPromise<TRequest, TResponse, TQueryParams extends IQueryParams =any>
 
 export const toOption = <TOption extends IBaseSelectOption = IBaseSelectOption>(item: TOption) => item;

@@ -2,7 +2,7 @@ import {IEntityContext, IQueryHook, IQueryParams} from "@leight-core/api";
 import {ReactNode, useEffect} from "react";
 import {UseQueryOptions} from "react-query";
 
-export interface IQueryProps<TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined> {
+export interface IQueryProps<TRequest, TResponse, TQueryParams extends IQueryParams = any> {
 	useQuery: IQueryHook<TRequest, TResponse, TQueryParams>;
 	request: TRequest;
 	queryParams?: TQueryParams;
@@ -19,7 +19,7 @@ export interface IQueryProps<TRequest, TResponse, TQueryParams extends IQueryPar
 	onUpdate?: (entity: TResponse) => void;
 }
 
-export const Query = <TRequest, TResponse, TQueryParams extends IQueryParams | undefined = undefined>(
+export const Query = <TRequest, TResponse, TQueryParams extends IQueryParams = any>(
 	{
 		useQuery,
 		request,
