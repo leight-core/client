@@ -10,6 +10,7 @@ export interface IFormItemProps extends Partial<FormItemProps> {
 	 * Field name; also used for translations.
 	 */
 	field: NamePath;
+	path?: NamePath;
 	/**
 	 * Attach required validation rule?
 	 */
@@ -31,6 +32,7 @@ export interface IFormItemProps extends Partial<FormItemProps> {
 export const FormItem: FC<IFormItemProps> = (
 	{
 		field,
+		path = field,
 		required = false,
 		showLabel = true,
 		noMargin = false,
@@ -68,11 +70,11 @@ export const FormItem: FC<IFormItemProps> = (
 	const context: IFormItemContext = {
 		field,
 		label: t(["form-item." + fieldName + ".label"].concat(labels)) as string,
-		getValue: () => formContext.form.getFieldValue(field),
-		setValue: value => formContext.form.setFields([{name: field, value}]),
+		getValue: () => formContext.form.getFieldValue(path),
+		setValue: value => formContext.form.setFields([{name: path, value}]),
 		setErrors: (errors: string[]) => {
 			setTimeout(() => {
-				formContext.form.setFields([{name: field, errors: errors.map(item => t(item))}]);
+				formContext.form.setFields([{name: path, errors: errors.map(item => t(item))}]);
 			}, 0);
 		},
 	};
