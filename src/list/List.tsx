@@ -4,9 +4,16 @@ import {List as CoolList, ListProps} from "antd";
 import React, {ReactNode} from "react";
 
 export interface IListProps<TResponse> extends Partial<Omit<ListProps<TResponse>, "children" | "header" | "footer">> {
-	header?: (sourceContext: ISourceContext<TResponse>) => ReactNode;
-	footer?: (sourceContext: ISourceContext<TResponse>) => ReactNode;
-	children?: (item: TResponse) => ReactNode;
+	header?(sourceContext: ISourceContext<TResponse>): ReactNode;
+
+	footer?(sourceContext: ISourceContext<TResponse>): ReactNode;
+
+	/**
+	 * Optional typed method for rendering list's item extra field.
+	 */
+	renderItemExtra?(item: TResponse): ReactNode;
+
+	children?(item: TResponse): ReactNode;
 }
 
 export const ListItem = CoolList.Item;
