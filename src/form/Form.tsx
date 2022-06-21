@@ -125,7 +125,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams = a
 					closeDrawer && drawerContext?.hide();
 					onSuccess({navigate, values, response, formContext});
 				},
-				onError: error => onFailure && onFailure({error: (error && error.response && error.response.data) || error, formContext}),
+				onError: error => onFailure?.({error: (error && error.response && error.response.data) || error, formContext}),
 			});
 		}}
 		labelAlign={"left"}
