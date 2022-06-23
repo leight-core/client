@@ -35,17 +35,17 @@ export const User = ({userId, tokens = []}: IUserRequest | undefined = {}): IUse
 	return $user;
 };
 
-export const fetchUser: () => GetServerSideProps<any, any> = () => async context => {
+export const fetchUser: () => GetServerSideProps<{ user: { userId?: string, tokens?: string[] } }, any> = () => async context => {
 	const token: any = await getToken(context);
 	if (!token) {
 		throw new Error("Token not available");
 	}
 	return {
 		props: {
-			user: User({
+			user: {
 				userId: token?.sub,
 				tokens: token?.tokens,
-			}),
+			},
 		}
 	};
 };
