@@ -20,7 +20,7 @@ export interface IUseSessionRequest {
 
 export function useSession(
 	{
-		required,
+		required = true,
 		redirectTo = "/api/auth/signin?error=SessionRequired",
 		queryConfig = {},
 	}: IUseSessionRequest = {}) {
@@ -29,6 +29,7 @@ export function useSession(
 		staleTime: 60 * 100 * 5 * 3,
 		refetchOnWindowFocus: "always",
 		refetchInterval: 60 * 100 * 5,
+		keepPreviousData: true,
 		...queryConfig,
 		onSettled(data, error) {
 			queryConfig?.onSettled?.(data, error);

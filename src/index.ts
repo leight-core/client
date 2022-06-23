@@ -29,3 +29,4 @@ export * from "./tab";
 export * from "./template";
 export * from "./translation";
 export * from "./uploader";
+export * from "./user";
