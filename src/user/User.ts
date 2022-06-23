@@ -1,15 +1,11 @@
-import {AclError, IUser, UndefinedUserError} from "@leight-core/api";
+import {AclError, IUser, IUserRequest, UndefinedUserError} from "@leight-core/api";
 import {diffOf, intersectOf} from "@leight-core/utils";
 import {GetServerSideProps} from "next";
 import {getToken} from "next-auth/jwt";
 
-export interface IUserRequest {
-	userId?: string | null;
-	tokens?: string[];
-}
-
 export const User = ({userId, tokens = []}: IUserRequest | undefined = {}): IUser => {
 	const $user: IUser = ({
+		userId,
 		tokens,
 		required: () => {
 			if (!userId) {

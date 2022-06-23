@@ -1,4 +1,4 @@
-import {Session} from "next-auth";
+import {ISession} from "@leight-core/api";
 import {useRouter} from "next/router";
 import {useQuery} from "react-query";
 import {UseQueryOptions} from "react-query/types/react/types";
@@ -15,7 +15,7 @@ export async function fetchSession() {
 export interface IUseSessionRequest {
 	required?: boolean;
 	redirectTo?: string;
-	queryConfig?: Omit<UseQueryOptions<any, any, Session, any>, "queryKey" | "queryFn">;
+	queryConfig?: Omit<UseQueryOptions<any, any, ISession, any>, "queryKey" | "queryFn">;
 }
 
 export function useSession(
@@ -25,7 +25,7 @@ export function useSession(
 		queryConfig = {},
 	}: IUseSessionRequest = {}) {
 	const router = useRouter();
-	return useQuery<Session>(["session"], fetchSession, {
+	return useQuery<ISession>(["session"], fetchSession, {
 		staleTime: 60 * 100 * 5 * 3,
 		refetchOnWindowFocus: "always",
 		refetchInterval: 60 * 100 * 5,

@@ -1,4 +1,5 @@
-import {IUserRequest, User, UserContext} from "@leight-core/client";
+import {IUserRequest} from "@leight-core/api";
+import {User, UserContext} from "@leight-core/client";
 import {FC, PropsWithChildren} from "react";
 
 export type IUserProviderProps = PropsWithChildren<{
