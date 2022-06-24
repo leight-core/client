@@ -26,27 +26,40 @@ export const MenuItem: FC<IMenuItemProps> = ({title, href, query}) => {
 	</LinkTo>;
 };
 
+export type ICreateMenuItemProps = {
+	title: string;
+	href: string
+	icon: ReactNode
+	query?: IQueryParams | void;
+} & Partial<ItemType>;
+
 /**
  * Because MenuItem component **must have** a key which is duplicate with an ID (as a key is not possible to read),
  * this function let's user create a menu item with just an ID and icon.
  *
  * Basically it has the same behavior as MenuItem component.
  */
-export function CreateMenuItem(title: string, href: string, icon: ReactNode, query?: IQueryParams | void, rest?: Partial<ItemType>): ItemType {
+export function CreateMenuItem({icon, href, title, query, ...props}: ICreateMenuItemProps): ItemType {
 	return {
 		icon,
 		key: href,
 		label: <MenuItem title={title} href={href} query={query}/>,
-		...rest,
+		...props,
 	};
 }
 
-export function CreateMenuGroup(title: string, icon: ReactNode, items: ItemType[], rest?: Partial<ItemType>): ItemType {
+export type ICreateMenuGroupProps = {
+	title: string;
+	icon: ReactNode;
+	items: ItemType[];
+} & Partial<ItemType>;
+
+export function CreateMenuGroup({icon, title, items, ...props}: ICreateMenuGroupProps): ItemType {
 	return {
 		icon,
 		key: title,
 		label: <Trans i18nKey={title}/>,
 		children: items,
-		...rest,
+		...props,
 	};
 }
