@@ -1,14 +1,16 @@
 import {isString} from "@leight-core/utils";
 import {Button, ButtonProps, Modal, ModalProps} from "antd";
-import {FC, useState} from "react";
+import {ComponentProps, FC, useState} from "react";
 import {useTranslation} from "react-i18next";
+import {UseToken} from "../user";
 
 export interface IModalButtonProps extends Omit<Partial<ModalProps>, "onOk"> {
 	button?: ButtonProps;
 	onOk?: (setShow: (show: boolean) => void) => void,
+	tokens?: ComponentProps<typeof UseToken>["tokens"];
 }
 
-export const ModalButton: FC<IModalButtonProps> = ({button, onOk, ...props}) => {
+export const ModalButton: FC<IModalButtonProps> = ({button, onOk, tokens, ...props}) => {
 	const {t} = useTranslation();
 	const [show, setShow] = useState(false);
 	if (button && isString(button.children)) {
@@ -21,12 +23,14 @@ export const ModalButton: FC<IModalButtonProps> = ({button, onOk, ...props}) => 
 		props.children = t(props.children as string);
 	}
 	return <>
-		<Button
-			type={"link"}
-			size={"large"}
-			{...button}
-			onClick={() => setShow(true)}
-		/>
+		<UseToken tokens={tokens}>
+			<Button
+				type={"link"}
+				size={"large"}
+				{...button}
+				onClick={() => setShow(true)}
+			/>
+		</UseToken>
 		<Modal
 			visible={show}
 			onCancel={() => setShow(false)}
