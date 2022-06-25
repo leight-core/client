@@ -144,7 +144,11 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams = a
 };
 
 export function Form<TRequest = any, TResponse = void, TQueryParams extends IQueryParams = any>({translation, tokens, withTokenProps, ...props}: IFormProps<TRequest, TResponse, TQueryParams>): JSX.Element {
-	return <WithToken tokens={tokens} {...withTokenProps}>
+	return <WithToken
+		tokens={tokens}
+		label={translation ? `${translation}.403` : undefined}
+		{...withTokenProps}
+	>
 		<FormProvider translation={translation}>
 			<ItemGroupProvider prefix={[]}>
 				<FormInternal<TRequest, TResponse, TQueryParams> {...props}/>
