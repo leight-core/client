@@ -14,7 +14,7 @@ import {
 	IQueryParams,
 	IToError
 } from "@leight-core/api";
-import {FormProvider, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext} from "@leight-core/client";
+import {FormProvider, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext, WithToken} from "@leight-core/client";
 import {isCallable} from "@leight-core/utils";
 import {Form as CoolForm, message, Spin} from "antd";
 import React, {ComponentProps} from "react";
@@ -51,6 +51,8 @@ export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryPara
 	closeDrawer?: boolean;
 	onValuesChange?: IFormOnValuesChanged;
 	onChange?: IFormOnChanged;
+	tokens?: string[];
+	withTokenProps?: ComponentProps<typeof WithToken>;
 }
 
 const usePassThroughMutation: IMutationHook<any, any> = () => useMutation<any, any, any, any>(values => new Promise(resolve => resolve(values)));
@@ -141,10 +143,12 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams = a
 	</CoolForm>;
 };
 
-export function Form<TRequest = any, TResponse = void, TQueryParams extends IQueryParams = any>({translation, ...props}: IFormProps<TRequest, TResponse, TQueryParams>): JSX.Element {
-	return <FormProvider translation={translation}>
-		<ItemGroupProvider prefix={[]}>
-			<FormInternal<TRequest, TResponse, TQueryParams> {...props}/>
-		</ItemGroupProvider>
-	</FormProvider>;
+export function Form<TRequest = any, TResponse = void, TQueryParams extends IQueryParams = any>({translation, tokens, withTokenProps, ...props}: IFormProps<TRequest, TResponse, TQueryParams>): JSX.Element {
+	return <WithToken tokens={tokens} {...withTokenProps}>
+		<FormProvider translation={translation}>
+			<ItemGroupProvider prefix={[]}>
+				<FormInternal<TRequest, TResponse, TQueryParams> {...props}/>
+			</ItemGroupProvider>
+		</FormProvider>
+	</WithToken>;
 }
