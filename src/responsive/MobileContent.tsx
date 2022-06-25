@@ -6,5 +6,5 @@ export type IMobileContentProps = PropsWithChildren<{
 }>;
 
 export const MobileContent: FC<IMobileContentProps> = ({children, fallback = null}) => {
-	return <>{useIsMobile() ? {children} : fallback}</>;
+	return <>{useIsMobile() ? children : fallback}</>;
 };

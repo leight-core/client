@@ -6,5 +6,5 @@ export type IBrowserContentProps = PropsWithChildren<{
 }>;
 
 export const BrowserContent: FC<IBrowserContentProps> = ({children, fallback = null}) => {
-	return <>{useIsBrowser() ? {children} : fallback}</>;
+	return <>{useIsBrowser() ? children : fallback}</>;
 };

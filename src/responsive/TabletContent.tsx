@@ -6,5 +6,5 @@ export type ITabletContentProps = PropsWithChildren<{
 }>;
 
 export const TabletContent: FC<ITabletContentProps> = ({children, fallback = null}) => {
-	return <>{useIsTablet() ? {children} : fallback}</>;
+	return <>{useIsTablet() ? children : fallback}</>;
 };
