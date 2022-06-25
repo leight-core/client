@@ -3,15 +3,17 @@ import {PlacementType} from "@leight-core/api";
 import {DrawerButton, IDrawerButtonProps, useMobile} from "@leight-core/client";
 import {Menu} from "antd";
 import {PushState} from "antd/lib/drawer";
-import {FC, ReactNode} from "react";
+import {ComponentProps, FC, ReactNode} from "react";
 
-export interface IDrawerMenuProps extends Partial<IDrawerButtonProps> {
+export interface IDrawerMenuProps extends Omit<Partial<IDrawerButtonProps>, "children"> {
 	header?: ReactNode;
 	placement?: PlacementType;
 	push?: boolean | PushState;
+	items?: ComponentProps<typeof Menu>["items"];
+	menuProps?: Partial<ComponentProps<typeof Menu>>;
 }
 
-export const DrawerMenu: FC<IDrawerMenuProps> = ({children, header, placement = "left", push = false, ...props}) => {
+export const DrawerMenu: FC<IDrawerMenuProps> = ({header, placement = "left", push = false, items, menuProps, ...props}) => {
 	const mobile = useMobile();
 	return <DrawerButton
 		type={"text"}
@@ -26,8 +28,10 @@ export const DrawerMenu: FC<IDrawerMenuProps> = ({children, header, placement = 
 		icon={<MenuOutlined/>}
 		{...props}
 	>
-		<Menu selectable={false}>
-			{children}
-		</Menu>
+		<Menu
+			selectable={false}
+			items={items}
+			{...menuProps}
+		/>
 	</DrawerButton>;
 };
