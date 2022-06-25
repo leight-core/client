@@ -1,4 +1,4 @@
-import {useUserContext} from "@leight-core/client";
+import {useOptionalUserContext} from "@leight-core/client";
 import {FC, PropsWithChildren} from "react";
 
 export type IShowTokenProps = PropsWithChildren<{
@@ -6,6 +6,6 @@ export type IShowTokenProps = PropsWithChildren<{
 }>
 
 export const ShowToken: FC<IShowTokenProps> = ({tokens, children}) => {
-	const userContext = useUserContext();
-	return userContext.user.hasAny(tokens) ? <>{children}</> : null;
+	const userContext = useOptionalUserContext();
+	return !userContext || userContext.user.hasAny(tokens) ? <>{children}</> : null;
 };

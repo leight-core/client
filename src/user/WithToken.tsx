@@ -1,4 +1,4 @@
-import {Template, useUserContext} from "@leight-core/client";
+import {Template, useOptionalUserContext} from "@leight-core/client";
 import {ComponentProps, FC, PropsWithChildren} from "react";
 
 export type IWithTokenProps = PropsWithChildren<{
@@ -8,8 +8,8 @@ export type IWithTokenProps = PropsWithChildren<{
 }>
 
 export const WithToken: FC<IWithTokenProps> = ({tokens, label, template, children}) => {
-	const userContext = useUserContext();
-	return userContext.user.hasAny(tokens) ? <>{children}</> : <Template
+	const userContext = useOptionalUserContext();
+	return !userContext || userContext.user.hasAny(tokens) ? <>{children}</> : <Template
 		status={"403"}
 		label={label}
 		{...template}
