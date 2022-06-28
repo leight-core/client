@@ -20,6 +20,7 @@ export interface IPageProps extends IEmptyPageProps {
 	extra?: ReactNode;
 	extraSize?: number;
 	header?: ReactNode;
+	footer?: ReactNode;
 	headerPostfix?: ReactNode;
 	cardProps?: Partial<CardProps>;
 	headerProps?: IPageHeaderProps;
@@ -39,6 +40,7 @@ export const Page: FC<IPageProps> = (
 		extraSize,
 		cardProps,
 		header,
+		footer,
 		headerProps,
 		headerPostfix,
 		children,
@@ -82,6 +84,7 @@ export const Page: FC<IPageProps> = (
 			ghost={false}
 			breadcrumb={breadcrumbProps}
 			style={mobile({padding: "4px 0 0 12px"})}
+			footer={footer}
 			{...headerProps}
 		/>}
 		<Card
