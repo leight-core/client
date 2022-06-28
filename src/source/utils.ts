@@ -54,7 +54,14 @@ export const toPromise = <TRequest, TResponse>(method: Method, url: string, requ
  */
 export function createQueryHook<TRequest, TResponse, TQueryParams extends IQueryParams = any>(link: string, method: Method): IQueryHook<TRequest, TResponse, TQueryParams> {
 	return (request?, query?, options?, config?) => {
-		return useQuery([link, {query, request}], () => toPromise<TRequest, TResponse>(method, toLink(link, query), request, config), options);
+		return useQuery(
+			[link, {query, request}],
+			() => toPromise<TRequest, TResponse>(method, toLink(link, query), request, config),
+			{
+				keepPreviousData: true,
+				...options,
+			}
+		);
 	};
 }
 
@@ -77,7 +84,5 @@ export function createPromiseHook<TRequest, TResponse, TQueryParams extends IQue
 export function createPromise<TRequest, TResponse, TQueryParams extends IQueryParams = any>(link: string, method: Method): IPromiseCallback<TRequest, TResponse, TQueryParams> {
 	return (request?, query?, config?) => toPromise<TRequest, TResponse>(method, toLink<TQueryParams>(link, query), request, config);
 }
-
-// export function createPromise<TRequest, TResponse, TQueryParams extends IQueryParams =any>
 
 export const toOption = <TOption extends IBaseSelectOption = IBaseSelectOption>(item: TOption) => item;

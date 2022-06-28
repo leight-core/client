@@ -1,6 +1,6 @@
 import {ISourceContext} from "@leight-core/api";
-import {useSourceContext} from "@leight-core/client";
-import {List as CoolList, ListProps} from "antd";
+import {LoaderIcon, Template, useSourceContext} from "@leight-core/client";
+import {List as CoolList, ListProps, SpinProps} from "antd";
 import React, {ReactNode} from "react";
 
 export interface IListProps<TResponse> extends Partial<Omit<ListProps<TResponse>, "children" | "header" | "footer">> {
@@ -14,6 +14,10 @@ export interface IListProps<TResponse> extends Partial<Omit<ListProps<TResponse>
 	renderItemExtra?(item: TResponse): ReactNode;
 
 	children?(item: TResponse): ReactNode;
+
+	loading?: Partial<SpinProps>;
+
+	emptyText?: ReactNode;
 }
 
 export const ListItem = CoolList.Item;
@@ -24,6 +28,8 @@ export const List = <TResponse, >(
 		header,
 		footer,
 		children,
+		emptyText,
+		loading,
 		...props
 	}: IListProps<TResponse>) => {
 	const sourceContext = useSourceContext<TResponse>();
@@ -32,7 +38,15 @@ export const List = <TResponse, >(
 		footer={footer?.(sourceContext)}
 		dataSource={sourceContext.data()}
 		loading={{
-			spinning: sourceContext.result.isFetching && !sourceContext.result.isRefetching,
+			spinning: sourceContext.result.isLoading,
+			delay: 125,
+			indicator: <Template
+				icon={<LoaderIcon/>}
+			/>,
+			...loading,
+		}}
+		locale={{
+			emptyText,
 		}}
 		renderItem={children}
 		pagination={sourceContext.pagination()}

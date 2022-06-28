@@ -52,7 +52,7 @@ export const SourceProvider = <TResponse, >(
 		});
 	}
 
-	const data = useQuery({
+	const query = useQuery({
 		size: cursorContext?.size,
 		page: cursorContext?.page,
 		filter: filterContext?.filter,
@@ -68,10 +68,12 @@ export const SourceProvider = <TResponse, >(
 		refetchInterval: live,
 	});
 
+	const hasData = () => Array.isArray(query?.data) && query.data.length > 0;
+
 	return <SourceContext.Provider
 		value={{
 			name,
-			result: data,
+			result: query,
 			pagination: () => withPagination && count.isSuccess ? {
 				responsive: true,
 				current: (cursorContext?.page || 0) + 1,
@@ -84,9 +86,9 @@ export const SourceProvider = <TResponse, >(
 				showTotal: (total, [from, to]) => t(`${name}.list.total`, {data: {total, from, to}}),
 				onChange: (current, size) => cursorContext?.setPage(current - 1, size),
 			} : undefined,
-			hasData: () => data.isSuccess && data.data.length > 0,
-			map: mapper => data.isSuccess ? data.data.map(mapper) : [],
-			data: () => data.isSuccess ? data.data : [],
+			hasData,
+			map: mapper => hasData() ? (query.data?.map(mapper) || []) : [],
+			data: () => hasData() ? (query.data || []) : [],
 		}}
 		{...props}
 	/>;
