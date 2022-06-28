@@ -15,6 +15,7 @@ export function createQueryClient(cacheTime = 24): QueryClient {
 		defaultOptions: {
 			queries: {
 				cacheTime: 1000 * 60 * 60 * cacheTime,
+				keepPreviousData: true,
 			}
 		}
 	});

@@ -32,7 +32,7 @@ export const List = <TResponse, >(
 		footer={footer?.(sourceContext)}
 		dataSource={sourceContext.data()}
 		loading={{
-			spinning: sourceContext.result.isFetching,
+			spinning: sourceContext.result.isFetching && !sourceContext.result.isRefetching,
 		}}
 		renderItem={children}
 		pagination={sourceContext.pagination()}
