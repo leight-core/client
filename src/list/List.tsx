@@ -2,6 +2,7 @@ import {ISourceContext} from "@leight-core/api";
 import {LoaderIcon, Template, useSourceContext} from "@leight-core/client";
 import {List as CoolList, ListProps, SpinProps} from "antd";
 import React, {ReactNode} from "react";
+import {UseQueryResult} from "react-query";
 
 export interface IListProps<TResponse> extends Partial<Omit<ListProps<TResponse>, "children" | "header" | "footer">> {
 	header?(sourceContext: ISourceContext<TResponse>): ReactNode;
@@ -17,6 +18,8 @@ export interface IListProps<TResponse> extends Partial<Omit<ListProps<TResponse>
 
 	loading?: Partial<SpinProps>;
 
+	withLoading?: keyof Pick<UseQueryResult, "isLoading" | "isFetching" | "isRefetching">;
+
 	emptyText?: ReactNode;
 }
 
@@ -30,6 +33,7 @@ export const List = <TResponse, >(
 		children,
 		emptyText,
 		loading,
+		withLoading = "isFetching",
 		...props
 	}: IListProps<TResponse>) => {
 	const sourceContext = useSourceContext<TResponse>();
@@ -38,7 +42,7 @@ export const List = <TResponse, >(
 		footer={footer?.(sourceContext)}
 		dataSource={sourceContext.data()}
 		loading={{
-			spinning: sourceContext.result.isFetching,
+			spinning: sourceContext.result[withLoading],
 			delay: 250,
 			indicator: <Template
 				icon={<LoaderIcon/>}
