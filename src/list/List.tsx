@@ -38,8 +38,8 @@ export const List = <TResponse, >(
 		footer={footer?.(sourceContext)}
 		dataSource={sourceContext.data()}
 		loading={{
-			spinning: sourceContext.result.isLoading,
-			delay: 125,
+			spinning: sourceContext.result.isFetching,
+			delay: 250,
 			indicator: <Template
 				icon={<LoaderIcon/>}
 			/>,
