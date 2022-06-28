@@ -1,5 +1,5 @@
 {
-	"version": "0.6.48",
+	"version": "0.6.49",
 	"name": "@leight-core/client",
 	"description": "All that shiny client stuff.",
 	"license": "MIT",
@@ -22,13 +22,13 @@
 	},
 	"dependencies": {
 		"@fingerprintjs/fingerprintjs": "^3.3.3",
-		"@leight-core/api": "^0.6.83",
+		"@leight-core/api": "^0.6.85",
 		"@leight-core/utils": "^0.5.31",
 		"axios": "^0.27.2",
 		"axios-retry": "^3.2.5",
 		"cancelable-promise": "^4.3.0",
-		"dayjs": "^1.11.2",
-		"i18next": "^21.8.4",
+		"dayjs": "^1.11.3",
+		"i18next": "^21.8.11",
 		"i18next-browser-languagedetector": "^6.1.4",
 		"moment": "^2.29.3",
 		"nprogress": "^0.2.0",
@@ -36,15 +36,15 @@
 		"react-cookie": "^4.1.1",
 		"react-device-detect": "^2.2.2",
 		"react-i18next": "^11.16.7",
-		"react-query": "^3.38.1"
+		"react-query": "^3.39.1"
 	},
 	"peerDependencies": {
 		"@ant-design/icons": "^4.7.0",
-		"antd": "^4.20.6",
-		"next": "^12.1.6",
-		"next-auth": "^4.3.4",
-		"react": "^18.1.0",
-		"react-dom": "^18.1.0"
+		"antd": "^4.21.4",
+		"next": "^12.2.0",
+		"next-auth": "^4.6.1",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0"
 	},
 	"devDependencies": {
 		"@ant-design/icons": "^4.7.0",
