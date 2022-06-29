@@ -9,6 +9,7 @@ export * from "./DeployRefreshManager";
 export * from "./IconText";
 export * from "./ModalButton";
 export * from "./Placeholder";
+export * from "./PlainText";
 export * from "./Preview";
 export * from "./ResultSpinner";
 export * from "./ScrollToTop";
