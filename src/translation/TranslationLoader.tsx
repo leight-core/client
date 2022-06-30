@@ -25,6 +25,7 @@ export const TranslationLoader: FC<ITranslationLoaderProps> = ({useQuery, logo, 
 		logo={logo}
 		icon={<TranslationOutlined/>}
 		loading={isLoading}
+		isError={result.isError}
 		result={result.data}
 		errorText={"Translations cannot be loaded."}
 		{...props}

@@ -15,10 +15,10 @@ export interface ILoaderLayoutProps<TResult = any> extends Partial<Omit<LayoutPr
 	children?: ReactNode | ((result: TResult) => ReactNode);
 }
 
-export const LoaderLayout = <TResult, >({logo, icon, result, errorText, loading, isError, children, ...props}: ILoaderLayoutProps<TResult>) => {
+export const LoaderLayout = <TResult, >({logo, icon, result, errorText, loading, isError = false, children, ...props}: ILoaderLayoutProps<TResult>) => {
 	const {t} = useTranslation();
 	return <>
-		{loading && <Layout style={{height: "100vh"}} {...props}>
+		{(loading || isError) && <Layout style={{height: "100vh"}} {...props}>
 			<Row justify={"center"} align={"middle"}>
 				<Col span={24}>
 					<Card
@@ -43,6 +43,6 @@ export const LoaderLayout = <TResult, >({logo, icon, result, errorText, loading,
 				</Col>
 			</Row>
 		</Layout>}
-		{!loading && (isCallable(children) ? (children as any)(result) : children)}
+		{!loading && !isError && (isCallable(children) ? (children as any)(result) : children)}
 	</>;
 };
