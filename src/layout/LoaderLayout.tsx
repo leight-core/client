@@ -43,6 +43,6 @@ export const LoaderLayout = <TResult, >({logo, icon, result, errorText, loading,
 				</Col>
 			</Row>
 		</Layout>}
-		{!loading && result ? (isCallable(result) ? (children as any)(result) : children) : null}
+		{!loading && (isCallable(children) ? (children as any)(result) : children)}
 	</>;
 };
