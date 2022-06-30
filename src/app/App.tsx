@@ -1,5 +1,5 @@
 import {ITranslationsQuery} from "@leight-core/api";
-import {DayjsProvider, I18NextProvider, IResponsiveProviderProps, LayoutBlockProvider, MenuSelectionProvider, ResponsiveContext, ResponsiveProvider, SiderCollapseProvider, TranslationLoader} from "@leight-core/client";
+import {DayjsProvider, I18NextProvider, IResponsiveProviderProps, LayoutBlockProvider, MenuSelectionProvider, ResponsiveProvider, TranslationLoader} from "@leight-core/client";
 import {i18n} from "i18next";
 import {FC, PropsWithChildren, ReactNode} from "react";
 import {CookiesProvider} from "react-cookie";
@@ -12,7 +12,6 @@ export type IAppProps = PropsWithChildren<{
 	queryClient: QueryClient;
 	dayjs: any;
 	i18next: i18n;
-	defaultCollapsed?: boolean;
 	responsiveProviderProps?: IResponsiveProviderProps;
 }>;
 
@@ -32,7 +31,6 @@ export const App: FC<IAppProps> = (
 		i18next,
 		queryClient,
 		responsiveProviderProps,
-		defaultCollapsed,
 		...props
 	}) => {
 	return <QueryClientProvider client={queryClient}>
@@ -41,13 +39,9 @@ export const App: FC<IAppProps> = (
 				<I18NextProvider i18next={i18next}>
 					<CookiesProvider>
 						<TranslationLoader useQuery={useTranslationQuery} logo={logo}>
-							<ResponsiveContext.Consumer>
-								{browserContext => <SiderCollapseProvider defaultCollapsed={defaultCollapsed !== undefined ? defaultCollapsed : !browserContext.isMobile()}>
-									<MenuSelectionProvider>
-										<LayoutBlockProvider {...props}/>
-									</MenuSelectionProvider>
-								</SiderCollapseProvider>}
-							</ResponsiveContext.Consumer>
+							<MenuSelectionProvider>
+								<LayoutBlockProvider {...props}/>
+							</MenuSelectionProvider>
 						</TranslationLoader>
 					</CookiesProvider>
 				</I18NextProvider>
