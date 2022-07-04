@@ -1,4 +1,4 @@
-import {BlockProvider, PageProvider, ScrollToTop, useBlockContext, useLayoutBlockContext, useMenuSelectionContext, useSiderCollapseContext} from "@leight-core/client";
+import {BlockProvider, PageProvider, ScrollToTop, useBlockContext, useLayoutBlockContext, useMenuSelectionContext, useOptionalSiderCollapseContext} from "@leight-core/client";
 import {Spin} from "antd";
 import Head from "next/head";
 import {FC, PropsWithChildren, useEffect} from "react";
@@ -56,7 +56,7 @@ export const EmptyPage: FC<IEmptyPageProps> = (
 	const {t} = useTranslation();
 	const blockContext = useLayoutBlockContext();
 	useMenuSelectionContext().useSelection(menuSelection);
-	useSiderCollapseContext().useCollapse(collapsed, true);
+	useOptionalSiderCollapseContext()?.useCollapse(collapsed, true);
 	useEffect(() => {
 		blockContext.unblock(true);
 	}, []);

@@ -1,4 +1,4 @@
-import {useMenuSelectionContext, useSiderCollapseContext} from "@leight-core/client";
+import {useMenuSelectionContext, useOptionalSiderCollapseContext} from "@leight-core/client";
 import {Menu as CoolMenu, MenuProps} from "antd";
 import React, {FC} from "react";
 
@@ -8,11 +8,11 @@ export interface IMenuProps extends Partial<MenuProps> {
 
 export const Menu: FC<IMenuProps> = ({extraOpenKeys = [], ...props}) => {
 	const menuSelectionContext = useMenuSelectionContext();
-	const menuCollapseContext = useSiderCollapseContext();
+	const menuCollapseContext = useOptionalSiderCollapseContext();
 	return <CoolMenu
 		mode={"inline"}
 		selectedKeys={menuSelectionContext.selection}
-		defaultOpenKeys={menuCollapseContext.collapsed ? [] : extraOpenKeys}
+		defaultOpenKeys={menuCollapseContext?.collapsed ? [] : extraOpenKeys}
 		subMenuCloseDelay={0.35}
 		{...props}
 	/>;

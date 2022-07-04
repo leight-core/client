@@ -8,13 +8,13 @@ type ILayoutSiderProps = PropsWithChildren<{
 }>;
 
 const LayoutSider: FC<ILayoutSiderProps> = ({sizeSize = 235, ...props}) => {
-	const menuCollapseContext = useSiderCollapseContext();
+	const siderCollapseContext = useSiderCollapseContext();
 	return <Layout.Sider
 		hidden={false}
 		theme={"light"}
 		collapsible
-		onCollapse={menuCollapseContext.setCollapsed}
-		collapsed={menuCollapseContext.collapsed}
+		onCollapse={siderCollapseContext.setCollapsed}
+		collapsed={siderCollapseContext.collapsed}
 		width={sizeSize}
 		{...props}
 	/>;
