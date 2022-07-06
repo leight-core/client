@@ -32,7 +32,11 @@ export interface IQuerySourceSelectProps<TResponse> extends Partial<Omit<SelectP
 	 * Debounce interval in ms.
 	 */
 	debounce?: number;
-	onSelect?: (value: IQuerySourceValue<TResponse>) => void;
+
+	onSelect?(value: IQuerySourceValue<TResponse>): void;
+
+	toId?(value?: string | null): Record<string, string | null | undefined>;
+
 	labelPrefix?: string;
 }
 
@@ -51,6 +55,7 @@ export const QuerySourceSelect = <TResponse, >(
 		disableOnEmpty = true,
 		onSelect,
 		labelPrefix,
+		toId = value => ({id: value}),
 		...props
 	}: PropsWithChildren<IQuerySourceSelectProps<TResponse>>) => {
 	const tid = useRef<any>();
@@ -66,7 +71,7 @@ export const QuerySourceSelect = <TResponse, >(
 		]);
 	});
 	useEffect(() => {
-		filter && filterContext?.setFilter({id: value} as any);
+		filter && filterContext?.setFilter(toId(value));
 	}, [value]);
 
 	const _onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => onSelect?.(option);
