@@ -8,28 +8,29 @@ export interface IMenuItemProps {
 	/**
 	 * Menu item title, goes through translation.
 	 */
-	title: string;
+	title?: string;
 	/**
 	 * Menu item href, goes through a link generator.
 	 */
 	href: string;
+	icon?: ReactNode;
 	/**
 	 * Optional params for link generator.
 	 */
 	query?: IQueryParams | void;
 }
 
-export const MenuItem: FC<IMenuItemProps> = ({title, href, query}) => {
+export const MenuItem: FC<IMenuItemProps> = ({title, icon, href, query}) => {
 	const {t} = useTranslation();
 	return <LinkTo href={href} query={query}>
-		{t(title)}
+		{title ? t(title) : icon}
 	</LinkTo>;
 };
 
 export type ICreateMenuItemProps = {
 	title?: string;
-	href: string
-	icon: ReactNode
+	href: string;
+	icon: ReactNode;
 	query?: IQueryParams | void;
 } & Partial<ItemType>;
 
@@ -41,7 +42,7 @@ export type ICreateMenuItemProps = {
  */
 export function CreateMenuItem({icon, href, title, query, ...props}: ICreateMenuItemProps): ItemType {
 	return {
-		icon,
+		icon: title ? icon : <MenuItem icon={icon} href={href} query={query}/>,
 		key: href,
 		label: title ? <MenuItem title={title} href={href} query={query}/> : undefined,
 		...props,
