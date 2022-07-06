@@ -1,8 +1,8 @@
 import {IFormItemContext} from "@leight-core/api";
-import {FormItemContext, useFormContext, useOptionalItemGroupContext} from "@leight-core/client";
+import {FormItemContext, ShowToken, useFormContext, useOptionalItemGroupContext, UseToken} from "@leight-core/client";
 import {Form, FormItemProps, Input} from "antd";
 import {NamePath, Rule} from "rc-field-form/lib/interface";
-import {cloneElement, FC} from "react";
+import {FC} from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IFormItemProps extends Partial<FormItemProps> {
@@ -25,6 +25,8 @@ export interface IFormItemProps extends Partial<FormItemProps> {
 	noMargin?: boolean;
 	labels?: string[] | string;
 	hasTooltip?: boolean;
+	enableWith?: string[];
+	showWith?: string[];
 
 	onNormalize?(value: any, formItemContext: IFormItemContext): void,
 }
@@ -39,6 +41,8 @@ export const FormItem: FC<IFormItemProps> = (
 		children = <Input/>,
 		labels = [],
 		hasTooltip = false,
+		enableWith,
+		showWith,
 		onNormalize,
 		...props
 	}) => {
@@ -86,7 +90,11 @@ export const FormItem: FC<IFormItemProps> = (
 			rules={rules}
 			{...props}
 		>
-			{children ? cloneElement(children as any, {["data-required"]: required}) : null}
+			<ShowToken tokens={showWith}>
+				<UseToken tokens={enableWith}>
+					<>{children}</>
+				</UseToken>
+			</ShowToken>
 		</Form.Item>
 	</FormItemContext.Provider>;
 };

@@ -22,7 +22,11 @@ import {useTranslation} from "react-i18next";
 import {useMutation} from "react-query";
 
 export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryParams = any> extends Partial<Omit<ComponentProps<typeof CoolForm>, "onValuesChange" | "onChange">> {
+	/**
+	 * Base translation used in the whole form; extremely simplifies translations.
+	 */
 	translation?: string;
+
 	/**
 	 * What to do on form submit.
 	 */
@@ -48,16 +52,25 @@ export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryPara
 	 * Map error from outside to a state in the form (like a general error or a field error).
 	 */
 	toError?: (error: IToError<any, any>) => IFormErrorMap<any>;
+	/**
+	 * If the form is used under a drawer, this flag controls if it should be automatically closed on success.
+	 */
 	closeDrawer?: boolean;
 	onValuesChange?: IFormOnValuesChanged;
 	onChange?: IFormOnChanged;
+	/**
+	 * Optional ACL check - if specified, user must possess any of the given token.
+	 */
 	tokens?: string[];
+	/**
+	 * Props for the WithToken component.
+	 */
 	withTokenProps?: ComponentProps<typeof WithToken>;
 }
 
 const usePassThroughMutation: IMutationHook<any, any> = () => useMutation<any, any, any, any>(values => new Promise(resolve => resolve(values)));
 
-const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams = any>(
+const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams>(
 	{
 		useMutation = usePassThroughMutation,
 		mutationQueryParams,
@@ -143,13 +156,24 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams = a
 	</CoolForm>;
 };
 
-export function Form<TRequest = any, TResponse = void, TQueryParams extends IQueryParams = any>({translation, tokens, withTokenProps, ...props}: IFormProps<TRequest, TResponse, TQueryParams>): JSX.Element {
+/**
+ * Simple but powerful Antd Form wrapper providing some extra cool features like Token checks on a user or translations and many more.
+ */
+export function Form<TRequest = any, TResponse = void, TQueryParams extends IQueryParams = any>(
+	{
+		translation,
+		tokens,
+		withTokenProps,
+		...props
+	}: IFormProps<TRequest, TResponse, TQueryParams>): JSX.Element {
 	return <WithToken
 		tokens={tokens}
 		label={translation ? `${translation}.403` : undefined}
 		{...withTokenProps}
 	>
-		<FormProvider translation={translation}>
+		<FormProvider
+			translation={translation}
+		>
 			<ItemGroupProvider prefix={[]}>
 				<FormInternal<TRequest, TResponse, TQueryParams> {...props}/>
 			</ItemGroupProvider>
