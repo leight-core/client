@@ -1,5 +1,5 @@
 import {IFormItemContext} from "@leight-core/api";
-import {FormItemContext, ShowToken, useFormContext, useOptionalItemGroupContext, UseToken} from "@leight-core/client";
+import {FormItemContext, useFormContext, useOptionalItemGroupContext} from "@leight-core/client";
 import {Form, FormItemProps, Input} from "antd";
 import {NamePath, Rule} from "rc-field-form/lib/interface";
 import {FC} from "react";
@@ -90,11 +90,12 @@ export const FormItem: FC<IFormItemProps> = (
 			rules={rules}
 			{...props}
 		>
-			<ShowToken tokens={showWith}>
-				<UseToken tokens={enableWith}>
-					<>{children}</>
-				</UseToken>
-			</ShowToken>
+			{children}
+			{/*<ShowToken tokens={showWith}>*/}
+			{/*	<UseToken tokens={enableWith}>*/}
+
+			{/*</UseToken>*/}
+			{/*</ShowToken>*/}
 		</Form.Item>
 	</FormItemContext.Provider>;
 };
