@@ -39,7 +39,7 @@ export const DrawerButton: FC<IDrawerButtonProps> = ({children, onClick, label, 
 						width={mobile("100vw", width)}
 						height={height}
 						headerStyle={mobile({padding: "8px 4px"})}
-						bodyStyle={{overflowY: "scroll", padding: mobile("4px")}}
+						bodyStyle={{overflowY: "scroll", padding: mobile("1.25em")}}
 						placement={placement}
 						push={push}
 						{...drawerProps}
