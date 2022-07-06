@@ -1,5 +1,5 @@
 import {IFormItemContext} from "@leight-core/api";
-import {FormItemContext, useFormContext, useOptionalItemGroupContext} from "@leight-core/client";
+import {FormItemContext, ShowToken, useFormContext, useOptionalItemGroupContext} from "@leight-core/client";
 import {Form, FormItemProps, Input} from "antd";
 import {NamePath, Rule} from "rc-field-form/lib/interface";
 import {FC} from "react";
@@ -25,7 +25,6 @@ export interface IFormItemProps extends Partial<FormItemProps> {
 	noMargin?: boolean;
 	labels?: string[] | string;
 	hasTooltip?: boolean;
-	enableWith?: string[];
 	showWith?: string[];
 
 	onNormalize?(value: any, formItemContext: IFormItemContext): void,
@@ -41,7 +40,6 @@ export const FormItem: FC<IFormItemProps> = (
 		children = <Input/>,
 		labels = [],
 		hasTooltip = false,
-		enableWith,
 		showWith,
 		onNormalize,
 		...props
@@ -83,19 +81,16 @@ export const FormItem: FC<IFormItemProps> = (
 		},
 	};
 	onNormalize && !props.normalize && (props.normalize = value => onNormalize(value, context));
-	return <FormItemContext.Provider value={context}>
-		<Form.Item
-			name={field}
-			label={showLabel === false ? null : t(["form-item." + fieldName + ".label"].concat(labels))}
-			rules={rules}
-			{...props}
-		>
-			{children}
-			{/*<ShowToken tokens={showWith}>*/}
-			{/*	<UseToken tokens={enableWith}>*/}
-
-			{/*</UseToken>*/}
-			{/*</ShowToken>*/}
-		</Form.Item>
-	</FormItemContext.Provider>;
+	return <ShowToken tokens={showWith}>
+		<FormItemContext.Provider value={context}>
+			<Form.Item
+				name={field}
+				label={showLabel === false ? null : t(["form-item." + fieldName + ".label"].concat(labels))}
+				rules={rules}
+				{...props}
+			>
+				{children}
+			</Form.Item>
+		</FormItemContext.Provider>
+	</ShowToken>;
 };
