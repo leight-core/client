@@ -58,9 +58,9 @@ export const Preview: FC<IPreviewProps> = (
 		{...props}
 	>
 		{!forceTabs && <BrowserContent>
-			{children.map(({items}) => {
+			{children.map(({name: group, items}) => {
 				const count = Math.ceil(24 / children.length);
-				return <Row gutter={32}>
+				return <Row key={`row.${name}.${group}`} gutter={32}>
 					<Col span={count}>
 						<Listing hideEmpty={hideEmpty} translation={translation}>
 							{items}
@@ -70,15 +70,15 @@ export const Preview: FC<IPreviewProps> = (
 			})}
 		</BrowserContent>}
 		<MobileContent force={forceTabs}>
-			{children.map(({name: group, items}) => {
-				return <Tabs>
-					<Tabs.TabPane key={`${name}.group.${group}`} tab={<TabInline title={`${name}.${group}.tab`}/>}>
+			<Tabs>
+				{children.map(({name: group, items}) => {
+					return <Tabs.TabPane key={`${name}.group.${group}`} tab={<TabInline title={`${name}.${group}.tab`}/>}>
 						<Listing hideEmpty={hideEmpty} translation={translation}>
 							{items}
 						</Listing>
-					</Tabs.TabPane>
-				</Tabs>;
-			})}
+					</Tabs.TabPane>;
+				})}
+			</Tabs>
 		</MobileContent>
 	</List>;
 };
