@@ -73,7 +73,7 @@ export const Page: FC<IPageProps> = (
 		</DrawerButton>;
 	}
 	return <EmptyPage title={title} values={values} {...props}>
-		{header || <PageHeader
+		{header || (header !== null && <PageHeader
 			onBack={onBack ? () => onBack(navigate) : undefined}
 			headerPostfix={headerPostfix}
 			title={title}
@@ -86,7 +86,7 @@ export const Page: FC<IPageProps> = (
 			style={mobile({padding: "4px 0 0 12px"})}
 			footer={footer}
 			{...headerProps}
-		/>}
+		/>)}
 		<Card
 			bodyStyle={mobile({padding: "0 1.25em"}, {padding: "0 8px", paddingBottom: "16px", minHeight: "60vh"})}
 			{...cardProps}
