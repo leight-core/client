@@ -47,6 +47,10 @@ export const InfiniteList = <TResponse, >(
 					sourceContext.reset();
 					filterContext?.setFilter({fulltext: value});
 				}}
+				onClear={() => {
+					sourceContext.reset();
+					filterContext?.setFilter();
+				}}
 			/> : header?.({sourceContext, filterContext})}
 			{...props}
 		>
