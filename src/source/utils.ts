@@ -1,7 +1,7 @@
 import {IBaseSelectOption, IHookCallback, IMutationHook, IPromiseCallback, IQueryHook, IQueryParams} from "@leight-core/api";
 import axios, {AxiosRequestConfig, AxiosResponse, Method} from "axios";
 import {useEffect} from "react";
-import {QueryClient, useMutation, useQuery} from "react-query";
+import {QueryClient, useMutation, useQuery, UseQueryResult} from "react-query";
 import {broadcastQueryClient} from "react-query/broadcastQueryClient-experimental";
 import {createWebStoragePersistor} from "react-query/createWebStoragePersistor-experimental";
 import {persistQueryClient} from "react-query/persistQueryClient-experimental";
@@ -86,3 +86,19 @@ export function createPromise<TRequest, TResponse, TQueryParams extends IQueryPa
 }
 
 export const toOption = <TOption extends IBaseSelectOption = IBaseSelectOption>(item: TOption) => item;
+
+export const promiseOf = async <TResponse>(query: UseQueryResult<TResponse[]>): Promise<TResponse[]> => new Promise<TResponse[]>((resolve, reject) => {
+	console.log("Starting interval");
+	const interval = setInterval(() => {
+		console.log("interval check");
+		if (query.isSuccess) {
+			console.log("resolved - success");
+			resolve(query.data);
+			clearInterval(interval);
+		} else if (query.isError) {
+			console.log("resolved - error");
+			reject(query.error);
+			clearInterval(interval);
+		}
+	}, 250);
+});
