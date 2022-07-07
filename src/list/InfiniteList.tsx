@@ -21,10 +21,11 @@ export interface IInfiniteListItemProps extends Omit<ComponentProps<typeof List[
 	onClick?(navigate: INavigate): void;
 }
 
-export const InfiniteListItem: FC<IInfiniteListItemProps> = ({onClick, ...props}) => {
+export const InfiniteListItem: FC<IInfiniteListItemProps> = ({onClick, clickable, ...props}) => {
 	const navigate = useNavigate();
 	return <List.Item
-		onClick={onClick ? () => onClick(navigate) : undefined}
+		clickable={clickable}
+		onClick={onClick && clickable ? () => onClick(navigate) : undefined}
 		{...props}
 	/>;
 };
