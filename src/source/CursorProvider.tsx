@@ -27,6 +27,8 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 			page,
 			size,
 			setPage: (page, size = defaultSize) => setPage([page, size]),
+			next: () => setPage([page + 1, size]),
+			prev: () => setPage([Math.max(0, page - 1), size]),
 		}}
 		{...props}
 	/>;
