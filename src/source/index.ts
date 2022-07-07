@@ -4,6 +4,7 @@ export * from "./FilterContext";
 export * from "./FilterProvider";
 export * from "./OrderByContext";
 export * from "./OrderByProvider";
+export * from "./PagingContext";
 export * from "./Query";
 export * from "./QuerySourceSelect";
 export * from "./SourceContext";

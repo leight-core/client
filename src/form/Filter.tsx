@@ -65,7 +65,7 @@ const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter
 		<FilterInternal
 			onClear={() => {
 				drawerContext?.setVisible(false);
-				onClear && onClear();
+				onClear?.();
 			}}
 			{...props}
 		/>

@@ -7,8 +7,14 @@ export type ICursorProviderProps = PropsWithChildren<{
 	defaultSize?: number;
 }>;
 
-export const CursorProvider: FC<ICursorProviderProps> = ({name, defaultPage, defaultSize, ...props}) => {
-	const [[page, size], setPage] = useState<[number | undefined, number | undefined]>([defaultPage, defaultSize]);
+export const CursorProvider: FC<ICursorProviderProps> = (
+	{
+		name,
+		defaultPage = 0,
+		defaultSize = 10,
+		...props
+	}) => {
+	const [[page, size], setPage] = useState<[number, number]>([defaultPage, defaultSize]);
 	useEffect(() => {
 		setPage([defaultPage, size]);
 	}, [defaultPage]);
@@ -20,7 +26,7 @@ export const CursorProvider: FC<ICursorProviderProps> = ({name, defaultPage, def
 			name,
 			page,
 			size,
-			setPage: (page?: number, size: number | undefined = defaultSize) => setPage([page, size]),
+			setPage: (page, size = defaultSize) => setPage([page, size]),
 		}}
 		{...props}
 	/>;

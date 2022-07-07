@@ -2,7 +2,6 @@ import {IQuery, IQueryHook} from "@leight-core/api";
 import {SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
 import {merge} from "@leight-core/utils";
 import {PropsWithChildren} from "react";
-import {useTranslation} from "react-i18next";
 import {useQuery as useCoolQuery, UseQueryOptions} from "react-query";
 
 export type ISourceProviderProps<TResponse> = PropsWithChildren<{
@@ -10,11 +9,11 @@ export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	/**
 	 * Source of the query
 	 */
-	useQuery: IQueryHook<IQuery<any, any>, TResponse[]>;
+	useQuery: IQueryHook<IQuery, TResponse[]>;
 	/**
 	 * Query used to count backend items by the given query (for pagination).
 	 */
-	useCountQuery?: IQueryHook<IQuery<any, any>, number>;
+	useCountQuery?: IQueryHook<IQuery, number>;
 	/**
 	 * Enables live refetches of the query
 	 */
@@ -37,7 +36,6 @@ export const SourceProvider = <TResponse, >(
 		...props
 	}: ISourceProviderProps<TResponse>
 ) => {
-	const {t} = useTranslation();
 	const filterContext = useOptionalFilterContext<any>();
 	const orderByContext = useOptionalOrderByContext<any>();
 	const cursorContext = useOptionalCursorContext();
@@ -75,21 +73,28 @@ export const SourceProvider = <TResponse, >(
 			name,
 			result: query,
 			count: withCount ? count : undefined,
-			pagination: () => withCount && count.isSuccess ? {
-				responsive: true,
-				current: (cursorContext?.page || 0) + 1,
-				total: count.data,
-				pageSize: cursorContext?.size || 10,
-				defaultPageSize: cursorContext?.size || 10,
-				showSizeChanger: false,
-				showQuickJumper: false,
-				hideOnSinglePage: true,
-				showTotal: (total, [from, to]) => t(`${name}.list.total`, {data: {total, from, to}}),
-				onChange: (current, size) => cursorContext?.setPage(current - 1, size),
-			} : undefined,
 			hasData,
 			map: mapper => hasData() ? (query.data?.map(mapper) || []) : [],
 			data: () => hasData() ? (query.data || []) : [],
+			hasMore: () => {
+				if (!withCount) {
+					console.warn(`Querying ${name}.hasMore() without counting enabled!`);
+					return false;
+				}
+				if (!count.isSuccess) {
+					return false;
+				}
+				if (!cursorContext) {
+					console.warn(`Querying ${name}.hasMore() without cursor context (cannot do paging without it)!`);
+					return false;
+				}
+				const pages = Math.ceil(count.data / cursorContext.size);
+				console.log("Number of pages ", pages);
+				return cursorContext.page < pages;
+			},
+			more: () => {
+				console.log(`Querying ${name}.more()`, cursorContext);
+			},
 		}}
 		{...props}
 	/>;
