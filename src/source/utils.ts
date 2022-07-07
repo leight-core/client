@@ -93,11 +93,11 @@ export const promiseOf = async <TResponse>(query: UseQueryResult<TResponse[]>): 
 		console.log("interval check");
 		if (query.isSuccess) {
 			console.log("resolved - success");
-			resolve(query.data);
+			setTimeout(() => resolve(query.data), 0);
 			clearInterval(interval);
 		} else if (query.isError) {
 			console.log("resolved - error");
-			reject(query.error);
+			setTimeout(() => reject(query.error), 0);
 			clearInterval(interval);
 		}
 	}, 250);
