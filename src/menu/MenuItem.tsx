@@ -40,10 +40,12 @@ export type ICreateMenuItemProps = {
  *
  * Basically it has the same behavior as MenuItem component.
  */
-export function CreateMenuItem({icon, href, title, query, ...props}: ICreateMenuItemProps): ItemType {
+export function CreateMenuItem({icon, href, title, query, ...props}: ICreateMenuItemProps) {
 	return {
 		icon: title ? icon : <MenuItem icon={icon} href={href} query={query}/>,
 		key: href,
+		href,
+		query,
 		label: title ? <MenuItem title={title} href={href} query={query}/> : undefined,
 		...props,
 	};
@@ -55,7 +57,7 @@ export type ICreateMenuGroupProps = {
 	items: ItemType[];
 } & Partial<ItemType>;
 
-export function CreateMenuGroup({icon, title, items, ...props}: ICreateMenuGroupProps): ItemType {
+export function CreateMenuGroup({icon, title, items, ...props}: ICreateMenuGroupProps) {
 	return {
 		icon,
 		key: title,

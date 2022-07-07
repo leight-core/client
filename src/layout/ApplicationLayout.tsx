@@ -1,7 +1,6 @@
-import {LoaderIcon, PlaceholderPage, useLayoutBlockContext} from "@leight-core/client";
+import {BrowserContent, LoaderIcon, MobileContent, PlaceholderPage, useLayoutBlockContext} from "@leight-core/client";
 import {Layout, Spin} from "antd";
 import React, {CSSProperties, FC, PropsWithChildren, ReactNode, Suspense} from "react";
-import {BrowserView, MobileView} from "react-device-detect";
 
 export type IApplicationLayoutProps = PropsWithChildren<{
 	/**
@@ -22,7 +21,7 @@ export const ApplicationLayout: FC<IApplicationLayoutProps> = ({header, footer, 
 	const layoutBlockContext = useLayoutBlockContext();
 	return <Layout>
 		<Spin indicator={<LoaderIcon/>} spinning={layoutBlockContext.isBlocked()}>
-			<BrowserView>
+			<BrowserContent>
 				{header}
 				<Layout>
 					<Layout>
@@ -34,17 +33,14 @@ export const ApplicationLayout: FC<IApplicationLayoutProps> = ({header, footer, 
 						</Layout.Content>
 					</Layout>
 				</Layout>
-			</BrowserView>
-			<MobileView>
+			</BrowserContent>
+			<MobileContent>
 				<Layout>
 					<Layout.Content style={{minHeight: "100vh", ...contentStyle}}>
 						<Suspense fallback={<PlaceholderPage/>} {...props}/>
-						{footer && <Layout.Footer>
-							{footer}
-						</Layout.Footer>}
 					</Layout.Content>
 				</Layout>
-			</MobileView>
+			</MobileContent>
 		</Spin>
 	</Layout>;
 };

@@ -1,6 +1,6 @@
 import {QuestionCircleOutlined} from "@ant-design/icons";
 import {INavigate, IQueryParams} from "@leight-core/api";
-import {DrawerButton, EmptyPage, IDrawerButtonProps, IEmptyPageProps, IPageHeaderProps, PageHeader, Template, useMobile, useNavigate} from "@leight-core/client";
+import {BrowserPageHeader, DrawerButton, EmptyPage, IBrowserPageHeaderProps, IDrawerButtonProps, IEmptyPageProps, Template, useIsBrowser, useNavigate} from "@leight-core/client";
 import {BreadcrumbProps, Card, CardProps, Divider} from "antd";
 import Breadcrumb from "antd/lib/breadcrumb";
 import * as React from "react";
@@ -9,8 +9,9 @@ import {Trans} from "react-i18next";
 
 export type IPageBreadcrumb = BreadcrumbProps | React.ReactElement<typeof Breadcrumb>;
 
-export interface IPageProps extends IEmptyPageProps {
-	onBack?: (navigate: INavigate<IQueryParams>) => void;
+export interface IBrowserPageProps extends IEmptyPageProps {
+	onBack?(navigate: INavigate<IQueryParams>): void;
+
 	breadcrumbProps?: IPageBreadcrumb;
 	icon?: ReactNode;
 	/**
@@ -23,15 +24,15 @@ export interface IPageProps extends IEmptyPageProps {
 	footer?: ReactNode;
 	headerPostfix?: ReactNode;
 	cardProps?: Partial<CardProps>;
-	headerProps?: IPageHeaderProps;
+	headerProps?: IBrowserPageHeaderProps;
 	values?: any;
 	/**
 	 * Components used for translation interpolation. See react-i18n Trans docs.
 	 */
-	components?: IPageHeaderProps["components"];
+	components?: IBrowserPageHeaderProps["components"];
 }
 
-export const Page: FC<IPageProps> = (
+export const BrowserPage: FC<IBrowserPageProps> = (
 	{
 		breadcrumbProps,
 		icon,
@@ -50,8 +51,11 @@ export const Page: FC<IPageProps> = (
 		onBack,
 		...props
 	}) => {
-	const mobile = useMobile();
+	const isBrowser = useIsBrowser();
 	const navigate = useNavigate<IQueryParams>();
+	if (!isBrowser) {
+		return null;
+	}
 	if (!headerPostfix && withHelp) {
 		headerPostfix = <DrawerButton
 			title={`${withHelp.translation}.title`}
@@ -73,7 +77,7 @@ export const Page: FC<IPageProps> = (
 		</DrawerButton>;
 	}
 	return <EmptyPage title={title} values={values} {...props}>
-		{header || (header !== null && <PageHeader
+		{header || (header !== null && <BrowserPageHeader
 			onBack={onBack ? () => onBack(navigate) : undefined}
 			headerPostfix={headerPostfix}
 			title={title}
@@ -83,12 +87,11 @@ export const Page: FC<IPageProps> = (
 			extra={extra && extraSize ? <div style={{width: `${extraSize}em`}}>{extra}</div> : extra}
 			ghost={false}
 			breadcrumb={breadcrumbProps}
-			style={mobile({padding: "4px 0 0 12px"})}
 			footer={footer}
 			{...headerProps}
 		/>)}
 		<Card
-			bodyStyle={mobile({padding: "0 1.25em"}, {padding: "0 8px", paddingBottom: "16px", minHeight: "60vh"})}
+			bodyStyle={{padding: "0 8px", paddingBottom: "16px", minHeight: "60vh"}}
 			{...cardProps}
 		>
 			{children}

@@ -24,6 +24,7 @@
 		"@fingerprintjs/fingerprintjs": "^3.3.3",
 		"@leight-core/api": "^0.6.87",
 		"@leight-core/utils": "^0.5.31",
+		"antd-mobile": "^5.17.2",
 		"axios": "^0.27.2",
 		"axios-retry": "^3.2.5",
 		"cancelable-promise": "^4.3.0",

@@ -3,14 +3,14 @@ import {Col, PageHeader as CoolPageHeader, PageHeaderProps as CoolPageHeaderProp
 import {ComponentProps, FC, ReactNode} from "react";
 import {Trans, useTranslation} from "react-i18next";
 
-export interface IPageHeaderProps extends Partial<CoolPageHeaderProps> {
+export interface IBrowserPageHeaderProps extends Partial<CoolPageHeaderProps> {
 	icon?: ReactNode;
 	headerPostfix?: ReactNode;
 	values?: any;
 	components?: ComponentProps<typeof Trans>["components"];
 }
 
-export const PageHeader: FC<IPageHeaderProps> = ({title, icon, headerPostfix, values, components, ...props}) => {
+export const BrowserPageHeader: FC<IBrowserPageHeaderProps> = ({title, icon, headerPostfix, values, components, ...props}) => {
 	const {t} = useTranslation();
 	const $title = isString(title) ? <span>
 		<Trans
