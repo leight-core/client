@@ -15,6 +15,8 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 		...props
 	}) => {
 	const [[page, size], setPage] = useState<[number, number]>([defaultPage, defaultSize]);
+	const [append, setAppend] = useState<boolean>();
+	const [prepend, setPrepend] = useState<boolean>();
 	useEffect(() => {
 		setPage([defaultPage, size]);
 	}, [defaultPage]);
@@ -26,9 +28,17 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 			name,
 			page,
 			size,
+			append,
+			prepend,
 			setPage: (page, size = defaultSize) => setPage([page, size]),
-			next: () => setPage([page + 1, size]),
-			prev: () => setPage([Math.max(0, page - 1), size]),
+			next: append => {
+				setAppend(append);
+				setPage([page + 1, size]);
+			},
+			prev: prepend => {
+				setPrepend(prepend);
+				setPage([Math.max(0, page - 1), size]);
+			},
 		}}
 		{...props}
 	/>;

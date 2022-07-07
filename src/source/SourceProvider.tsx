@@ -1,7 +1,7 @@
 import {IQuery, IQueryHook} from "@leight-core/api";
 import {SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
 import {merge} from "@leight-core/utils";
-import {PropsWithChildren} from "react";
+import {PropsWithChildren, useState} from "react";
 import {useQuery as useCoolQuery, UseQueryOptions} from "react-query";
 
 export type ISourceProviderProps<TResponse> = PropsWithChildren<{
@@ -40,6 +40,7 @@ export const SourceProvider = <TResponse, >(
 	const orderByContext = useOptionalOrderByContext<any>();
 	const cursorContext = useOptionalCursorContext();
 	const queryParamsContext = useOptionalQueryParamsContext<any>();
+	const [data, setData] = useState<TResponse[]>([]);
 
 	if (!withCount) {
 		useCountQuery = undefined;
@@ -58,6 +59,20 @@ export const SourceProvider = <TResponse, >(
 	}, queryParamsContext?.queryParams, merge({
 		keepPreviousData: true,
 		refetchInterval: live,
+		onSuccess: (response: TResponse[]) => {
+			if (cursorContext?.append) {
+				setData(prev => prev.concat(response));
+				return;
+			}
+			if (cursorContext?.prepend) {
+				setData(prev => {
+					prev.unshift(...response);
+					return prev;
+				});
+				return;
+			}
+			setData(response);
+		},
 	}, options || {}));
 	const count = useCountQuery({
 		filter: filterContext?.filter,
@@ -66,7 +81,7 @@ export const SourceProvider = <TResponse, >(
 		refetchInterval: live,
 	});
 
-	const hasData = () => Array.isArray(query?.data) && query.data.length > 0;
+	const hasData = () => Array.isArray(data) && data.length > 0;
 
 	return <SourceContext.Provider
 		value={{
@@ -74,8 +89,8 @@ export const SourceProvider = <TResponse, >(
 			result: query,
 			count: withCount ? count : undefined,
 			hasData,
-			map: mapper => hasData() ? (query.data?.map(mapper) || []) : [],
-			data: () => hasData() ? (query.data || []) : [],
+			map: mapper => hasData() ? (data?.map(mapper) || []) : [],
+			data: () => hasData() ? (data || []) : [],
 			hasMore: () => {
 				if (!withCount) {
 					console.warn(`Querying ${name}.hasMore() without counting enabled!`);
@@ -89,12 +104,9 @@ export const SourceProvider = <TResponse, >(
 					return false;
 				}
 				const pages = Math.ceil(count.data / cursorContext.size);
-				console.log("Number of pages ", pages);
 				return cursorContext.page < pages;
 			},
-			more: () => {
-				console.log(`Querying ${name}.more()`, cursorContext);
-			},
+			more: append => cursorContext?.next(append),
 		}}
 		{...props}
 	/>;
