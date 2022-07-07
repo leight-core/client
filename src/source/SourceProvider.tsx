@@ -23,7 +23,7 @@ export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	 * Query options.
 	 */
 	options?: UseQueryOptions<any, any, TResponse[]>;
-	withPagination?: boolean;
+	withCount?: boolean;
 }>;
 
 export const SourceProvider = <TResponse, >(
@@ -31,7 +31,7 @@ export const SourceProvider = <TResponse, >(
 		name,
 		useQuery,
 		useCountQuery,
-		withPagination = false,
+		withCount = false,
 		live = false,
 		options,
 		...props
@@ -43,7 +43,7 @@ export const SourceProvider = <TResponse, >(
 	const cursorContext = useOptionalCursorContext();
 	const queryParamsContext = useOptionalQueryParamsContext<any>();
 
-	if (!withPagination) {
+	if (!withCount) {
 		useCountQuery = undefined;
 	}
 	if (!useCountQuery) {
@@ -74,7 +74,8 @@ export const SourceProvider = <TResponse, >(
 		value={{
 			name,
 			result: query,
-			pagination: () => withPagination && count.isSuccess ? {
+			count: withCount ? count : undefined,
+			pagination: () => withCount && count.isSuccess ? {
 				responsive: true,
 				current: (cursorContext?.page || 0) + 1,
 				total: count.data,
