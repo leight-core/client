@@ -92,6 +92,9 @@ export const SourceProvider = <TResponse, >(
 			map: mapper => hasData() ? (data?.map(mapper) || []) : [],
 			data: () => hasData() ? (data || []) : [],
 			hasMore: () => {
+				if (query.isFetching) {
+					return false;
+				}
 				if (!withCount) {
 					console.warn(`Querying ${name}.hasMore() without counting enabled!`);
 					return false;
