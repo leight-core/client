@@ -109,7 +109,7 @@ export const SourceProvider = <TResponse, >(
 			more: async append => {
 				if (!cursorContext) {
 					console.warn(`Requesting ${name}.more() without cursor context!`);
-					return;
+					return Promise.resolve([]);
 				}
 				cursorContext?.next(append);
 				return promiseOf(query);
