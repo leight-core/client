@@ -1,11 +1,20 @@
-import {INavigate} from "@leight-core/api";
-import {useNavigate, useSourceContext} from "@leight-core/client";
-import {Divider, DotLoading, InfiniteScroll, List, Space} from "antd-mobile";
+import {IFilterContext, INavigate, ISourceContext} from "@leight-core/api";
+import {useNavigate, useOptionalFilterContext, useSourceContext} from "@leight-core/client";
+import {Divider, DotLoading, InfiniteScroll, List, SearchBar, Space} from "antd-mobile";
 import {ComponentProps, FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface IInfiniteListProps<TResponse> extends Partial<Omit<ComponentProps<typeof List>, "children">> {
+export interface IInfiniteListHeaderRequest<TResponse> {
+	sourceContext: ISourceContext<TResponse>;
+	filterContext?: IFilterContext | null;
+}
+
+export interface IInfiniteListProps<TResponse> extends Partial<Omit<ComponentProps<typeof List>, "children" | "header">> {
 	children?(item: TResponse): ReactNode;
+
+	header?(request: IInfiniteListHeaderRequest<TResponse>): ReactNode;
+
+	withFulltext?: boolean;
 }
 
 export interface IInfiniteListItemProps extends Omit<ComponentProps<typeof List["Item"]>, "onClick"> {
@@ -20,11 +29,27 @@ export const InfiniteListItem: FC<IInfiniteListItemProps> = ({onClick, ...props}
 	/>;
 };
 
-export const InfiniteList = <TResponse, >({children, ...props}: IInfiniteListProps<TResponse>) => {
+export const InfiniteList = <TResponse, >(
+	{
+		children,
+		withFulltext = false,
+		header,
+		...props
+	}: IInfiniteListProps<TResponse>) => {
 	const {t} = useTranslation();
 	const sourceContext = useSourceContext<TResponse>();
+	const filterContext = useOptionalFilterContext();
 	return <>
-		<List {...props}>
+		<List
+			header={withFulltext ? <SearchBar
+				style={{maxWidth: "95vw"}}
+				onSearch={value => {
+					sourceContext.reset();
+					filterContext?.setFilter({fulltext: value});
+				}}
+			/> : header?.({sourceContext, filterContext})}
+			{...props}
+		>
 			{sourceContext.data().map(item => children?.(item))}
 		</List>
 		<InfiniteScroll
