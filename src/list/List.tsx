@@ -1,9 +1,8 @@
 import {ISourceContext} from "@leight-core/api";
-import {LoaderIcon, PaginationContext, Template, useSourceContext} from "@leight-core/client";
+import {LoaderIcon, PaginationContext, PaginationProvider, Template, useSourceContext} from "@leight-core/client";
 import {List as CoolList, ListProps, SpinProps} from "antd";
 import React, {ReactNode} from "react";
 import {UseQueryResult} from "react-query";
-import {PaginationProvider} from "../source/PaginationProvider";
 
 export interface IListProps<TResponse> extends Partial<Omit<ListProps<TResponse>, "children" | "header" | "footer">> {
 	header?(sourceContext: ISourceContext<TResponse>): ReactNode;
