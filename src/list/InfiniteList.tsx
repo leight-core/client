@@ -4,7 +4,7 @@ import {ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IInfiniteListProps<TResponse> {
-	children(item: TResponse): ReactNode;
+	children?(item: TResponse): ReactNode;
 }
 
 export const InfiniteListItem = List.Item;
@@ -14,7 +14,7 @@ export const InfiniteList = <TResponse, >({children}: IInfiniteListProps<TRespon
 	const sourceContext = useSourceContext<TResponse>();
 	return <>
 		<List>
-			{sourceContext.data().map(item => children(item))}
+			{sourceContext.data().map(item => children?.(item))}
 		</List>
 		<InfiniteScroll
 			loadMore={async () => sourceContext.more(true)}
