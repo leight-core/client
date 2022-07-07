@@ -88,15 +88,11 @@ export function createPromise<TRequest, TResponse, TQueryParams extends IQueryPa
 export const toOption = <TOption extends IBaseSelectOption = IBaseSelectOption>(item: TOption) => item;
 
 export const promiseOf = async <TResponse>(query: UseQueryResult<TResponse[]>): Promise<TResponse[]> => new Promise<TResponse[]>((resolve, reject) => {
-	console.log("Starting interval");
 	const interval = setInterval(() => {
-		console.log("interval check");
 		if (query.isSuccess) {
-			console.log("resolved - success");
 			setTimeout(() => resolve(query.data), 0);
 			clearInterval(interval);
 		} else if (query.isError) {
-			console.log("resolved - error");
 			setTimeout(() => reject(query.error), 0);
 			clearInterval(interval);
 		}

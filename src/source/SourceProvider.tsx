@@ -1,5 +1,5 @@
 import {IQuery, IQueryHook} from "@leight-core/api";
-import {promiseOf, SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
+import {SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
 import {merge} from "@leight-core/utils";
 import {PropsWithChildren, useState} from "react";
 import {useQuery as useCoolQuery, UseQueryOptions} from "react-query";
@@ -112,10 +112,9 @@ export const SourceProvider = <TResponse, >(
 			more: async append => {
 				if (!cursorContext) {
 					console.warn(`Requesting ${name}.more() without cursor context!`);
-					return Promise.resolve([]);
+					return;
 				}
 				cursorContext?.next(append);
-				return promiseOf(query);
 			},
 		}}
 		{...props}
