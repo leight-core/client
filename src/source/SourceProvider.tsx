@@ -91,6 +91,10 @@ export const SourceProvider = <TResponse, >(
 			hasData,
 			map: mapper => hasData() ? (data?.map(mapper) || []) : [],
 			data: () => hasData() ? (data || []) : [],
+			reset: () => {
+				cursorContext?.setPage(0);
+				setData([]);
+			},
 			hasMore: () => {
 				if (query.isFetching) {
 					return false;

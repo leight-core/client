@@ -37,7 +37,11 @@ export const InfiniteList = <TResponse, >({children}: IInfiniteListProps<TRespon
 					<DotLoading/>
 				</Space>
 			) : (
-				<Divider style={{width: "100%"}}>{t("common.infinite.no-more")}</Divider>
+				<Divider
+					style={{width: "100%"}}
+				>
+					{t("common.infinite.no-more")}
+				</Divider>
 			)}
 		</InfiniteScroll>
 	</>;
