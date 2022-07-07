@@ -1,13 +1,24 @@
-import {useSourceContext} from "@leight-core/client";
+import {INavigate} from "@leight-core/api";
+import {useNavigate, useSourceContext} from "@leight-core/client";
 import {Divider, DotLoading, InfiniteScroll, List, Space} from "antd-mobile";
-import {ReactNode} from "react";
+import {ComponentProps, FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IInfiniteListProps<TResponse> {
 	children?(item: TResponse): ReactNode;
 }
 
-export const InfiniteListItem = List.Item;
+export interface IInfiniteListItemProps extends Omit<ComponentProps<typeof List["Item"]>, "onClick"> {
+	onClick?(navigate: INavigate): void;
+}
+
+export const InfiniteListItem: FC<IInfiniteListItemProps> = ({onClick, ...props}) => {
+	const navigate = useNavigate();
+	return <List.Item
+		onClick={onClick ? () => onClick(navigate) : undefined}
+		{...props}
+	/>;
+};
 
 export const InfiniteList = <TResponse, >({children}: IInfiniteListProps<TResponse>) => {
 	const {t} = useTranslation();
