@@ -4,7 +4,7 @@ import {Divider, DotLoading, InfiniteScroll, List, Space} from "antd-mobile";
 import {ComponentProps, FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface IInfiniteListProps<TResponse> {
+export interface IInfiniteListProps<TResponse> extends Partial<Omit<ComponentProps<typeof List>, "children">> {
 	children?(item: TResponse): ReactNode;
 }
 
@@ -20,11 +20,11 @@ export const InfiniteListItem: FC<IInfiniteListItemProps> = ({onClick, ...props}
 	/>;
 };
 
-export const InfiniteList = <TResponse, >({children}: IInfiniteListProps<TResponse>) => {
+export const InfiniteList = <TResponse, >({children, ...props}: IInfiniteListProps<TResponse>) => {
 	const {t} = useTranslation();
 	const sourceContext = useSourceContext<TResponse>();
 	return <>
-		<List>
+		<List {...props}>
 			{sourceContext.data().map(item => children?.(item))}
 		</List>
 		<InfiniteScroll
