@@ -56,7 +56,7 @@ export const MobilePage: FC<IMobilePageProps> = (
 			{tabTitle && <Head><title key={"title"}>{t(tabTitle, values)}</title></Head>}
 			<SafeArea position={"top"}/>
 			<div style={{
-				height: "100vh",
+				height: "80vh",
 				display: "flex",
 				flexDirection: "column",
 				backgroundColor: "#FFF",
