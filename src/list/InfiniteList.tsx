@@ -25,7 +25,7 @@ export const InfiniteListItem: FC<IInfiniteListItemProps> = ({onClick, clickable
 	const navigate = useNavigate();
 	return <List.Item
 		clickable={clickable}
-		onClick={onClick && clickable ? () => onClick(navigate) : undefined}
+		onClick={onClick && clickable !== false ? () => onClick(navigate) : undefined}
 		{...props}
 	/>;
 };
