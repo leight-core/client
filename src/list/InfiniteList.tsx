@@ -40,10 +40,15 @@ export const InfiniteList = <TResponse, >(
 	const {t} = useTranslation();
 	const sourceContext = useSourceContext<TResponse>();
 	const filterContext = useOptionalFilterContext();
+	if (withFulltext && header) {
+		console.warn(`Using infinite list ${sourceContext.name} with fulltext and header specified; please use flags only or just header.`);
+	}
+	if (withFulltext && !filterContext) {
+		console.warn(`Using infinite list ${sourceContext.name} with fulltext and without filter context!`);
+	}
 	return <>
 		<List
 			header={withFulltext ? <SearchBar
-				style={{maxWidth: "95vw"}}
 				onSearch={value => {
 					sourceContext.reset();
 					filterContext?.setFilter({fulltext: value});
