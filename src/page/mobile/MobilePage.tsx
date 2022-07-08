@@ -2,7 +2,7 @@ import {INavigate, IQueryParams} from "@leight-core/api";
 import {MobileContent, PageProvider, useIsMobile, useMenuSelectionContext, useNavigate} from "@leight-core/client";
 import {isString} from "@leight-core/utils";
 import {Space} from "antd";
-import {NavBar} from "antd-mobile";
+import {NavBar, SafeArea} from "antd-mobile";
 import Head from "next/head";
 import {ComponentProps, FC, PropsWithChildren, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
@@ -54,6 +54,7 @@ export const MobilePage: FC<IMobilePageProps> = (
 	return <MobileContent>
 		<PageProvider>
 			{tabTitle && <Head><title key={"title"}>{t(tabTitle, values)}</title></Head>}
+			<SafeArea position={"top"}/>
 			<div style={{
 				height: "100vh",
 				display: "flex",
@@ -100,6 +101,7 @@ export const MobilePage: FC<IMobilePageProps> = (
 					{footer}
 				</div>}
 			</div>
+			<SafeArea position={"bottom"}/>
 		</PageProvider>
 	</MobileContent>;
 };
