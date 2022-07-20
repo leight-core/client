@@ -1,5 +1,5 @@
 {
-	"version": "0.6.91",
+	"version": "0.6.92",
 	"name": "@leight-core/client",
 	"description": "All that shiny client stuff.",
 	"license": "MIT",
@@ -24,7 +24,6 @@
 		"@fingerprintjs/fingerprintjs": "^3.3.3",
 		"@leight-core/api": "^0.6.101",
 		"@leight-core/utils": "^0.5.32",
-		"@tanstack/query-broadcast-client-experimental": "^4.0.8",
 		"@tanstack/query-sync-storage-persister": "^4.0.8",
 		"@tanstack/react-query": "^4.0.8",
 		"@tanstack/react-query-devtools": "^4.0.8",
