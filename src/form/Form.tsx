@@ -16,10 +16,10 @@ import {
 } from "@leight-core/api";
 import {FormProvider, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext, WithToken} from "@leight-core/client";
 import {isCallable} from "@leight-core/utils";
+import {useMutation} from "@tanstack/react-query";
 import {Form as CoolForm, message, Spin} from "antd";
 import React, {ComponentProps} from "react";
 import {useTranslation} from "react-i18next";
-import {useMutation} from "react-query";
 
 export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryParams = any> extends Partial<Omit<ComponentProps<typeof CoolForm>, "onValuesChange" | "onChange">> {
 	/**

@@ -1,6 +1,6 @@
 import {IEntityContext, IQueryHook, IQueryParams} from "@leight-core/api";
+import {UseQueryOptions} from "@tanstack/react-query";
 import {ReactNode, useEffect} from "react";
-import {UseQueryOptions} from "react-query";
 
 export interface IQueryProps<TRequest, TResponse, TQueryParams extends IQueryParams = any> {
 	useQuery: IQueryHook<TRequest, TResponse, TQueryParams>;

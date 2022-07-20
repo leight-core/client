@@ -1,7 +1,6 @@
 import {ISession} from "@leight-core/api";
+import {useQuery, UseQueryOptions} from "@tanstack/react-query";
 import {useRouter} from "next/router";
-import {useQuery} from "react-query";
-import {UseQueryOptions} from "react-query/types/react/types";
 
 export async function fetchSession() {
 	const res = await fetch("/api/auth/session");

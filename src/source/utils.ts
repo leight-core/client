@@ -1,11 +1,11 @@
 import {IBaseSelectOption, IHookCallback, IMutationHook, IPromiseCallback, IQueryHook, IQueryParams} from "@leight-core/api";
+import {toLink} from "@leight-core/client";
+import {broadcastQueryClient} from "@tanstack/query-broadcast-client-experimental";
+import {createSyncStoragePersister} from "@tanstack/query-sync-storage-persister";
+import {QueryClient, useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
+import {persistQueryClient} from "@tanstack/react-query-persist-client";
 import axios, {AxiosRequestConfig, AxiosResponse, Method} from "axios";
 import {useEffect} from "react";
-import {QueryClient, useMutation, useQuery, UseQueryResult} from "react-query";
-import {broadcastQueryClient} from "react-query/broadcastQueryClient-experimental";
-import {createWebStoragePersistor} from "react-query/createWebStoragePersistor-experimental";
-import {persistQueryClient} from "react-query/persistQueryClient-experimental";
-import {toLink} from "../link";
 
 /**
  * @param cacheTime cache time in hours
@@ -28,12 +28,13 @@ export function useQueryPersistence(queryClient: QueryClient, name: string, bust
 	useEffect(() => {
 		persistQueryClient({
 			queryClient,
-			persistor: createWebStoragePersistor({storage: window.sessionStorage}),
+			persister: createSyncStoragePersister({storage: window.sessionStorage}),
 			buster: buster || process.env.BUILD_ID,
-		}).then(() => broadcastQueryClient({
+		});
+		broadcastQueryClient({
 			queryClient,
 			broadcastChannel: name,
-		}));
+		});
 	}, []);
 	return enable;
 }

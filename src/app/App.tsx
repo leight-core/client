@@ -1,10 +1,10 @@
 import {ITranslationsQuery} from "@leight-core/api";
 import {DayjsProvider, I18NextProvider, IResponsiveProviderProps, LayoutBlockProvider, MenuSelectionProvider, ResponsiveProvider, TranslationLoader} from "@leight-core/client";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import {i18n} from "i18next";
 import {FC, PropsWithChildren, ReactNode} from "react";
 import {CookiesProvider} from "react-cookie";
-import {QueryClient, QueryClientProvider} from "react-query";
-import {ReactQueryDevtools} from "react-query/devtools";
 
 export type IAppProps = PropsWithChildren<{
 	logo?: ReactNode;

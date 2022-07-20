@@ -1,13 +1,13 @@
 import FingerprintJS from "@fingerprintjs/fingerprintjs";
 import {FingerprintContext} from "@leight-core/client";
+import {useQuery} from "@tanstack/react-query";
 import axios from "axios";
 import {FC, PropsWithChildren} from "react";
-import {useQuery} from "react-query";
 
-export type IFingerprintProviderProps = PropsWithChildren<unknown>;
+export type IFingerprintProviderProps = PropsWithChildren;
 
 export const FingerprintProvider: FC<IFingerprintProviderProps> = props => {
-	const fingerprint = useQuery("fingerprint", () => new Promise<string>((resolve) => {
+	const fingerprint = useQuery(["fingerprint"], () => new Promise<string>((resolve) => {
 		const done = (fingerprint: string) => {
 			resolve((axios.defaults.headers as any)["X-Client-Hash"] = fingerprint);
 		};

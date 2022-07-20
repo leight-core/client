@@ -1,8 +1,8 @@
 import {IQuery, IQueryHook} from "@leight-core/api";
 import {SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
 import {merge} from "@leight-core/utils";
+import {useQuery as useCoolQuery, UseQueryOptions} from "@tanstack/react-query";
 import {PropsWithChildren, useState} from "react";
-import {useQuery as useCoolQuery, UseQueryOptions} from "react-query";
 
 export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	name: string;
