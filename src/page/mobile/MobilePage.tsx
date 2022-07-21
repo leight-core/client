@@ -4,8 +4,12 @@ import {isString} from "@leight-core/utils";
 import {Space} from "antd";
 import {NavBar, SafeArea} from "antd-mobile";
 import Head from "next/head";
-import {ComponentProps, FC, PropsWithChildren, ReactNode} from "react";
+import {ComponentProps, FC, PropsWithChildren, ReactNode, useEffect} from "react";
 import {useTranslation} from "react-i18next";
+
+const appHeight = () => {
+	document.documentElement.style.setProperty("--app-height", `${window.innerHeight}px`);
+};
 
 export type IMobilePageProps = PropsWithChildren<{
 	header?: ReactNode;
@@ -45,22 +49,38 @@ export const MobilePage: FC<IMobilePageProps> = (
 	}) => {
 	const isMobile = useIsMobile();
 	const navigate = useNavigate();
+	useEffect(() => {
+		window.addEventListener("resize", appHeight);
+		appHeight();
+		return () => {
+			window.removeEventListener("resize", appHeight);
+		};
+	}, []);
 	const {t} = useTranslation();
 	useMenuSelectionContext().useSelection(menuSelection);
 	if (!isMobile) {
 		return null;
 	}
+
 	tabTitle = tabTitle || (title ? `${title}.title` : undefined);
 	return <MobileContent>
 		<PageProvider>
 			{tabTitle && <Head><title key={"title"}>{t(tabTitle, values)}</title></Head>}
 			<SafeArea position={"top"}/>
-			<div style={{
-				height: "80vh",
-				display: "flex",
-				flexDirection: "column",
-				backgroundColor: "#FFF",
-			}}>
+			<div
+				className={"app-height"}
+				style={{
+					padding: "0",
+					margin: "0",
+					overflow: "hidden",
+					width: "100vw",
+					height: "var(--app-height)",
+
+					display: "flex",
+					flexDirection: "column",
+					backgroundColor: "#FFF",
+				}}
+			>
 				<div style={{
 					flex: 0,
 					borderBottom: "solid 1px var(--adm-color-border)",
