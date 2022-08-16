@@ -13,3 +13,4 @@ export * from "./PlainText";
 export * from "./Preview";
 export * from "./ResultSpinner";
 export * from "./ScrollToTop";
+export * from "./Tags";
