@@ -7,6 +7,7 @@ export * from "./Card";
 export * from "./CopyText";
 export * from "./DeployRefreshManager";
 export * from "./IconText";
+export * from "./FilterButton";
 export * from "./ModalButton";
 export * from "./Placeholder";
 export * from "./PlainText";
