@@ -26,6 +26,7 @@ export * from "./selection";
 export * from "./session";
 export * from "./source";
 export * from "./tab";
+export * from "./table";
 export * from "./template";
 export * from "./translation";
 export * from "./uploader";
