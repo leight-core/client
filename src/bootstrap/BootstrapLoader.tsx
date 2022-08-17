@@ -8,16 +8,20 @@ import {FC, useState} from "react";
 
 export interface IBootstrapLoaderProps extends ConfigProviderProps {
 	session?: Session | null;
+	/**
+	 * Enable next-auth session checks.
+	 */
+	withSession?: boolean;
 }
 
-export const BootstrapLoader: FC<IBootstrapLoaderProps> = ({session, ...props}) => {
+export const BootstrapLoader: FC<IBootstrapLoaderProps> = ({session, withSession = true, ...props}) => {
 	const [bootstrapConfig, setBootstrapConfig] = useState<IBootstrapConfig>();
 	useBootstrap(setBootstrapConfig);
-	return <SessionProvider
+	return withSession ? <SessionProvider
 		session={session}
 		refetchInterval={60}
 		refetchOnWindowFocus={true}
 	>
 		{bootstrapConfig && <ConfigProvider locale={bootstrapConfig.locale.antd} {...props}/>}
-	</SessionProvider>;
+	</SessionProvider> : <>{bootstrapConfig && <ConfigProvider locale={bootstrapConfig.locale.antd} {...props}/>}</>;
 };
