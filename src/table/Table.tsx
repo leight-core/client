@@ -31,7 +31,7 @@ export const Table = <TSourceContext extends ISourceContext<any>>(
 	return <PaginationProvider>
 		<PaginationContext.Consumer>
 			{paginationContext =>
-				<CoolTable
+				<CoolTable<ISourceItem<TSourceContext>>
 					style={{minHeight: "50vh"}}
 					showSorterTooltip={false}
 					dataSource={sourceContext.data()}
