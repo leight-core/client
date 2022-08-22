@@ -9,7 +9,7 @@ export interface IButtonLinkProps extends Partial<ComponentProps<typeof Button>>
 	/**
 	 * Href goes to generate method (clever link).
 	 */
-	href: string;
+	href?: string;
 	/**
 	 * Title of a button.
 	 */
@@ -23,6 +23,15 @@ export interface IButtonLinkProps extends Partial<ComponentProps<typeof Button>>
 export const ButtonLink: FC<IButtonLinkProps> = ({href, label, query, ...props}) => {
 	const {t} = useTranslation();
 	try {
+		if (!href) {
+			return <Button
+				type={"link"}
+				size={"large"}
+				{...props}
+			>
+				{isString(label) ? t(label as string) : label}
+			</Button>;
+		}
 		return <Link href={{pathname: href, query: query || undefined}}>
 			<Button
 				type={"link"}
