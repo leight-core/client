@@ -7,7 +7,7 @@ export interface ILoadingPageProps extends Partial<IEmptyPageProps> {
 }
 
 export const LoadingPage: FC<ILoadingPageProps> = ({children, icon = <LoaderIcon style={{fontSize: 42}}/>, ...props}) => {
-	return <EmptyPage title={"component.loading"} {...props}>
+	return <EmptyPage title={"common.loading"} {...props}>
 		<Result
 			style={{marginTop: "10vh"}}
 			icon={icon}

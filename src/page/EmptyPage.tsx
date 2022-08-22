@@ -33,9 +33,8 @@ export type IEmptyPageProps = PropsWithChildren<{
 }>;
 
 const EmptyPageInternal: FC<PropsWithChildren<any>> = ({children}) => {
-	const {t} = useTranslation();
 	const blockContext = useBlockContext();
-	return <Spin spinning={blockContext.isBlocked()} indicator={null as any} tip={t("component.loading") as string}>
+	return <Spin spinning={blockContext.isBlocked()}>
 		{children}
 	</Spin>;
 };
