@@ -1,9 +1,8 @@
 import {IQueryParams} from "@leight-core/api";
-import {isString} from "@leight-core/utils";
+import {Translate} from "@leight-core/client";
 import {Button} from "antd";
 import Link from "next/link";
 import React, {ComponentProps, FC, ReactNode} from "react";
-import {useTranslation} from "react-i18next";
 
 export interface IButtonLinkProps extends Partial<ComponentProps<typeof Button>> {
 	/**
@@ -21,15 +20,15 @@ export interface IButtonLinkProps extends Partial<ComponentProps<typeof Button>>
 }
 
 export const ButtonLink: FC<IButtonLinkProps> = ({href, label, query, ...props}) => {
-	const {t} = useTranslation();
 	try {
 		if (!href) {
 			return <Button
 				type={"link"}
 				size={"large"}
+				disabled
 				{...props}
 			>
-				{isString(label) ? t(label as string) : label}
+				<Translate text={label}/>
 			</Button>;
 		}
 		return <Link href={{pathname: href, query: query || undefined}}>
@@ -38,7 +37,7 @@ export const ButtonLink: FC<IButtonLinkProps> = ({href, label, query, ...props})
 				size={"large"}
 				{...props}
 			>
-				{isString(label) ? t(label as string) : label}
+				<Translate text={label}/>
 			</Button>
 		</Link>;
 	} catch (e) {
@@ -49,7 +48,7 @@ export const ButtonLink: FC<IButtonLinkProps> = ({href, label, query, ...props})
 			disabled
 			{...props}
 		>
-			{isString(label) ? t(label as string) : label}
+			<Translate text={label}/>
 		</Button>;
 	}
 };
