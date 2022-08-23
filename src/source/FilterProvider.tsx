@@ -46,9 +46,15 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, def
 			name,
 			filter,
 			source,
-			setFilter: (filter, source) => $setFilter({...filter, ...applyFilter}, filter, source),
-			applyFilter: (apply, source) => $setFilter({...filter, ...apply, ...applyFilter}, apply, source),
-			mergeFilter: (apply, source) => $setFilter(merge<any, any>(merge<any, any>(filter || {}, apply || {}), applyFilter || {}), apply, source),
+			setFilter: (filter, source) => setTimeout(() => {
+				$setFilter({...filter, ...applyFilter}, filter, source);
+			}, 0),
+			applyFilter: (apply, source) => setTimeout(() => {
+				$setFilter({...filter, ...apply, ...applyFilter}, apply, source);
+			}, 0),
+			mergeFilter: (apply, source) => setTimeout(() => {
+				$setFilter(merge<any, any>(merge<any, any>(filter || {}, apply || {}), applyFilter || {}), apply, source);
+			}, 0),
 			isEmpty: () => isEmpty(request),
 		}}
 		{...props}
