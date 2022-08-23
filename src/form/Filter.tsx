@@ -38,15 +38,24 @@ const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 };
 
 type IFilterFormProps<TFilter> = {
+	/**
+	 * Filter form translations; it's appending ".filter", for example "foo.bar.filter".
+	 */
 	translation: string;
 	formProps?: Partial<IFormProps<TFilter, TFilter>>;
 
+	/**
+	 * Translate values from the filter form into filter context; by default 1:1 (form content is directly "filterContext.setFilter()").
+	 */
 	toFilter(values: any): TFilter | undefined;
 
+	/**
+	 * Setup initial values of the form; by default uses "filterContext.source", if it's empty, toFrom is called with a current filter and source.
+	 */
 	toForm?(filter?: TFilter, source?: any): any;
 } & IFilterInternalProps;
 
-const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter => filter, toFilter, ...props}: IFilterFormProps<TFilter>) => {
+const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter => filter, toFilter = value => value, ...props}: IFilterFormProps<TFilter>) => {
 	const drawerContext = useOptionalDrawerContext();
 	const filterContext = useFilterContext<TFilter>();
 	const sourceContext = useOptionalSourceContext();
