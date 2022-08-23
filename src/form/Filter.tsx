@@ -47,7 +47,7 @@ type IFilterFormProps<TFilter> = {
 	/**
 	 * Translate values from the filter form into filter context; by default 1:1 (form content is directly "filterContext.setFilter()").
 	 */
-	toFilter(values: any): TFilter | undefined;
+	toFilter?(values: any): TFilter | undefined;
 
 	/**
 	 * Setup initial values of the form; by default uses "filterContext.source", if it's empty, toFrom is called with a current filter and source.
