@@ -1,4 +1,5 @@
 export * from "./DrawerMenu";
+export * from "./HorizontalMenu";
 export * from "./Menu";
 export * from "./MenuContext";
 export * from "./MenuDivider";

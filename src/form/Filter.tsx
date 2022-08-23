@@ -59,6 +59,7 @@ const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter
 	const drawerContext = useOptionalDrawerContext();
 	const filterContext = useFilterContext<TFilter>();
 	const sourceContext = useOptionalSourceContext();
+	const cursorContext = useOptionalCursorContext();
 
 	return <Form<TFilter, TFilter>
 		layout={"vertical"}
@@ -66,6 +67,7 @@ const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter
 		onSuccess={({response}) => {
 			sourceContext?.reset();
 			filterContext.setFilter(toFilter(response), response);
+			cursorContext?.setPage(0);
 			drawerContext?.setVisible(false);
 		}}
 		translation={translation + ".filter"}
