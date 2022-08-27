@@ -28,7 +28,9 @@ export const ButtonLink: FC<IButtonLinkProps> = ({href, label, query, ...props})
 				disabled
 				{...props}
 			>
-				<Translate text={label}/>
+				<span>
+					<Translate text={label}/>
+				</span>
 			</Button>;
 		}
 		return <Link href={{pathname: href, query: query || undefined}}>
@@ -37,7 +39,9 @@ export const ButtonLink: FC<IButtonLinkProps> = ({href, label, query, ...props})
 				size={"large"}
 				{...props}
 			>
-				<Translate text={label}/>
+				<span>
+					<Translate text={label}/>
+				</span>
 			</Button>
 		</Link>;
 	} catch (e) {
@@ -48,7 +52,9 @@ export const ButtonLink: FC<IButtonLinkProps> = ({href, label, query, ...props})
 			disabled
 			{...props}
 		>
-			<Translate text={label}/>
+			<span>
+				<Translate text={label}/>
+			</span>
 		</Button>;
 	}
 };
