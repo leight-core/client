@@ -73,6 +73,9 @@ export const QuerySourceSelect = <TResponse, >(
 	useEffect(() => {
 		filter && filterContext?.setFilter(toId(value));
 	}, [value]);
+	useEffect(() => {
+		filter && filterContext?.setFilter(toId(value));
+	}, []);
 
 	const _onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => onSelect?.(option);
 
@@ -80,7 +83,7 @@ export const QuerySourceSelect = <TResponse, >(
 		options={sourceContext.result.data.map(entity => {
 			const option = toOption(entity);
 			return ({
-				value: option.value,
+				...option,
 				label: isString(option.label) ? t((labelPrefix || "") + option.label, option.label) : option.label,
 				entity,
 			});
