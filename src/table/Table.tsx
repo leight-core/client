@@ -14,10 +14,7 @@ export interface IITableChildren<TResponse> {
 	column(props: ITableColumnProps<TResponse>): ReactNode;
 }
 
-export interface ITableChildrenCallback<TResponse> {
-	(children: IITableChildren<TResponse>): ReactNode;
-}
-
+export type ITableChildrenCallback<TResponse> = (children: IITableChildren<TResponse>) => ReactNode;
 
 export interface ITableProps<TResponse> extends Omit<TableProps<TResponse>, "children"> {
 	hidden?: string[];
@@ -38,6 +35,24 @@ export const Table = <TResponse, >(
 	}: ITableProps<TResponse>) => {
 	const {t} = useTranslation();
 	const sourceContext = useSourceContext<TResponse>();
+	let $children: any = children;
+	if (isCallable($children)) {
+		$children = ($children as ITableChildrenCallback<any>)({
+			column: (props: any) => {
+				if (props.title === undefined) {
+					props.title = `table.${translation}.${props.key}.column`;
+				}
+				if (isString(props.title)) {
+					props.title = t(props.title as string);
+				}
+				if (props.dataIndex === undefined) {
+					props.dataIndex = props.key;
+				}
+				return hidden?.includes(props.key) ? null : <CoolTable.Column {...props}/>;
+			},
+		});
+	}
+
 	return <PaginationProvider>
 		<PaginationContext.Consumer>
 			{paginationContext =>
@@ -62,20 +77,7 @@ export const Table = <TResponse, >(
 					}}
 					{...props}
 				>
-					{isCallable(children) ? (children as ITableChildrenCallback<any>)({
-						column: (props: any) => {
-							if (isString(props.title)) {
-								props.title = t(props.title as string);
-							}
-							if (props.dataIndex === undefined) {
-								props.dataIndex = props.key;
-							}
-							if (props.title === undefined) {
-								props.title = `table.${translation}.${props.key}.column`;
-							}
-							return hidden?.includes(props.key) ? null : <CoolTable.Column {...props}/>;
-						},
-					}) : children as any}
+					{$children}
 				</CoolTable>}
 		</PaginationContext.Consumer>
 	</PaginationProvider>;
