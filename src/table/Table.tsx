@@ -23,6 +23,7 @@ export interface ITableProps<TResponse> extends Omit<TableProps<TResponse>, "chi
 	children?: ITableChildrenCallback<TResponse> | ReactNode;
 	loading?: Partial<SpinProps>;
 	withLoading?: keyof Pick<UseQueryResult, "isLoading" | "isFetching" | "isRefetching">;
+	translation?: string;
 }
 
 export const Table = <TResponse, >(
