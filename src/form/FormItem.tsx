@@ -61,9 +61,10 @@ export const FormItem: FC<IFormItemProps> = (
 		message: t(["form-item." + fieldName + ".required"].concat(labels.map(item => item + ".required"))) as string,
 	});
 	/**
-	 * This is... a hack I really don't understand! But it works.
+	 * This is... a hack I really don't understand!
+	 * But it works.
 	 *
-	 * The idea is to clear errors set from form context and this solution could do that with ease!
+	 * The idea is to clear errors set from form context, and this solution could do that with ease!
 	 */
 	rules.push(() => ({validator: () => Promise.resolve()}));
 	props.tooltip = props.tooltip ? t("" + props.tooltip) : props.tooltip;

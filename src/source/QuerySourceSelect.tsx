@@ -77,7 +77,7 @@ export const QuerySourceSelect = <TResponse, >(
 		filter && filterContext?.setFilter(toId(value));
 	}, []);
 
-	const _onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => onSelect?.(option);
+	const $onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => onSelect?.(option);
 
 	return sourceContext.result.isSuccess ? <Select<string, IQuerySourceValue<TResponse>>
 		options={sourceContext.result.data.map(entity => {
@@ -88,7 +88,7 @@ export const QuerySourceSelect = <TResponse, >(
 				entity,
 			});
 		})}
-		onSelect={_onSelect}
+		onSelect={$onSelect}
 		loading={sourceContext.result.isFetching}
 		filterOption={() => true}
 		showSearch={showSearch}
@@ -107,7 +107,7 @@ export const QuerySourceSelect = <TResponse, >(
 		loading={sourceContext.result.isLoading}
 		disabled={disableOnEmpty}
 		style={{width: "100%"}}
-		onSelect={_onSelect}
+		onSelect={$onSelect}
 		{...props}
 	/>;
 };
