@@ -20,6 +20,7 @@ export interface ITableChildrenCallback<TResponse> {
 
 
 export interface ITableProps<TResponse> extends Omit<TableProps<TResponse>, "children"> {
+	hidden?: string[];
 	children?: ITableChildrenCallback<TResponse> | ReactNode;
 	loading?: Partial<SpinProps>;
 	withLoading?: keyof Pick<UseQueryResult, "isLoading" | "isFetching" | "isRefetching">;
@@ -28,8 +29,10 @@ export interface ITableProps<TResponse> extends Omit<TableProps<TResponse>, "chi
 
 export const Table = <TResponse, >(
 	{
+		hidden,
 		children,
 		loading,
+		translation,
 		withLoading = "isFetching",
 		...props
 	}: ITableProps<TResponse>) => {
@@ -64,7 +67,13 @@ export const Table = <TResponse, >(
 							if (isString(props.title)) {
 								props.title = t(props.title as string);
 							}
-							return <CoolTable.Column {...props}/>;
+							if (props.dataIndex === undefined) {
+								props.dataIndex = props.key;
+							}
+							if (props.title === undefined) {
+								props.title = `table.${translation}.${props.key}.column`;
+							}
+							return hidden?.includes(props.key) ? null : <CoolTable.Column {...props}/>;
 						},
 					}) : children as any}
 				</CoolTable>}
