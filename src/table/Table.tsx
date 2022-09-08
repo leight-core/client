@@ -1,24 +1,18 @@
 import {LoaderIcon, PaginationContext, PaginationProvider, Template, useSourceContext} from "@leight-core/client";
-import {isCallable, isString} from "@leight-core/utils";
+import {isString} from "@leight-core/utils";
 import {UseQueryResult} from "@tanstack/react-query";
 import {Empty, SpinProps, Table as CoolTable, TableProps} from "antd";
 import type {ColumnProps} from "antd/es/table";
-import React, {ReactNode} from "react";
+import React from "react";
 import {useTranslation} from "react-i18next";
 
 export interface ITableColumnProps<TItem> extends Omit<ColumnProps<TItem>, "dataIndex"> {
 	readonly dataIndex?: keyof TItem;
 }
 
-export interface IITableChildren<TResponse> {
-	column(props: ITableColumnProps<TResponse>): ReactNode;
-}
-
-export type ITableChildrenCallback<TResponse> = (children: IITableChildren<TResponse>) => ReactNode;
-
 export interface ITableProps<TResponse> extends Omit<TableProps<TResponse>, "children"> {
 	hidden?: string[];
-	children?: ITableChildrenCallback<TResponse> | ReactNode;
+	children: ITableColumnProps<TResponse>[];
 	loading?: Partial<SpinProps>;
 	withLoading?: keyof Pick<UseQueryResult, "isLoading" | "isFetching" | "isRefetching">;
 	translation?: string;
@@ -35,23 +29,19 @@ export const Table = <TResponse, >(
 	}: ITableProps<TResponse>) => {
 	const {t} = useTranslation();
 	const sourceContext = useSourceContext<TResponse>();
-	let $children: any = children;
-	if (isCallable($children)) {
-		$children = ($children as ITableChildrenCallback<any>)({
-			column: (props: any) => {
-				if (props.title === undefined) {
-					props.title = `table.${translation}.${props.key}.column`;
-				}
-				if (isString(props.title)) {
-					props.title = t(props.title as string);
-				}
-				if (props.dataIndex === undefined) {
-					props.dataIndex = props.key;
-				}
-				return hidden?.includes(props.key) ? null : <CoolTable.Column {...props}/>;
-			},
-		});
-	}
+
+	const createColumn = (props: any) => {
+		if (props.title === undefined) {
+			props.title = `table.${translation}.${props.key}.column`;
+		}
+		if (isString(props.title)) {
+			props.title = t(props.title as string);
+		}
+		if (props.dataIndex === undefined) {
+			props.dataIndex = props.key;
+		}
+		return hidden?.includes(props.key) ? null : <CoolTable.Column {...props}/>;
+	};
 
 	return <PaginationProvider>
 		<PaginationContext.Consumer>
@@ -77,7 +67,7 @@ export const Table = <TResponse, >(
 					}}
 					{...props}
 				>
-					{$children}
+					{children.map(createColumn)}
 				</CoolTable>}
 		</PaginationContext.Consumer>
 	</PaginationProvider>;
