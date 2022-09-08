@@ -41,6 +41,7 @@ export const Table = <TResponse, >(
 			props.dataIndex = props.key;
 		} else if (props.dataIndex === null) {
 			props.dataIndex = undefined;
+			props.render = props.render || (() => null);
 		}
 		return hidden?.includes(props.key) ? null : <CoolTable.Column {...props}/>;
 	};
