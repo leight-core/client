@@ -12,7 +12,7 @@ export interface ITableColumnProps<TItem> extends Omit<ColumnProps<TItem>, "data
 
 export interface ITableProps<TResponse> extends Omit<TableProps<TResponse>, "children"> {
 	hidden?: string[];
-	children?: ITableColumnProps<TResponse>[];
+	children?: (ITableColumnProps<TResponse> | undefined)[];
 	loading?: Partial<SpinProps>;
 	withLoading?: keyof Pick<UseQueryResult, "isLoading" | "isFetching" | "isRefetching">;
 	translation?: string;
@@ -67,7 +67,7 @@ export const Table = <TResponse, >(
 					}}
 					{...props}
 				>
-					{children.map(createColumn)}
+					{children?.filter(i => i).map(createColumn)}
 				</CoolTable>}
 		</PaginationContext.Consumer>
 	</PaginationProvider>;
