@@ -7,7 +7,7 @@ import React from "react";
 import {useTranslation} from "react-i18next";
 
 export interface ITableColumnProps<TItem> extends Omit<ColumnProps<TItem>, "dataIndex"> {
-	readonly dataIndex?: keyof TItem;
+	readonly dataIndex?: keyof TItem | null;
 }
 
 export interface ITableProps<TResponse> extends Omit<TableProps<TResponse>, "children"> {
@@ -39,6 +39,8 @@ export const Table = <TResponse, >(
 		}
 		if (props.dataIndex === undefined) {
 			props.dataIndex = props.key;
+		} else if (props.dataIndex === null) {
+			props.dataIndex = undefined;
 		}
 		return hidden?.includes(props.key) ? null : <CoolTable.Column {...props}/>;
 	};
