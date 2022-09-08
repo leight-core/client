@@ -12,7 +12,7 @@ export interface ITableColumnProps<TItem> extends Omit<ColumnProps<TItem>, "data
 
 export interface ITableProps<TResponse> extends Omit<TableProps<TResponse>, "children"> {
 	hidden?: string[];
-	children: ITableColumnProps<TResponse>[];
+	children?: ITableColumnProps<TResponse>[];
 	loading?: Partial<SpinProps>;
 	withLoading?: keyof Pick<UseQueryResult, "isLoading" | "isFetching" | "isRefetching">;
 	translation?: string;
@@ -21,7 +21,7 @@ export interface ITableProps<TResponse> extends Omit<TableProps<TResponse>, "chi
 export const Table = <TResponse, >(
 	{
 		hidden,
-		children,
+		children = [],
 		loading,
 		translation,
 		withLoading = "isFetching",
