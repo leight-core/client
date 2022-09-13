@@ -23,7 +23,7 @@ export const Tags: FC<ITagsProps> = ({translation, onClick, color = "blue", tags
 				}}
 				{...props}
 			>
-				{translation ? t(translation + "." + (tag.group ? "." + tag.group : "") + tag.tag) : tag.tag}
+				{translation ? t(`${translation}.${tag.group}.${tag.tag}`) : tag.tag}
 			</Tag>) : (translation ? <Typography.Text type={"secondary"}>{t(`${translation}.empty`)}</Typography.Text> : null)
 	}</>;
 };
