@@ -1,12 +1,7 @@
+import {ITag} from "@leight-core/api";
 import {Tag, TagProps} from "antd";
 import {FC} from "react";
 import {useTranslation} from "react-i18next";
-
-export interface ITag {
-	id: string;
-	code: string;
-	label?: string;
-}
 
 export interface ITagsProps extends Omit<Partial<TagProps>, "onClick"> {
 	translation?: string;
@@ -26,7 +21,7 @@ export const Tags: FC<ITagsProps> = ({translation = "tag", onClick, tags = [], .
 			}}
 			{...props}
 		>
-			{t(translation + "." + tag.code, tag.label)}
+			{t(translation + "." + (tag.group ? "." + tag.group : "") + tag.tag)}
 		</Tag>)}
 	</>;
 };
