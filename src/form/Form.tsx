@@ -137,7 +137,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams>(
 				onSuccess: response => {
 					blockContext.unblock();
 					formBlockContext.unblock();
-					closeDrawer && drawerContext?.hide();
+					closeDrawer && drawerContext?.close();
 					onSuccess({navigate, values, response, formContext});
 				},
 				onError: error => onFailure?.({error: (error && error.response && error.response.data) || error, formContext}),

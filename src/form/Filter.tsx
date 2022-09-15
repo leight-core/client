@@ -68,14 +68,14 @@ const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter
 			sourceContext?.reset();
 			filterContext.setFilter(toFilter(response), response);
 			cursorContext?.setPage(0);
-			drawerContext?.setVisible(false);
+			drawerContext?.close();
 		}}
 		translation={translation + ".filter"}
 		{...formProps}
 	>
 		<FilterInternal
 			onClear={() => {
-				drawerContext?.setVisible(false);
+				drawerContext?.close();
 				onClear?.();
 			}}
 			{...props}

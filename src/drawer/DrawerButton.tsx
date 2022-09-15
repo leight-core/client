@@ -49,7 +49,7 @@ export const DrawerButton: FC<IDrawerButtonProps> = ({children, onClick, label, 
 					<UseToken tokens={tokens}>
 						<Button
 							onClick={event => {
-								drawerContext.setVisible(true);
+								drawerContext.setOpen(true);
 								onClick?.(event);
 							}}
 							{...props}

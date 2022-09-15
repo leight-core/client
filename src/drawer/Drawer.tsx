@@ -13,8 +13,8 @@ export const Drawer: FC<IDrawerProps> = props => {
 	return <CoolDrawer
 		placement={"right"}
 		closable
-		onClose={() => drawerContext.setVisible(false)}
-		visible={drawerContext.visible}
+		onClose={() => drawerContext.close()}
+		open={drawerContext.open}
 		destroyOnClose
 		{...props}
 	/>;
