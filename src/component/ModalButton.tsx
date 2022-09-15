@@ -12,7 +12,7 @@ export interface IModalButtonProps extends Omit<Partial<ModalProps>, "onOk"> {
 
 export const ModalButton: FC<IModalButtonProps> = ({button, onOk, tokens, ...props}) => {
 	const {t} = useTranslation();
-	const [show, setShow] = useState(false);
+	const [open, setOpen] = useState(false);
 	if (button && isString(button.children)) {
 		button.children = t(button.children as string);
 	}
@@ -28,13 +28,13 @@ export const ModalButton: FC<IModalButtonProps> = ({button, onOk, tokens, ...pro
 				type={"link"}
 				size={"large"}
 				{...button}
-				onClick={() => setShow(true)}
+				onClick={() => setOpen(true)}
 			/>
 		</UseToken>
 		<Modal
-			visible={show}
-			onCancel={() => setShow(false)}
-			onOk={onOk ? () => onOk(setShow) : () => setShow(false)}
+			open={open}
+			onCancel={() => setOpen(false)}
+			onOk={onOk ? () => onOk(setOpen) : () => setOpen(false)}
 			cancelButtonProps={{
 				type: "text",
 				size: "large",
