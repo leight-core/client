@@ -22,7 +22,7 @@ export const DeployRefreshManager: FC<IDeployRefreshManagerProps> = ({useVersion
 	// noinspection SillyAssignmentJS
 	return <>
 		<Modal
-			visible={version}
+			open={version}
 			title={t("common.new.version.title", {data: {version: versionQuery.data}})}
 			footer={<Button
 				type={"primary"}
