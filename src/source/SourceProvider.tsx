@@ -22,6 +22,7 @@ export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	 * Query options.
 	 */
 	options?: UseQueryOptions<any, any, TResponse[]>;
+	onSuccess?(response: TResponse[]): void;
 	withCount?: boolean;
 }>;
 
@@ -33,6 +34,7 @@ export const SourceProvider = <TResponse, >(
 		withCount = false,
 		live = false,
 		options,
+		onSuccess,
 		...props
 	}: ISourceProviderProps<TResponse>
 ) => {
@@ -60,6 +62,7 @@ export const SourceProvider = <TResponse, >(
 		keepPreviousData: true,
 		refetchInterval: live,
 		onSuccess: (response: TResponse[]) => {
+			onSuccess?.(response);
 			if (cursorContext?.append) {
 				setData(prev => prev.concat(response));
 				return;
