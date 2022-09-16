@@ -3,7 +3,6 @@ import {IFilterContext, INavigate, ISourceContext} from "@leight-core/api";
 import {useNavigate, useOptionalFilterContext, useSourceContext} from "@leight-core/client";
 import {Divider, DotLoading, InfiniteScroll, List, SearchBar, Space} from "antd-mobile";
 import {ComponentProps, FC, ReactNode} from "react";
-import {useTranslation} from "react-i18next";
 import {IoTrailSignOutline} from "react-icons/io5";
 
 export interface IInfiniteListHeaderRequest<TResponse> {
@@ -39,7 +38,6 @@ export const InfiniteList = <TResponse, >(
 		header,
 		...props
 	}: IInfiniteListProps<TResponse>) => {
-	const {t} = useTranslation();
 	const sourceContext = useSourceContext<TResponse>();
 	const filterContext = useOptionalFilterContext();
 	if (withFulltext && header) {
@@ -70,15 +68,13 @@ export const InfiniteList = <TResponse, >(
 		>
 			{sourceContext.result.isFetching || sourceContext.hasMore() ? (
 				<Space>
-					<span>{t("common.infinite.loading")}</span>
 					<DotLoading/>
 				</Space>
 			) : (
 				<Divider
 					style={{width: "100%"}}
 				>
-					<Icon component={IoTrailSignOutline}/>
-					{/*{t("common.infinite.no-more")}*/}
+					<Icon component={IoTrailSignOutline} size={64}/>
 				</Divider>
 			)}
 		</InfiniteScroll>
