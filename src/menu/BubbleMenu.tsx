@@ -4,11 +4,13 @@ import {ActionSheet, FloatingBubble} from "antd-mobile";
 import {AddOutline} from "antd-mobile-icons";
 import {ComponentProps, FC, ReactNode, useState} from "react";
 
+export type IActionSheetProps = ComponentProps<typeof ActionSheet>;
+
 export interface IBubbleMenuActionOnClickProps {
 	setVisible(visible: boolean): void;
 }
 
-export type IBubbleMenuAction = Omit<Unboxed<ComponentProps<typeof ActionSheet>["actions"]>, "onClick" | "text"> & {
+export type IBubbleMenuAction = Omit<Unboxed<IActionSheetProps["actions"]>, "onClick" | "text"> & {
 	text?: ReactNode;
 	onClick?(props: IBubbleMenuActionOnClickProps): void;
 }
@@ -16,6 +18,7 @@ export type IBubbleMenuAction = Omit<Unboxed<ComponentProps<typeof ActionSheet>[
 export interface IBubbleMenuProps extends Partial<ComponentProps<typeof FloatingBubble>> {
 	translation?: string;
 	actions: IBubbleMenuAction[];
+	actionSheetProps?: IActionSheetProps;
 	initialPosition?: {
 		topRight?: number;
 		topLeft?: number;
@@ -24,7 +27,7 @@ export interface IBubbleMenuProps extends Partial<ComponentProps<typeof Floating
 	};
 }
 
-export const BubbleMenu: FC<IBubbleMenuProps> = ({translation, actions, initialPosition: {topRight, topLeft, bottomRight, bottomLeft} = {}, ...props}) => {
+export const BubbleMenu: FC<IBubbleMenuProps> = ({translation, actionSheetProps, actions, initialPosition: {topRight, topLeft, bottomRight, bottomLeft} = {}, ...props}) => {
 	const [visible, setVisible] = useState(false);
 
 	const defaultSize = "16px";
@@ -62,6 +65,7 @@ export const BubbleMenu: FC<IBubbleMenuProps> = ({translation, actions, initialP
 				} : undefined,
 			}))}
 			onClose={() => setVisible(false)}
+			{...actionSheetProps}
 		/>
 		<FloatingBubble
 			axis="y"
