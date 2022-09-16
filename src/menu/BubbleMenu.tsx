@@ -1,5 +1,5 @@
-import {Unboxed} from "@leight-core/api";
-import {Translate} from "@leight-core/client";
+import {INavigate, Unboxed} from "@leight-core/api";
+import {Translate, useNavigate} from "@leight-core/client";
 import {ActionSheet, FloatingBubble} from "antd-mobile";
 import {AddOutline} from "antd-mobile-icons";
 import {ComponentProps, FC, ReactNode, useState} from "react";
@@ -8,6 +8,8 @@ export type IActionSheetProps = ComponentProps<typeof ActionSheet>;
 
 export interface IBubbleMenuActionOnClickProps {
 	setVisible(visible: boolean): void;
+
+	navigate: INavigate;
 }
 
 export type IBubbleMenuAction = Omit<Unboxed<IActionSheetProps["actions"]>, "onClick" | "text"> & {
@@ -29,6 +31,7 @@ export interface IBubbleMenuProps extends Partial<ComponentProps<typeof Floating
 
 export const BubbleMenu: FC<IBubbleMenuProps> = ({translation, actionSheetProps, actions, initialPosition: {topRight, topLeft, bottomRight, bottomLeft} = {}, ...props}) => {
 	const [visible, setVisible] = useState(false);
+	const navigate = useNavigate();
 
 	const defaultSize = "16px";
 
@@ -61,7 +64,10 @@ export const BubbleMenu: FC<IBubbleMenuProps> = ({translation, actionSheetProps,
 				...action,
 				text: text || <Translate text={translation ? translation + "." + action.key : action.key}/>,
 				onClick: onClick ? () => {
-					onClick({setVisible});
+					onClick({
+						setVisible,
+						navigate,
+					});
 				} : undefined,
 			}))}
 			onClose={() => setVisible(false)}
