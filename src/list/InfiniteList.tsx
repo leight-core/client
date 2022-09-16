@@ -1,6 +1,6 @@
 import Icon from "@ant-design/icons";
 import {IFilterContext, INavigate, ISourceContext} from "@leight-core/api";
-import {useNavigate, useOptionalFilterContext, useSourceContext} from "@leight-core/client";
+import {useNavigate, useOptionalCursorContext, useOptionalFilterContext, useSourceContext} from "@leight-core/client";
 import {DotLoading, InfiniteScroll, List, SearchBar, Space} from "antd-mobile";
 import {ComponentProps, FC, ReactNode} from "react";
 import {IoTrailSignOutline} from "react-icons/io5";
@@ -40,6 +40,7 @@ export const InfiniteList = <TResponse, >(
 	}: IInfiniteListProps<TResponse>) => {
 	const sourceContext = useSourceContext<TResponse>();
 	const filterContext = useOptionalFilterContext();
+	const cursorContext = useOptionalCursorContext();
 	if (withFulltext && header) {
 		console.warn(`Using infinite list ${sourceContext.name} with fulltext and header specified; please use flags only or just header.`);
 	}
@@ -51,10 +52,12 @@ export const InfiniteList = <TResponse, >(
 			header={withFulltext ? <SearchBar
 				onSearch={value => {
 					sourceContext.reset();
+					cursorContext?.setPage(0);
 					filterContext?.setFilter({fulltext: value});
 				}}
 				onClear={() => {
 					sourceContext.reset();
+					cursorContext?.setPage(0);
 					filterContext?.setFilter();
 				}}
 			/> : header?.({sourceContext, filterContext})}
