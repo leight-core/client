@@ -1,3 +1,4 @@
+export * from "./BubbleMenu";
 export * from "./DrawerMenu";
 export * from "./HorizontalMenu";
 export * from "./Menu";
