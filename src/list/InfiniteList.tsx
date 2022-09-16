@@ -1,8 +1,10 @@
+import Icon from "@ant-design/icons";
 import {IFilterContext, INavigate, ISourceContext} from "@leight-core/api";
 import {useNavigate, useOptionalFilterContext, useSourceContext} from "@leight-core/client";
 import {Divider, DotLoading, InfiniteScroll, List, SearchBar, Space} from "antd-mobile";
 import {ComponentProps, FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
+import {IoTrailSignOutline} from "react-icons/io5";
 
 export interface IInfiniteListHeaderRequest<TResponse> {
 	sourceContext: ISourceContext<TResponse>;
@@ -75,7 +77,8 @@ export const InfiniteList = <TResponse, >(
 				<Divider
 					style={{width: "100%"}}
 				>
-					{t("common.infinite.no-more")}
+					<Icon component={IoTrailSignOutline}/>
+					{/*{t("common.infinite.no-more")}*/}
 				</Divider>
 			)}
 		</InfiniteScroll>

@@ -1,5 +1,5 @@
 {
-	"version": "0.6.134",
+	"version": "0.6.135",
 	"name": "@leight-core/client",
 	"description": "All that shiny client stuff.",
 	"license": "MIT",
@@ -27,6 +27,7 @@
 		"@tanstack/query-sync-storage-persister": "^4.0.8",
 		"@tanstack/react-query": "^4.0.8",
 		"@tanstack/react-query-persist-client": "^4.0.8",
+		"react-icons": "^4.4.0",
 		"antd-mobile": "^5.21.0",
 		"axios": "^0.27.2",
 		"axios-retry": "^3.3.1",
