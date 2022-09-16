@@ -1,7 +1,7 @@
 import Icon from "@ant-design/icons";
 import {IFilterContext, INavigate, ISourceContext} from "@leight-core/api";
 import {useNavigate, useOptionalFilterContext, useSourceContext} from "@leight-core/client";
-import {Divider, DotLoading, InfiniteScroll, List, SearchBar, Space} from "antd-mobile";
+import {DotLoading, InfiniteScroll, List, SearchBar, Space} from "antd-mobile";
 import {ComponentProps, FC, ReactNode} from "react";
 import {IoTrailSignOutline} from "react-icons/io5";
 
@@ -66,17 +66,13 @@ export const InfiniteList = <TResponse, >(
 			loadMore={async () => sourceContext.more(true)}
 			hasMore={sourceContext.hasMore()}
 		>
-			{sourceContext.result.isFetching || sourceContext.hasMore() ? (
-				<Space>
+			<Space>
+				{sourceContext.result.isFetching || sourceContext.hasMore() ? (
 					<DotLoading/>
-				</Space>
-			) : (
-				<Divider
-					style={{width: "100%"}}
-				>
-					<Icon component={IoTrailSignOutline} size={64}/>
-				</Divider>
-			)}
+				) : (
+					<Icon component={IoTrailSignOutline} size={128}/>
+				)}
+			</Space>
 		</InfiniteScroll>
 	</>;
 };
