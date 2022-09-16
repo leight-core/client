@@ -52,13 +52,13 @@ export const InfiniteList = <TResponse, >(
 			header={withFulltext ? <SearchBar
 				onSearch={value => {
 					sourceContext.reset();
-					cursorContext?.setPage(0);
 					filterContext?.setFilter({fulltext: value});
+					setTimeout(() => cursorContext?.setPage(0), 0);
 				}}
 				onClear={() => {
 					sourceContext.reset();
-					cursorContext?.setPage(0);
 					filterContext?.setFilter();
+					setTimeout(() => cursorContext?.setPage(0), 0);
 				}}
 			/> : header?.({sourceContext, filterContext})}
 			{...props}
