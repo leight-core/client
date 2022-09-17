@@ -143,7 +143,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams>(
 						values,
 						response,
 						formContext,
-						t: text => t(formContext.translation ? `${formContext.translation}.${text}` : text),
+						t: (text, data) => t(formContext.translation ? `${formContext.translation}.${text}` : text, data),
 					});
 				},
 				onError: error => onFailure?.({error: (error && error.response && error.response.data) || error, formContext}),
