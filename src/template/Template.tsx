@@ -24,8 +24,8 @@ export const Template: FC<ITemplateProps> = ({icon, forceIcon = false, browserEx
 			extra={isBrowser ? browserExtra : mobileExtra}
 			{...props}
 		/>}
-		{!isMobile ? <Centered span={span}>
+		{isMobile ? children : <Centered span={span}>
 			{children}
-		</Centered> : children}
+		</Centered>}
 	</>;
 };

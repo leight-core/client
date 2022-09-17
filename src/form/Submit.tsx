@@ -27,9 +27,10 @@ const Internal: FC<IInternalProps> = ({label, tokens, ...props}) => {
 		<Button
 			htmlType={"submit"}
 			type={"primary"}
-			children={t(formContext.translation ? formContext.translation + "." + label : label, label)}
 			{...props}
-		/>
+		>
+			{t(formContext.translation ? formContext.translation + "." + label : label)}
+		</Button>
 	</UseToken>;
 };
 
