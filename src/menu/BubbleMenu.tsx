@@ -53,7 +53,7 @@ export const BubbleMenu: FC<IBubbleMenuProps> = ({translation, actionSheetProps,
 		"--initial-position-left": `${bottomLeft}px`,
 		"--edge-distance": `${bottomLeft}px`,
 	} : {
-		"--initial-position-top": defaultSize,
+		"--initial-position-bottom": defaultSize,
 		"--initial-position-right": defaultSize,
 		"--edge-distance": defaultSize,
 	};
