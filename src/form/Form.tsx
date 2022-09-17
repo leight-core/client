@@ -138,7 +138,13 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams>(
 					blockContext.unblock();
 					formBlockContext.unblock();
 					closeDrawer && drawerContext?.close();
-					onSuccess({navigate, values, response, formContext});
+					onSuccess({
+						navigate,
+						values,
+						response,
+						formContext,
+						t: text => t(formContext.translation ? `${formContext.translation}.${text}` : text),
+					});
 				},
 				onError: error => onFailure?.({error: (error && error.response && error.response.data) || error, formContext}),
 			});
