@@ -9,7 +9,7 @@ export interface IQuerySourceValue<TResponse> extends IBaseSelectOption {
 	entity: TResponse;
 }
 
-export interface IQuerySourceSelectProps<TResponse> extends Partial<Omit<SelectProps<string, IQuerySourceValue<TResponse>>, "onSelect">> {
+export interface IQuerySourceSelectProps<TResponse> extends Partial<Omit<SelectProps<string, IQuerySourceValue<TResponse>>, "onSelect" | "onDeselect">> {
 	/**
 	 * Map requested data into Select's options.
 	 */
@@ -35,6 +35,8 @@ export interface IQuerySourceSelectProps<TResponse> extends Partial<Omit<SelectP
 
 	onSelect?(value: IQuerySourceValue<TResponse>): void;
 
+	onDeselect?(value: IQuerySourceValue<TResponse>): void;
+
 	toId?(value?: string | null): Record<string, string | null | undefined>;
 
 	labelPrefix?: string;
@@ -54,6 +56,7 @@ export const QuerySourceSelect = <TResponse, >(
 		filter = showSearch,
 		disableOnEmpty = true,
 		onSelect,
+		onDeselect,
 		labelPrefix,
 		toId = value => ({id: value}),
 		...props
@@ -78,6 +81,7 @@ export const QuerySourceSelect = <TResponse, >(
 	}, []);
 
 	const $onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => onSelect?.(option);
+	const $onDeselect: any = (value: string, option: IQuerySourceValue<TResponse>) => onDeselect?.(option);
 
 	return sourceContext.result.isSuccess ? <Select<string, IQuerySourceValue<TResponse>>
 		options={sourceContext.result.data.map(entity => {
@@ -89,6 +93,7 @@ export const QuerySourceSelect = <TResponse, >(
 			});
 		})}
 		onSelect={$onSelect}
+		onDeselect={$onDeselect}
 		loading={sourceContext.result.isFetching}
 		filterOption={() => true}
 		showSearch={showSearch}
