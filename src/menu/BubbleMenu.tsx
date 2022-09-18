@@ -1,7 +1,6 @@
 import {INavigate, Unboxed} from "@leight-core/api";
-import {Translate, useNavigate} from "@leight-core/client";
-import {ActionSheet, FloatingBubble} from "antd-mobile";
-import {MoreOutline} from "antd-mobile-icons";
+import {BubbleButton, IBubbleButtonProps, Translate, useNavigate} from "@leight-core/client";
+import {ActionSheet} from "antd-mobile";
 import {ComponentProps, FC, ReactNode, useState} from "react";
 
 export type IActionSheetProps = ComponentProps<typeof ActionSheet>;
@@ -17,47 +16,15 @@ export type IBubbleMenuAction = Omit<Unboxed<IActionSheetProps["actions"]>, "onC
 	onClick?(props: IBubbleMenuActionOnClickProps): void;
 }
 
-export interface IBubbleMenuProps extends Partial<ComponentProps<typeof FloatingBubble>> {
+export interface IBubbleMenuProps extends Partial<IBubbleButtonProps> {
 	translation?: string;
 	actions: IBubbleMenuAction[];
 	actionSheetProps?: IActionSheetProps;
-	icon?: ReactNode;
-	initialPosition?: {
-		topRight?: number;
-		topLeft?: number;
-		bottomRight?: number;
-		bottomLeft?: number;
-	};
 }
 
-export const BubbleMenu: FC<IBubbleMenuProps> = ({translation, actionSheetProps, actions, initialPosition: {topRight, topLeft, bottomRight, bottomLeft} = {}, icon, ...props}) => {
+export const BubbleMenu: FC<IBubbleMenuProps> = ({translation, actionSheetProps, actions, ...props}) => {
 	const [visible, setVisible] = useState(false);
 	const navigate = useNavigate();
-
-	const defaultSize = "16px";
-
-	const style = topRight ? {
-		"--initial-position-top": `${topRight}px`,
-		"--initial-position-right": `${topRight}px`,
-		"--edge-distance": `${topRight}px`,
-	} : topLeft ? {
-		"--initial-position-top": `${topLeft}px`,
-		"--initial-position-left": `${topLeft}px`,
-		"--edge-distance": `${topLeft}px`,
-	} : bottomRight ? {
-		"--initial-position-bottom": `${bottomRight}px`,
-		"--initial-position-right": `${bottomRight}px`,
-		"--edge-distance": `${bottomRight}px`,
-	} : bottomLeft ? {
-		"--initial-position-bottom": `${bottomLeft}px`,
-		"--initial-position-left": `${bottomLeft}px`,
-		"--edge-distance": `${bottomLeft}px`,
-	} : {
-		"--initial-position-bottom": defaultSize,
-		"--initial-position-right": defaultSize,
-		"--edge-distance": defaultSize,
-	};
-
 	return <>
 		<ActionSheet
 			visible={visible}
@@ -74,14 +41,9 @@ export const BubbleMenu: FC<IBubbleMenuProps> = ({translation, actionSheetProps,
 			onClose={() => setVisible(false)}
 			{...actionSheetProps}
 		/>
-		<FloatingBubble
-			axis="y"
-			magnetic="x"
-			style={style}
+		<BubbleButton
 			onClick={() => setVisible(true)}
 			{...props}
-		>
-			{icon || <MoreOutline fontSize={32}/>}
-		</FloatingBubble>
+		/>
 	</>;
 };
