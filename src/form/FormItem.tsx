@@ -25,6 +25,7 @@ export interface IFormItemProps extends Partial<FormItemProps> {
 	noMargin?: boolean;
 	labels?: string[] | string;
 	hasTooltip?: boolean;
+	withHelp?: boolean;
 	showWith?: string[];
 
 	onNormalize?(value: any, formItemContext: IFormItemContext): void,
@@ -40,6 +41,7 @@ export const FormItem: FC<IFormItemProps> = (
 		children = <Input/>,
 		labels = [],
 		hasTooltip = false,
+		withHelp = false,
 		showWith,
 		onNormalize,
 		...props
@@ -70,6 +72,8 @@ export const FormItem: FC<IFormItemProps> = (
 	props.tooltip = props.tooltip ? t("" + props.tooltip) : props.tooltip;
 	formContext.translation && hasTooltip && (props.tooltip = t(formContext.translation + "." + fieldName + ".label.tooltip"));
 	itemGroupContext?.translation && hasTooltip && (props.tooltip = t(itemGroupContext.translation + "." + fieldName + ".label.tooltip"));
+	formContext.translation && withHelp && (props.help = t(formContext.translation + "." + fieldName + ".label.help"));
+	itemGroupContext?.translation && withHelp && (props.help = t(itemGroupContext.translation + "." + fieldName + ".label.help"));
 	const context: IFormItemContext = {
 		field,
 		label: t(["form-item." + fieldName + ".label"].concat(labels)) as string,
