@@ -16,12 +16,17 @@ export type ISelectionProviderProps<TSelection = any> = PropsWithChildren<{
 	 * Apply the given selection all the times (regardless of values set by a user)
 	 */
 	applySelection?: Record<string, TSelection>;
+	/**
+	 * Default selection handler.
+	 * @param event
+	 */
+	onSelection?(event: ISelection<TSelection>): void;
 }>;
 
-export function SelectionProvider<TSelection, >({type = "none", defaultEnabled = type !== "none", defaultSelection, applySelection, ...props}: ISelectionProviderProps<TSelection>) {
+export function SelectionProvider<TSelection, >({type = "none", defaultEnabled = type !== "none", defaultSelection, applySelection, onSelection, ...props}: ISelectionProviderProps<TSelection>) {
 	const [enabled, setEnabled] = useState(defaultEnabled && type !== "none");
 	const [selection, setSelection] = useState<Record<string, TSelection | undefined>>(applySelection || defaultSelection || {});
-	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>([]);
+	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>(onSelection ? [onSelection] : []);
 
 	useEffect(() => {
 		setSelection(defaultSelection || {});
