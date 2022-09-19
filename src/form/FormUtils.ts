@@ -1,4 +1,5 @@
-import {IFormFields} from "@leight-core/api";
+import {IFormFields, IMutationHook} from "@leight-core/api";
+import {useMutation} from "@tanstack/react-query";
 import {FormInstance} from "antd";
 import CancelablePromise from "cancelable-promise";
 
@@ -18,3 +19,5 @@ export const FormUtils = {
 		}, 0));
 	},
 };
+
+export const usePassThroughMutation: IMutationHook<any, any> = () => useMutation<any, any, any, any>(values => new Promise(resolve => resolve(values)));

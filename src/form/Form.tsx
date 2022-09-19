@@ -1,22 +1,7 @@
-import {
-	IFormContext,
-	IFormError,
-	IFormErrorHandler,
-	IFormErrorMap,
-	IFormInitialMapper,
-	IFormMutationMapper,
-	IFormOnChanged,
-	IFormOnFailure,
-	IFormOnSuccess,
-	IFormOnValuesChanged,
-	IMutationHook,
-	INavigate,
-	IQueryParams,
-	IToError
-} from "@leight-core/api";
-import {FormProvider, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext, WithToken} from "@leight-core/client";
+import {IFormContext, IFormError, IFormErrorHandler, IFormErrorMap, IMutationHook, INavigate, IQueryParams, IToFormError} from "@leight-core/api";
+import {IFormChanged, IFormFailure, IFormSuccess, IFormValuesChanged} from "@leight-core/api/lib/cjs/form/form";
+import {FormProvider, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext, usePassThroughMutation, WithToken} from "@leight-core/client";
 import {isCallable} from "@leight-core/utils";
-import {useMutation} from "@tanstack/react-query";
 import {Form as CoolForm, message, Spin} from "antd";
 import React, {ComponentProps} from "react";
 import {useTranslation} from "react-i18next";
@@ -32,32 +17,40 @@ export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryPara
 	 */
 	useMutation?: IMutationHook<TRequest, TResponse, TQueryParams>;
 	mutationQueryParams?: TQueryParams;
+
 	/**
 	 * Map form data to mutation data.
 	 */
-	toMutation?: IFormMutationMapper<any, TRequest>;
+	toMutation?(values: any): TRequest;
+
 	/**
 	 * Map data to the initial state of the form (if any).
 	 */
-	toForm?: IFormInitialMapper<any>;
+	toForm?(): any;
+
 	/**
 	 * Called when a form is successfully committed.
 	 */
-	onSuccess?: IFormOnSuccess<any, TResponse>;
+	onSuccess?(success: IFormSuccess<any, TResponse>): void;
+
 	/**
 	 * Called when an error occurs.
 	 */
-	onFailure?: IFormOnFailure<any>;
+	onFailure?(failure: IFormFailure<any>): void;
+
 	/**
 	 * Map error from outside to a state in the form (like a general error or a field error).
 	 */
-	toError?: (error: IToError<any, any>) => IFormErrorMap<any>;
+	toError?: (error: IToFormError<any, any>) => IFormErrorMap<any>;
 	/**
 	 * If the form is used under a drawer, this flag controls if it should be automatically closed on success.
 	 */
 	closeDrawer?: boolean;
-	onValuesChange?: IFormOnValuesChanged;
-	onChange?: IFormOnChanged;
+
+	onValuesChange?(success: IFormValuesChanged<any>): void;
+
+	onChange?(change: IFormChanged<any>): void;
+
 	/**
 	 * Optional ACL check - if specified, user must possess any of the given token.
 	 */
@@ -67,8 +60,6 @@ export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryPara
 	 */
 	withTokenProps?: ComponentProps<typeof WithToken>;
 }
-
-const usePassThroughMutation: IMutationHook<any, any> = () => useMutation<any, any, any, any>(values => new Promise(resolve => resolve(values)));
 
 const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams>(
 	{

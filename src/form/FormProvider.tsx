@@ -1,4 +1,4 @@
-import {IFormContext, IFormErrors, IFormFields} from "@leight-core/api";
+import {IFormErrors, IFormFields} from "@leight-core/api";
 import {FormBlockProvider, FormContext, FormUtils} from "@leight-core/client";
 import {Form as CoolForm, message} from "antd";
 import React, {FC, PropsWithChildren, useState} from "react";
@@ -10,31 +10,33 @@ export type IFormProviderProps = PropsWithChildren<{
 
 export const FormProvider: FC<IFormProviderProps> = ({translation, ...props}) => {
 	const {t} = useTranslation();
-	const [errors, setErrors] = useState<IFormErrors>();
+	const [errors, setErrors] = useState<IFormErrors>({errors: []});
 	const [form] = CoolForm.useForm();
-
-	const setErrorsInternal: IFormContext["setErrors"] = (errors: IFormErrors) => {
-		setErrors(errors);
-		errors.message && message.error(t("error." + errors.message));
-		form.setFields(((errors || {}).errors || []).map(item => ({
-			name: item.id,
-			errors: [t("error." + item.error)],
-		})));
-	};
-
-	const resetErrors: IFormContext["resetErrors"] = () => FormUtils.fields(form).then((fields: IFormFields[]) => fields.map(([field]) => form.setFields([{errors: [], name: field}])));
 	return <FormBlockProvider>
 		<FormContext.Provider
 			value={{
 				translation,
 				form,
-				errors: errors as IFormErrors,
-				setErrors: setErrorsInternal,
+				errors,
+				setErrors: (errors: IFormErrors) => {
+					setErrors(errors);
+					errors.message && message.error(t("error." + errors.message));
+					form.setFields(((errors || {}).errors || []).map(item => ({
+						name: item.id,
+						errors: [t("error." + item.error)],
+					})));
+				},
 				setValues: values => form.setFieldsValue(values),
 				setValue: values => form.setFields(values.map(value => ({name: value.name, value: value.value}))),
-				reset: () => form.resetFields(),
+				reset: () => {
+					setErrors({errors: []});
+					form.resetFields();
+				},
 				values: form.getFieldsValue,
-				resetErrors,
+				resetErrors: () => {
+					setErrors({errors: []});
+					FormUtils.fields(form).then((fields: IFormFields[]) => fields.map(([field]) => form.setFields([{errors: [], name: field}])));
+				},
 			}}
 			{...props}
 		/>
