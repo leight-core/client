@@ -12,11 +12,11 @@ import {
 	IQueryParams,
 	IToMobileFormError
 } from "@leight-core/api";
-import {FormBlockContext, LoaderIcon, MobileFormContext, MobileFormProvider, useNavigate, useOptionalDrawerContext, usePassThroughMutation, WithToken} from "@leight-core/client";
+import {FormBlockContext, LoaderIcon, MobileFormContext, MobileFormProvider, MobileSubmit, useNavigate, useOptionalDrawerContext, usePassThroughMutation, WithToken} from "@leight-core/client";
 import {isCallable} from "@leight-core/utils";
 import {message, Spin} from "antd";
 import {Form, Toast} from "antd-mobile";
-import React, {ComponentProps} from "react";
+import React, {ComponentProps, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IMobileFormProps<TRequest, TResponse, TQueryParams extends IQueryParams = any> extends ComponentProps<typeof Form> {
@@ -72,6 +72,14 @@ export interface IMobileFormProps<TRequest, TResponse, TQueryParams extends IQue
 	 * Props for the WithToken component.
 	 */
 	withTokenProps?: ComponentProps<typeof WithToken>;
+	/**
+	 * Submit button label (goes through translation).
+	 */
+	submit?: string;
+	/**
+	 * Optional icon used in this form.
+	 */
+	icon?: ReactNode;
 }
 
 export function MobileForm<TRequest = any, TResponse = void, TQueryParams extends IQueryParams = any>(
@@ -89,6 +97,8 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 		closeDrawer = true,
 		onValuesChange,
 		onChange,
+		submit = "submit",
+		icon,
 		...props
 	}: IMobileFormProps<TRequest, TResponse, TQueryParams>) {
 	const {t} = useTranslation();
@@ -163,6 +173,7 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 											},
 										});
 									}}
+									footer={submit ? <MobileSubmit icon={icon} label={submit}/> : undefined}
 									{...props}
 								/>;
 							}}
