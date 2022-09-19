@@ -29,5 +29,6 @@ export * from "./tab";
 export * from "./table";
 export * from "./template";
 export * from "./translation";
+export * from "./ui";
 export * from "./uploader";
 export * from "./user";

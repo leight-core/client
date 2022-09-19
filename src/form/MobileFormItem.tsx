@@ -1,5 +1,5 @@
 import {IMobileFormItemContext, INamePath} from "@leight-core/api";
-import {MobileFormItemContext, ShowToken, useMobileFormContext, useOptionalItemGroupContext} from "@leight-core/client";
+import {MobileFormItemContext, ShowToken, useMobileFormContext, useOptionalItemGroupContext, VisibleContext, VisibleProvider} from "@leight-core/client";
 import {Form, Input} from "antd-mobile";
 import {Rule} from "rc-field-form/lib/interface";
 import {ComponentProps, FC} from "react";
@@ -23,6 +23,7 @@ export interface IMobileFormItemProps extends Partial<ComponentProps<typeof Form
 	labels?: string[] | string;
 	withHelp?: boolean;
 	showWith?: string[];
+	withVisible?: boolean;
 
 	onNormalize?(value: any, formItemContext: IMobileFormItemContext): void,
 }
@@ -34,6 +35,7 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 		required = false,
 		showLabel = true,
 		hasTooltip = false,
+		withVisible = false,
 		children = <Input/>,
 		labels = [],
 		withHelp = false,
@@ -80,14 +82,26 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 	onNormalize && !props.normalize && (props.normalize = value => onNormalize(value, context));
 	return <ShowToken tokens={showWith}>
 		<MobileFormItemContext.Provider value={context}>
-			<Form.Item
+			{withVisible ? <VisibleProvider>
+				<VisibleContext.Consumer>
+					{visibleContext => <Form.Item
+						name={field}
+						label={showLabel === false ? null : t(["form-item." + fieldName + ".label"].concat(labels))}
+						rules={rules}
+						onClick={() => visibleContext?.setVisible(true)}
+						{...props}
+					>
+						{children}
+					</Form.Item>}
+				</VisibleContext.Consumer>
+			</VisibleProvider> : <Form.Item
 				name={field}
 				label={showLabel === false ? null : t(["form-item." + fieldName + ".label"].concat(labels))}
 				rules={rules}
 				{...props}
 			>
 				{children}
-			</Form.Item>
+			</Form.Item>}
 		</MobileFormItemContext.Provider>
 	</ShowToken>;
 };
