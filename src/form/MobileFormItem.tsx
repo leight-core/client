@@ -1,5 +1,5 @@
 import {IMobileFormItemContext, INamePath} from "@leight-core/api";
-import {MobileFormItemContext, ShowToken, useFormContext, useOptionalItemGroupContext} from "@leight-core/client";
+import {MobileFormItemContext, ShowToken, useMobileFormContext, useOptionalItemGroupContext} from "@leight-core/client";
 import {Form, Input} from "antd-mobile";
 import {Rule} from "rc-field-form/lib/interface";
 import {ComponentProps, FC} from "react";
@@ -19,10 +19,7 @@ export interface IMobileFormItemProps extends Partial<ComponentProps<typeof Form
 	 * Show Antd Form.Item label.
 	 */
 	showLabel?: boolean;
-	/**
-	 * Disable default Antd Form.Item margin.
-	 */
-	noMargin?: boolean;
+	hasTooltip?: boolean;
 	labels?: string[] | string;
 	withHelp?: boolean;
 	showWith?: string[];
@@ -36,7 +33,7 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 		path = field,
 		required = false,
 		showLabel = true,
-		noMargin = false,
+		hasTooltip = false,
 		children = <Input/>,
 		labels = [],
 		withHelp = false,
@@ -45,15 +42,15 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 		...props
 	}) => {
 	const {t} = useTranslation();
-	if (noMargin) {
-		props.style = {margin: 0};
-	}
-	const formContext = useFormContext();
+	const formContext = useMobileFormContext();
 	const itemGroupContext = useOptionalItemGroupContext();
 	field = ([] as (string | number)[]).concat(itemGroupContext ? itemGroupContext.prefix : [], Array.isArray(field) ? field : [field]);
 	const fieldName = Array.isArray(field) ? field.join(".") : field;
 	const rules: Rule[] = [];
 	labels = Array.isArray(labels) ? labels : [labels];
+	props.help = props.help ? t("" + props.help) : props.help;
+	formContext.translation && hasTooltip && (props.help = t(formContext.translation + "." + fieldName + ".label.tooltip"));
+	itemGroupContext?.translation && hasTooltip && (props.help = t(itemGroupContext.translation + "." + fieldName + ".label.tooltip"));
 	formContext.translation && labels.push(formContext.translation + "." + fieldName + ".label");
 	itemGroupContext?.translation && labels.push(itemGroupContext.translation + "." + fieldName + ".label");
 	required && rules.push({
