@@ -1,9 +1,9 @@
 import {useFormContext, UseToken} from "@leight-core/client";
-import {Button, Form} from "antd";
+import {Button, Form} from "antd-mobile";
 import React, {ComponentProps, FC} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface ISubmitProps extends Partial<ComponentProps<typeof Button>> {
+export interface IMobileSubmitProps extends Partial<ComponentProps<typeof Button>> {
 	/**
 	 * Disable Form.Item styling.
 	 */
@@ -25,8 +25,8 @@ const Internal: FC<IInternalProps> = ({label, tokens, ...props}) => {
 	const formContext = useFormContext();
 	return <UseToken tokens={tokens}>
 		<Button
-			htmlType={"submit"}
-			type={"primary"}
+			type={"submit"}
+			block
 			{...props}
 		>
 			{t(formContext.translation ? formContext.translation + "." + label : label)}
@@ -34,7 +34,7 @@ const Internal: FC<IInternalProps> = ({label, tokens, ...props}) => {
 	</UseToken>;
 };
 
-export const Submit: FC<ISubmitProps> = ({noStyle, ...props}) => {
+export const MobileSubmit: FC<IMobileSubmitProps> = ({noStyle, ...props}) => {
 	return <Form.Item
 		shouldUpdate
 		noStyle={noStyle}
