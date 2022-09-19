@@ -1,4 +1,4 @@
-import {useFormContext, UseToken} from "@leight-core/client";
+import {useMobileFormContext, UseToken} from "@leight-core/client";
 import {Button, Form} from "antd-mobile";
 import React, {ComponentProps, FC} from "react";
 import {useTranslation} from "react-i18next";
@@ -22,7 +22,7 @@ interface IInternalProps {
 
 const Internal: FC<IInternalProps> = ({label, tokens, ...props}) => {
 	const {t} = useTranslation();
-	const formContext = useFormContext();
+	const formContext = useMobileFormContext();
 	return <UseToken tokens={tokens}>
 		<Button
 			type={"submit"}
