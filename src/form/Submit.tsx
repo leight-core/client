@@ -15,30 +15,21 @@ export interface ISubmitProps extends Partial<ComponentProps<typeof Button>> {
 	tokens?: ComponentProps<typeof UseToken>["tokens"];
 }
 
-interface IInternalProps {
-	label: string | string[];
-	tokens?: ComponentProps<typeof UseToken>["tokens"];
-}
-
-const Internal: FC<IInternalProps> = ({label, tokens, ...props}) => {
+export const Submit: FC<ISubmitProps> = ({noStyle, label, tokens, ...props}) => {
 	const {t} = useTranslation();
 	const formContext = useFormContext();
 	return <UseToken tokens={tokens}>
-		<Button
-			htmlType={"submit"}
-			type={"primary"}
-			{...props}
+		<Form.Item
+			shouldUpdate
+			noStyle={noStyle}
 		>
-			{t(formContext.translation ? formContext.translation + "." + label : label)}
-		</Button>
+			<Button
+				htmlType={"submit"}
+				type={"primary"}
+				{...props}
+			>
+				{t(formContext.translation ? formContext.translation + "." + label : label)}
+			</Button>
+		</Form.Item>
 	</UseToken>;
-};
-
-export const Submit: FC<ISubmitProps> = ({noStyle, ...props}) => {
-	return <Form.Item
-		shouldUpdate
-		noStyle={noStyle}
-	>
-		{() => <Internal {...props}/>}
-	</Form.Item>;
 };

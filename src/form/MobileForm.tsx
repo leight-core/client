@@ -108,7 +108,9 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 		label={translation ? `${translation}.403` : undefined}
 		{...withTokenProps}
 	>
-		<MobileFormProvider>
+		<MobileFormProvider
+			translation={translation}
+		>
 			<FormBlockContext.Consumer>
 				{formBlockContext =>
 					<Spin indicator={<LoaderIcon/>} spinning={formBlockContext.isBlocked()}>
