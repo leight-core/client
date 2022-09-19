@@ -1,6 +1,6 @@
 import {IQuery, IQueryHook} from "@leight-core/api";
 import {SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
-import {merge} from "@leight-core/utils";
+import {merge, uniqueOf} from "@leight-core/utils";
 import {useQuery as useCoolQuery, UseQueryOptions} from "@tanstack/react-query";
 import {PropsWithChildren, useState} from "react";
 
@@ -64,17 +64,17 @@ export const SourceProvider = <TResponse, >(
 		onSuccess: (response: TResponse[]) => {
 			onSuccess?.(response);
 			if (cursorContext?.append) {
-				setData(prev => prev.concat(response));
+				setData(prev => uniqueOf<TResponse>(prev.concat(response)));
 				return;
 			}
 			if (cursorContext?.prepend) {
 				setData(prev => {
 					prev.unshift(...response);
-					return prev;
+					return uniqueOf(prev);
 				});
 				return;
 			}
-			setData(response);
+			setData(uniqueOf(response));
 		},
 	}, options || {}));
 	const count = useCountQuery({
