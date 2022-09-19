@@ -48,6 +48,11 @@ export function SelectionProvider<TSelection, >({type = "none", defaultEnabled =
 			return {};
 		});
 	};
+	const deSelect: ISelectionContext<TSelection>["deSelect"] = id => {
+		const $selection = {...selection};
+		delete $selection[id];
+		setSelection($selection);
+	};
 	const isSelected: ISelectionContext<TSelection>["isSelected"] = id => !!selection[id];
 	const toSelection: ISelectionContext<TSelection>["toSelection"] = () => Object.keys(selection).filter(key => !!selection[key]);
 	const isEmpty: ISelectionContext<TSelection>["isEmpty"] = () => !toSelection().length;
@@ -57,7 +62,7 @@ export function SelectionProvider<TSelection, >({type = "none", defaultEnabled =
 		}
 		return toSelection()[0];
 	};
-	const _selection = () => ({
+	const $selection = () => ({
 		isEmpty: isEmpty(),
 		single: (() => {
 			try {
@@ -82,15 +87,17 @@ export function SelectionProvider<TSelection, >({type = "none", defaultEnabled =
 			toSelection,
 			toItems: () => Object.values(selection).filter(item => !!item),
 			select,
+			deSelect,
 			item: item => select(item.id, item),
+			deItem: item => deSelect(item.id),
 			isSelectedItem: item => isSelected(item.id),
 			isEmpty,
 			toSingle,
 			onSelection: callback => onSelectionEvents.current.push(callback),
-			selection: _selection,
+			selection: $selection,
 			toSingleItem: () => selection[toSingle()],
 			handleSelection: () => {
-				const selection = _selection();
+				const selection = $selection();
 				onSelectionEvents.current.map(callback => callback(selection));
 			},
 			clear: () => setSelection({}),
