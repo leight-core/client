@@ -1,11 +1,11 @@
-import {IFormItemContext, INamePath} from "@leight-core/api";
-import {FormItemContext, ShowToken, useFormContext, useOptionalItemGroupContext} from "@leight-core/client";
-import {Form, FormItemProps, Input} from "antd";
+import {IMobileFormItemContext, INamePath} from "@leight-core/api";
+import {MobileFormItemContext, ShowToken, useFormContext, useOptionalItemGroupContext} from "@leight-core/client";
+import {Form, Input} from "antd-mobile";
 import {Rule} from "rc-field-form/lib/interface";
-import {FC} from "react";
+import {ComponentProps, FC} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface IFormItemProps extends Partial<FormItemProps> {
+export interface IMobileFormItemProps extends Partial<ComponentProps<typeof Form["Item"]>> {
 	/**
 	 * Field name; also used for translations.
 	 */
@@ -24,14 +24,13 @@ export interface IFormItemProps extends Partial<FormItemProps> {
 	 */
 	noMargin?: boolean;
 	labels?: string[] | string;
-	hasTooltip?: boolean;
 	withHelp?: boolean;
 	showWith?: string[];
 
-	onNormalize?(value: any, formItemContext: IFormItemContext): void,
+	onNormalize?(value: any, formItemContext: IMobileFormItemContext): void,
 }
 
-export const FormItem: FC<IFormItemProps> = (
+export const MobileFormItem: FC<IMobileFormItemProps> = (
 	{
 		field,
 		path = field,
@@ -40,7 +39,6 @@ export const FormItem: FC<IFormItemProps> = (
 		noMargin = false,
 		children = <Input/>,
 		labels = [],
-		hasTooltip = false,
 		withHelp = false,
 		showWith,
 		onNormalize,
@@ -69,12 +67,9 @@ export const FormItem: FC<IFormItemProps> = (
 	 * The idea is to clear errors set from form context, and this solution could do that with ease!
 	 */
 	rules.push(() => ({validator: () => Promise.resolve()}));
-	props.tooltip = props.tooltip ? t("" + props.tooltip) : props.tooltip;
-	formContext.translation && hasTooltip && (props.tooltip = t(formContext.translation + "." + fieldName + ".label.tooltip"));
-	itemGroupContext?.translation && hasTooltip && (props.tooltip = t(itemGroupContext.translation + "." + fieldName + ".label.tooltip"));
 	formContext.translation && withHelp && (props.help = t(formContext.translation + "." + fieldName + ".label.help"));
 	itemGroupContext?.translation && withHelp && (props.help = t(itemGroupContext.translation + "." + fieldName + ".label.help"));
-	const context: IFormItemContext = {
+	const context: IMobileFormItemContext = {
 		field,
 		label: t(["form-item." + fieldName + ".label"].concat(labels)) as string,
 		getValue: () => formContext.form.getFieldValue(path),
@@ -87,7 +82,7 @@ export const FormItem: FC<IFormItemProps> = (
 	};
 	onNormalize && !props.normalize && (props.normalize = value => onNormalize(value, context));
 	return <ShowToken tokens={showWith}>
-		<FormItemContext.Provider value={context}>
+		<MobileFormItemContext.Provider value={context}>
 			<Form.Item
 				name={field}
 				label={showLabel === false ? null : t(["form-item." + fieldName + ".label"].concat(labels))}
@@ -96,6 +91,6 @@ export const FormItem: FC<IFormItemProps> = (
 			>
 				{children}
 			</Form.Item>
-		</FormItemContext.Provider>
+		</MobileFormItemContext.Provider>
 	</ShowToken>;
 };
