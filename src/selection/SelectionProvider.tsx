@@ -32,7 +32,7 @@ export function SelectionProvider<TSelection, >({type = "single", defaultEnabled
 		setSelection(defaultSelection || {});
 	}, [defaultSelection]);
 	useEffect(() => {
-		setSelection(applySelection || {});
+		setSelection(applySelection || defaultSelection || {});
 	}, [applySelection]);
 
 	const select: ISelectionContext<TSelection>["select"] = (id, selection) => {
