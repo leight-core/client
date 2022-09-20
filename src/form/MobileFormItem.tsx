@@ -10,7 +10,6 @@ export interface IMobileFormItemProps extends Partial<ComponentProps<typeof Form
 	 * Field name; also used for translations.
 	 */
 	field: INamePath;
-	path?: INamePath;
 	/**
 	 * Attach required validation rule?
 	 */
@@ -31,7 +30,6 @@ export interface IMobileFormItemProps extends Partial<ComponentProps<typeof Form
 export const MobileFormItem: FC<IMobileFormItemProps> = (
 	{
 		field,
-		path = field,
 		required = false,
 		showLabel = true,
 		hasTooltip = false,
@@ -72,11 +70,11 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 	const context: IMobileFormItemContext = {
 		field,
 		label: t(["form-item." + fieldName + ".label"].concat(labels)) as string,
-		getValue: () => formContext.form.getFieldValue(path),
-		setValue: value => formContext.form.setFields([{name: path, value}]),
+		getValue: () => formContext.form.getFieldValue(field),
+		setValue: value => formContext.form.setFields([{name: field, value}]),
 		setErrors: (errors: string[]) => {
 			setTimeout(() => {
-				formContext.form.setFields([{name: path, errors: errors.map(item => t(item))}]);
+				formContext.form.setFields([{name: field, errors: errors.map(item => t(item))}]);
 			}, 0);
 		},
 	};

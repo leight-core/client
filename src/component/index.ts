@@ -6,6 +6,7 @@ export * from "./CancelOrderButton";
 export * from "./Card";
 export * from "./CopyText";
 export * from "./DeployRefreshManager";
+export * from "./FulltextBar";
 export * from "./IconText";
 export * from "./FilterButton";
 export * from "./ModalButton";
