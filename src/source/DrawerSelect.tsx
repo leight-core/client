@@ -1,8 +1,9 @@
 import Icon from "@ant-design/icons";
-import {IWithIdentity} from "@leight-core/api";
-import {Drawer, ISelectionProviderProps, ITranslateProps, SelectionContext, SelectionProvider, useOptionalCursorContext, useOptionalFilterContext, useSourceContext, VisibleContext, VisibleProvider} from "@leight-core/client";
+import {ISelection, IWithIdentity} from "@leight-core/api";
+import {BubbleButton, Drawer, ISelectionProviderProps, ITranslateProps, SelectionContext, SelectionProvider, useOptionalCursorContext, useOptionalFilterContext, useSourceContext, VisibleContext, VisibleProvider} from "@leight-core/client";
 import {Col, Row, Space} from "antd";
 import {CheckList, DotLoading, InfiniteScroll, SearchBar} from "antd-mobile";
+import {CheckOutline} from "antd-mobile-icons";
 import {PropsWithChildren, ReactNode} from "react";
 import {IoTrailSignOutline} from "react-icons/io5";
 
@@ -19,6 +20,12 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	 * Default selection (shortcut to selectionProviderProps)
 	 */
 	defaultSelection?: Record<string, TItem>;
+	/**
+	 * Submitted selection.
+	 *
+	 * @param event
+	 */
+	onSelection?(event: ISelection<TItem>): void;
 
 	withFulltext?: boolean;
 
@@ -29,6 +36,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 	{
 		translation,
 		defaultSelection,
+		onSelection,
 		selectionProviderProps,
 		render,
 		withFulltext = true,
@@ -43,6 +51,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 	return <SelectionProvider<TItem>
 		type={"single"}
 		defaultSelection={defaultSelection}
+		onSelection={onSelection}
 		{...selectionProviderProps}
 	>
 		<SelectionContext.Consumer>
@@ -56,6 +65,10 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 							bodyStyle={{padding: 0}}
 							translation={translation}
 						>
+							<BubbleButton
+								icon={<CheckOutline/>}
+								onClick={() => selectionContext.handleSelection()}
+							/>
 							{withFulltext ? <Row justify={"center"} style={{margin: "0.75em"}}>
 								<Col span={24}>
 									<SearchBar
