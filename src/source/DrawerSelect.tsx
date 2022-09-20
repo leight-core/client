@@ -1,7 +1,20 @@
 import Icon from "@ant-design/icons";
 import {ISelection, IWithIdentity} from "@leight-core/api";
-import {BubbleButton, Drawer, FulltextBar, ISelectionProviderProps, ITranslateProps, SelectionContext, SelectionProvider, Translate, useSourceContext, useVisibleContext} from "@leight-core/client";
-import {Col, Row, Space} from "antd";
+import {
+	BubbleButton,
+	Drawer,
+	FulltextBar,
+	ISelectionProviderProps,
+	ITranslateProps,
+	SelectionContext,
+	SelectionProvider,
+	Translate,
+	useOptionalCursorContext,
+	useOptionalFilterContext,
+	useSourceContext,
+	useVisibleContext
+} from "@leight-core/client";
+import {Col, Row, Space, Typography} from "antd";
 import {CheckList, DotLoading, InfiniteScroll} from "antd-mobile";
 import {CheckOutline} from "antd-mobile-icons";
 import {ReactNode} from "react";
@@ -45,16 +58,19 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		render,
 		withFulltext = true,
 		toChange = selection => toSingleSelection(selection) as TOnChange,
-		toPreview = event => event?.single ? render(event.single) : <Translate {...translation} text={"placeholder"}/>,
+		toPreview = event => event?.single ? render(event.single) : <Typography.Text type={"secondary"}><Translate {...translation} text={"placeholder"}/></Typography.Text>,
 	}: IDrawerSelectProps<TItem, TOnChange>) {
 	const sourceContext = useSourceContext<TItem>();
 	const visibleContext = useVisibleContext();
+	const filterContext = useOptionalFilterContext();
+	const cursorContext = useOptionalCursorContext();
 	return <SelectionProvider<TItem>
 		type={"single"}
 		defaultSelection={defaultSelection}
 		onSelection={selection => {
-			console.log("Handling selection", selection, "change", toChange(selection));
 			onChange?.(toChange(selection));
+			filterContext?.setFilter({});
+			cursorContext?.setPage(0);
 		}}
 		{...selectionProviderProps}
 	>
