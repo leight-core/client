@@ -56,8 +56,8 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 							bodyStyle={{padding: 0}}
 							translation={translation}
 						>
-							{withFulltext ? <Row>
-								<Col span={22}>
+							{withFulltext ? <Row justify={"center"} style={{margin: "0.75em"}}>
+								<Col span={24}>
 									<SearchBar
 										onSearch={value => {
 											sourceContext.reset();
