@@ -1,5 +1,5 @@
 {
-	"version": "0.6.173",
+	"version": "0.6.174",
 	"name": "@leight-core/client",
 	"description": "All that shiny client stuff.",
 	"license": "MIT",
@@ -18,11 +18,11 @@
 	],
 	"scripts": {
 		"lint": "eslint src",
-		"build": "npm run lint && tsc -p tsconfig.json && tsc -p tsconfig.json -m es6 --outDir lib/esm"
+		"build": "tsc -p tsconfig.json && tsc -p tsconfig.json -m es6 --outDir lib/esm"
 	},
 	"dependencies": {
 		"@fingerprintjs/fingerprintjs": "^3.3.3",
-		"@leight-core/api": "^0.6.148",
+		"@leight-core/api": "^0.6.149",
 		"@leight-core/utils": "^0.5.37",
 		"@tanstack/query-sync-storage-persister": "^4.0.8",
 		"@tanstack/react-query": "^4.0.8",

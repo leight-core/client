@@ -89,6 +89,7 @@ export function SelectionProvider<TSelection, >({type = "single", defaultEnabled
 			select,
 			deSelect,
 			item: item => select(item.id, item),
+			items: items => items.map(item => select(item.id, item)),
 			deItem: item => deSelect(item.id),
 			isSelectedItem: item => isSelected(item.id),
 			isEmpty,

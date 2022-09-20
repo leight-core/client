@@ -1,19 +1,6 @@
 import Icon from "@ant-design/icons";
-import {ISelection, IWithIdentity} from "@leight-core/api";
-import {
-	BubbleButton,
-	Drawer,
-	FulltextBar,
-	ISelectionProviderProps,
-	ITranslateProps,
-	SelectionContext,
-	SelectionProvider,
-	Translate,
-	useOptionalCursorContext,
-	useOptionalFilterContext,
-	useSourceContext,
-	useVisibleContext
-} from "@leight-core/client";
+import {ISelection, ISelectionContext, IWithIdentity} from "@leight-core/api";
+import {BubbleButton, Drawer, FulltextBar, ISelectionProviderProps, ITranslateProps, OfSelection, SelectionContext, SelectionProvider, Translate, useOptionalFilterContext, useSourceContext, useVisibleContext} from "@leight-core/client";
 import {Col, Row, Space, Typography} from "antd";
 import {CheckList, DotLoading, InfiniteScroll} from "antd-mobile";
 import {CheckOutline} from "antd-mobile-icons";
@@ -25,6 +12,16 @@ export const toSingleSelection = ({single}: ISelection<IWithIdentity>) => single
 export const toMultiSelection = ({selected}: ISelection<IWithIdentity>) => selected;
 
 export interface IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> {
+	/**
+	 * Currently selected value(s).
+	 */
+	value?: TOnChange;
+
+	/**
+	 * Callback used for FormItem compatibility.
+	 *
+	 * @param value
+	 */
 	onChange?(value?: TOnChange): void;
 
 	/**
@@ -40,17 +37,46 @@ export interface IDrawerSelectProps<TItem extends Record<string, any> & IWithIde
 	 */
 	defaultSelection?: Record<string, TItem>;
 
+	/**
+	 * Shows and enabled FulltextBar (under the hood using FilterContext with fulltext Query parameter)
+	 */
 	withFulltext?: boolean;
 
+	/**
+	 * Render the given item into the (selection) list.
+	 *
+	 * @param item
+	 */
 	render(item: TItem): ReactNode;
 
+	/**
+	 * Renders selected values in the form UI. When undefined is returned, placeholder is rendered.
+	 *
+	 * @param selection
+	 */
+	toPreview(selection?: ISelection<TItem>): ReactNode;
+
+	/**
+	 * Resulting selection converted into the form field data.
+	 *
+	 * @param selection
+	 */
 	toChange?(selection: ISelection<TItem>): TOnChange | undefined;
 
-	toPreview?(selection?: ISelection<TItem>): ReactNode;
+	/**
+	 * Opposite of toChange: should select items in the selectionContext.
+	 *
+	 * @param value
+	 * @param selectionContext
+	 */
+	ofSelection(value: TOnChange | undefined, selectionContext: ISelectionContext<TItem>): void;
+
+	icon?: ReactNode;
 }
 
 export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any>(
 	{
+		value,
 		onChange,
 		translation,
 		defaultSelection,
@@ -58,24 +84,32 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		render,
 		withFulltext = true,
 		toChange = selection => toSingleSelection(selection) as TOnChange,
-		toPreview = event => event?.single ? render(event.single) : <Typography.Text type={"secondary"}><Translate {...translation} text={"placeholder"}/></Typography.Text>,
+		ofSelection,
+		toPreview,
+		icon,
 	}: IDrawerSelectProps<TItem, TOnChange>) {
 	const sourceContext = useSourceContext<TItem>();
 	const visibleContext = useVisibleContext();
 	const filterContext = useOptionalFilterContext();
-	const cursorContext = useOptionalCursorContext();
+
+	const $toPreview = (selection?: ISelection<TItem>) => {
+		const preview = toPreview(selection);
+		return preview === undefined ? <Typography.Text type={"secondary"}><Translate {...translation} text={"placeholder"}/></Typography.Text> : preview;
+	};
+
 	return <SelectionProvider<TItem>
 		type={"single"}
 		defaultSelection={defaultSelection}
 		onSelection={selection => {
 			onChange?.(toChange(selection));
 			filterContext?.setFilter({});
-			cursorContext?.setPage(0);
+			sourceContext.reset();
 		}}
 		{...selectionProviderProps}
 	>
 		<SelectionContext.Consumer>
 			{selectionContext => <>
+				<OfSelection<TItem, TOnChange> ofSelection={ofSelection} value={value}/>
 				<Drawer
 					open={visibleContext.visible}
 					onClose={e => {
@@ -85,6 +119,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 					destroyOnClose
 					bodyStyle={{padding: 0}}
 					translation={translation}
+					icon={icon}
 				>
 					<BubbleButton
 						icon={<CheckOutline fontSize={32}/>}
@@ -130,7 +165,10 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 						</Col>
 					</Row>
 				</Drawer>
-				{toPreview(selectionContext.selection())}
+				<Space>
+					{icon ? <Typography.Text type={"secondary"}>{icon}</Typography.Text> : null}
+					{$toPreview(selectionContext.selection())}
+				</Space>
 			</>}
 		</SelectionContext.Consumer>
 	</SelectionProvider>;

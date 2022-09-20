@@ -1,6 +1,6 @@
-import {ITranslateProps, Translate, useMobile, useVisibleContext} from "@leight-core/client";
-import {Drawer as CoolDrawer} from "antd";
-import {ComponentProps, FC} from "react";
+import {Centered, ITranslateProps, Translate, useMobile, useVisibleContext} from "@leight-core/client";
+import {Drawer as CoolDrawer, Space} from "antd";
+import {ComponentProps, FC, ReactNode} from "react";
 
 type CoolDrawerProps = ComponentProps<typeof CoolDrawer>;
 
@@ -8,6 +8,7 @@ export interface IDrawerProps extends Partial<Omit<CoolDrawerProps, "title">> {
 	translation?: ITranslateProps;
 	fullscreen?: boolean;
 	placement?: CoolDrawerProps["placement"];
+	icon?: ReactNode;
 }
 
 /**
@@ -16,6 +17,7 @@ export interface IDrawerProps extends Partial<Omit<CoolDrawerProps, "title">> {
 export const Drawer: FC<IDrawerProps> = (
 	{
 		translation,
+		icon,
 		width,
 		height,
 		fullscreen = false,
@@ -27,7 +29,12 @@ export const Drawer: FC<IDrawerProps> = (
 	const mobile = useMobile();
 	fullscreen && (width = "100vw") && (height = "100vh");
 	return <CoolDrawer
-		title={<Translate {...translation}/>}
+		title={<Centered>
+			<Space>
+				{icon}
+				<Translate {...translation}/>
+			</Space>
+		</Centered>}
 		width={mobile("100vw", width)}
 		height={height}
 		headerStyle={mobile({padding: "8px 4px"})}
