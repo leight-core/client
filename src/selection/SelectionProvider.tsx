@@ -23,7 +23,7 @@ export type ISelectionProviderProps<TSelection = any> = PropsWithChildren<{
 	onSelection?(event: ISelection<TSelection>): void;
 }>;
 
-export function SelectionProvider<TSelection, >({type = "none", defaultEnabled = type !== "none", defaultSelection, applySelection, onSelection, ...props}: ISelectionProviderProps<TSelection>) {
+export function SelectionProvider<TSelection, >({type = "single", defaultEnabled = type !== "none", defaultSelection, applySelection, onSelection, ...props}: ISelectionProviderProps<TSelection>) {
 	const [enabled, setEnabled] = useState(defaultEnabled && type !== "none");
 	const [selection, setSelection] = useState<Record<string, TSelection | undefined>>(applySelection || defaultSelection || {});
 	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>(onSelection ? [onSelection] : []);
