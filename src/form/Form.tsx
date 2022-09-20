@@ -1,6 +1,6 @@
 import {IFormContext, IFormError, IFormErrorHandler, IFormErrorMap, IMutationHook, INavigate, IQueryParams, IToFormError} from "@leight-core/api";
 import {IFormChanged, IFormFailure, IFormSuccess, IFormValuesChanged} from "@leight-core/api/lib/cjs/form/form";
-import {FormProvider, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalDrawerContext, usePassThroughMutation, WithToken} from "@leight-core/client";
+import {FormProvider, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalVisibleContext, usePassThroughMutation, WithToken} from "@leight-core/client";
 import {isCallable} from "@leight-core/utils";
 import {Form as CoolForm, message, Spin} from "antd";
 import React, {ComponentProps} from "react";
@@ -43,9 +43,9 @@ export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryPara
 	 */
 	toError?: (error: IToFormError<any, any>) => IFormErrorMap<any>;
 	/**
-	 * If the form is used under a drawer, this flag controls if it should be automatically closed on success.
+	 * If the form is used under a visible context, this flag controls if it should be automatically hidden on success.
 	 */
-	closeDrawer?: boolean;
+	shouldHide?: boolean;
 
 	onValuesChange?(success: IFormValuesChanged<any>): void;
 
@@ -70,7 +70,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams>(
 		onSuccess = () => null,
 		toError = () => ({}),
 		onFailure,
-		closeDrawer = true,
+		shouldHide = true,
 		onValuesChange,
 		onChange,
 		children,
@@ -79,7 +79,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams>(
 	const formContext = useFormContext();
 	const blockContext = useBlockContext();
 	const formBlockContext = useFormBlockContext();
-	const drawerContext = useOptionalDrawerContext();
+	const visibleContext = useOptionalVisibleContext();
 	const doNavigate = useNavigate();
 	const {t} = useTranslation();
 
@@ -128,7 +128,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams>(
 				onSuccess: response => {
 					blockContext.unblock();
 					formBlockContext.unblock();
-					closeDrawer && drawerContext?.close();
+					shouldHide && visibleContext?.hide();
 					onSuccess({
 						navigate,
 						values,

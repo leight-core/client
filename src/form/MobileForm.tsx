@@ -12,7 +12,7 @@ import {
 	IQueryParams,
 	IToMobileFormError
 } from "@leight-core/api";
-import {FormBlockContext, LoaderIcon, MobileFormContext, MobileFormProvider, MobileSubmit, useNavigate, useOptionalDrawerContext, usePassThroughMutation, WithToken} from "@leight-core/client";
+import {FormBlockContext, LoaderIcon, MobileFormContext, MobileFormProvider, MobileSubmit, useNavigate, useOptionalVisibleContext, usePassThroughMutation, WithToken} from "@leight-core/client";
 import {isCallable} from "@leight-core/utils";
 import {message, Spin} from "antd";
 import {Form, Toast} from "antd-mobile";
@@ -58,7 +58,7 @@ export interface IMobileFormProps<TRequest, TResponse, TQueryParams extends IQue
 	/**
 	 * If the form is used under a drawer, this flag controls if it should be automatically closed on success.
 	 */
-	closeDrawer?: boolean;
+	shouldHide?: boolean;
 
 	onValuesChange?(success: IMobileFormValuesChanged<any>): void;
 
@@ -94,7 +94,7 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 		onSuccess = () => null,
 		toError = () => ({}),
 		onFailure,
-		closeDrawer = true,
+		shouldHide = true,
 		onValuesChange,
 		onChange,
 		submit = "submit",
@@ -102,7 +102,7 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 		...props
 	}: IMobileFormProps<TRequest, TResponse, TQueryParams>) {
 	const {t} = useTranslation();
-	const drawerContext = useOptionalDrawerContext();
+	const visibleContext = useOptionalVisibleContext();
 	const doNavigate = useNavigate();
 
 	const mutation = useMutation(mutationQueryParams);
@@ -158,7 +158,7 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 										mutation.mutate(toMutation(values), {
 											onSuccess: response => {
 												toast.close();
-												closeDrawer && drawerContext?.close();
+												shouldHide && visibleContext?.hide();
 												onSuccess({
 													navigate,
 													values,

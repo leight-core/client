@@ -1,5 +1,5 @@
 import {CloseCircleOutlined, SearchOutlined} from "@ant-design/icons";
-import {Centered, DrawerButton, Form, IDrawerButtonProps, IFormProps, Submit, useFilterContext, useFormContext, useOptionalCursorContext, useOptionalDrawerContext, useOptionalSourceContext} from "@leight-core/client";
+import {Centered, DrawerButton, Form, IDrawerButtonProps, IFormProps, Submit, useFilterContext, useFormContext, useOptionalCursorContext, useOptionalSourceContext, useOptionalVisibleContext} from "@leight-core/client";
 import {Button, Divider, Space, SpaceProps} from "antd";
 import {FC, PropsWithChildren} from "react";
 import {useTranslation} from "react-i18next";
@@ -56,7 +56,7 @@ type IFilterFormProps<TFilter> = {
 } & IFilterInternalProps;
 
 const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter => filter, toFilter = value => value, ...props}: IFilterFormProps<TFilter>) => {
-	const drawerContext = useOptionalDrawerContext();
+	const visibleContext = useOptionalVisibleContext();
 	const filterContext = useFilterContext<TFilter>();
 	const sourceContext = useOptionalSourceContext();
 	const cursorContext = useOptionalCursorContext();
@@ -68,14 +68,14 @@ const FilterForm = <TFilter, >({translation, onClear, formProps, toForm = filter
 			sourceContext?.reset();
 			filterContext.setFilter(toFilter(response), response);
 			cursorContext?.setPage(0);
-			drawerContext?.close();
+			visibleContext?.hide();
 		}}
 		translation={translation + ".filter"}
 		{...formProps}
 	>
 		<FilterInternal
 			onClear={() => {
-				drawerContext?.close();
+				visibleContext?.hide();
 				onClear?.();
 			}}
 			{...props}
@@ -92,7 +92,18 @@ export type IFilterProps<TFilter = any> = {
 
 export type IFilterWithoutTranslationProps<TFilter = any> = Omit<IFilterProps<TFilter>, "translation">;
 
-export function Filter<TFilter = any>({inline = false, translation, onClear, drawerButtonProps, formProps, toForm = filter => filter, toFilter, spaceProps, ...props}: IFilterProps<TFilter>): JSX.Element {
+export function Filter<TFilter = any>(
+	{
+		inline = false,
+		translation,
+		onClear,
+		drawerButtonProps,
+		formProps,
+		toForm = filter => filter,
+		toFilter,
+		spaceProps,
+		...props
+	}: IFilterProps<TFilter>): JSX.Element {
 	const {t} = useTranslation();
 	const filterContext = useFilterContext<TFilter>();
 	const cursorContext = useOptionalCursorContext();
