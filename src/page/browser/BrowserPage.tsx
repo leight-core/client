@@ -58,7 +58,9 @@ export const BrowserPage: FC<IBrowserPageProps> = (
 	}
 	if (!headerPostfix && withHelp) {
 		headerPostfix = <DrawerButton
-			title={`${withHelp.translation}.title`}
+			translation={{
+				text: `${withHelp.translation}.title`,
+			}}
 			icon={<QuestionCircleOutlined/>}
 			type={"link"}
 			size={"large"}

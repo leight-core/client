@@ -1,14 +1,11 @@
+import {ITranslationProps} from "@leight-core/api";
 import {isString} from "@leight-core/utils";
-import {FC, ReactNode} from "react";
+import {FC} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface ITranslateProps {
-	base?: string;
-	text: string | ReactNode;
-	values?: Record<string, any>;
-}
+export type ITranslateProps = ITranslationProps;
 
-export const Translate: FC<ITranslateProps> = ({base, text, values}) => {
+export const Translate: FC<ITranslateProps> = ({namespace, text, values}) => {
 	const {t} = useTranslation();
-	return <>{isString(text) ? t(base ? `${base}.${text}` : `${text}`, values) : text}</>;
+	return <>{isString(text) ? t(namespace ? `${namespace}.${text}` : `${text}`, values) : text}</>;
 };

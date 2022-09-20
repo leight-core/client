@@ -120,8 +120,11 @@ export function Filter<TFilter = any>(
 				icon={<SearchOutlined/>}
 				type={"link"}
 				size={"small"}
-				title={translation + ".filter.title"}
-				label={translation + ".filter.title"}
+				translation={{
+					text: "title",
+					namespace: translation + ".filter",
+				}}
+				label={"title"}
 				width={750}
 				{...drawerButtonProps}
 			>

@@ -1,12 +1,11 @@
+import {ITranslationProps} from "@leight-core/api";
 import {Drawer, IDrawerProps, Translate, UseToken, VisibleContext, VisibleProvider} from "@leight-core/client";
 import {Button, ButtonProps, Tooltip} from "antd";
 import {ComponentProps, FC, ReactNode} from "react";
-import {useTranslation} from "react-i18next";
 
 export interface IDrawerButtonProps extends Partial<Omit<ButtonProps, "title">> {
 	label?: ReactNode | string;
-	title?: ReactNode;
-	values?: Record<string, any>;
+	translation?: ITranslationProps;
 	tooltip?: string;
 	width?: string | number;
 	drawerProps?: IDrawerProps;
@@ -21,22 +20,19 @@ export const DrawerButton: FC<IDrawerButtonProps> = (
 		children,
 		onClick,
 		label,
-		title,
+		translation,
 		tooltip,
-		values,
 		width = 600,
 		drawerProps,
 		tokens,
 		...props
 	}) => {
-	const {t} = useTranslation();
-	return <Tooltip title={tooltip ? t(tooltip) : undefined}>
+	return <Tooltip title={tooltip ? <Translate {...translation} text={tooltip}/> : undefined}>
 		<VisibleProvider>
 			<VisibleContext.Consumer>
 				{visibleContext => <>
 					<Drawer
-						title={title}
-						values={values}
+						translation={translation}
 						width={width}
 						{...drawerProps}
 					>
@@ -50,7 +46,10 @@ export const DrawerButton: FC<IDrawerButtonProps> = (
 							}}
 							{...props}
 						>
-							<Translate text={label} values={values}/>
+							<Translate
+								{...translation}
+								text={label}
+							/>
 						</Button>
 					</UseToken>
 				</>}

@@ -1,5 +1,5 @@
 import {IMobileFormItemContext, INamePath} from "@leight-core/api";
-import {MobileFormItemContext, ShowToken, useMobileFormContext, useOptionalItemGroupContext, VisibleContext, VisibleProvider} from "@leight-core/client";
+import {MobileFormItemContext, ShowToken, useMobileFormContext, useOptionalItemGroupContext, useOptionalVisibleContext} from "@leight-core/client";
 import {Form, Input} from "antd-mobile";
 import {Rule} from "rc-field-form/lib/interface";
 import {ComponentProps, FC} from "react";
@@ -46,6 +46,7 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 	const {t} = useTranslation();
 	const formContext = useMobileFormContext();
 	const itemGroupContext = useOptionalItemGroupContext();
+	const visibleContext = useOptionalVisibleContext();
 	field = ([] as (string | number)[]).concat(itemGroupContext ? itemGroupContext.prefix : [], Array.isArray(field) ? field : [field]);
 	const fieldName = Array.isArray(field) ? field.join(".") : field;
 	const rules: Rule[] = [];
@@ -82,26 +83,15 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 	onNormalize && !props.normalize && (props.normalize = value => onNormalize(value, context));
 	return <ShowToken tokens={showWith}>
 		<MobileFormItemContext.Provider value={context}>
-			{withVisible ? <VisibleProvider>
-				<VisibleContext.Consumer>
-					{visibleContext => <Form.Item
-						name={field}
-						label={showLabel === false ? null : t(["form-item." + fieldName + ".label"].concat(labels))}
-						rules={rules}
-						onClick={() => visibleContext?.setVisible(true)}
-						{...props}
-					>
-						{children}
-					</Form.Item>}
-				</VisibleContext.Consumer>
-			</VisibleProvider> : <Form.Item
+			<Form.Item
 				name={field}
 				label={showLabel === false ? null : t(["form-item." + fieldName + ".label"].concat(labels))}
 				rules={rules}
+				onClick={withVisible && visibleContext ? () => visibleContext?.show() : undefined}
 				{...props}
 			>
 				{children}
-			</Form.Item>}
+			</Form.Item>
 		</MobileFormItemContext.Provider>
 	</ShowToken>;
 };
