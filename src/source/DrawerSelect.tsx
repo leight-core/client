@@ -1,8 +1,8 @@
 import Icon from "@ant-design/icons";
 import {IWithIdentity} from "@leight-core/api";
-import {Drawer, ISelectionProviderProps, ITranslateProps, SelectionContext, SelectionProvider, useSourceContext, VisibleContext, VisibleProvider} from "@leight-core/client";
+import {Drawer, ISelectionProviderProps, ITranslateProps, SelectionContext, SelectionProvider, useOptionalCursorContext, useOptionalFilterContext, useSourceContext, VisibleContext, VisibleProvider} from "@leight-core/client";
 import {Space} from "antd";
-import {CheckList, DotLoading, InfiniteScroll} from "antd-mobile";
+import {CheckList, DotLoading, InfiniteScroll, SearchBar} from "antd-mobile";
 import {PropsWithChildren, ReactNode} from "react";
 import {IoTrailSignOutline} from "react-icons/io5";
 
@@ -20,6 +20,8 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	 */
 	defaultSelection?: Record<string, TItem>;
 
+	withFulltext?: boolean;
+
 	render(item: TItem): ReactNode;
 }>;
 
@@ -29,9 +31,15 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		defaultSelection,
 		selectionProviderProps,
 		render,
+		withFulltext = true,
 		children,
 	}: IDrawerSelectProps<TItem>) {
 	const sourceContext = useSourceContext<TItem>();
+	const filterContext = useOptionalFilterContext();
+	const cursorContext = useOptionalCursorContext();
+	if (withFulltext && !filterContext) {
+		console.warn(`Using DrawerSelect list ${sourceContext.name} with fulltext and without filter context!`);
+	}
 	return <SelectionProvider<TItem>
 		type={"single"}
 		defaultSelection={defaultSelection}
@@ -48,6 +56,18 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 							bodyStyle={{padding: 0}}
 							translation={translation}
 						>
+							{withFulltext ? <SearchBar
+								onSearch={value => {
+									sourceContext.reset();
+									filterContext?.setFilter({fulltext: value});
+									setTimeout(() => cursorContext?.setPage(0), 0);
+								}}
+								onClear={() => {
+									sourceContext.reset();
+									filterContext?.setFilter();
+									setTimeout(() => cursorContext?.setPage(0), 0);
+								}}
+							/> : null}
 							<CheckList
 								value={selectionContext.toSelection()}
 							>
