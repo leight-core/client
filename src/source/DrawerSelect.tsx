@@ -1,7 +1,7 @@
 import Icon from "@ant-design/icons";
 import {IWithIdentity} from "@leight-core/api";
 import {Drawer, ISelectionProviderProps, ITranslateProps, SelectionContext, SelectionProvider, useOptionalCursorContext, useOptionalFilterContext, useSourceContext, VisibleContext, VisibleProvider} from "@leight-core/client";
-import {Space} from "antd";
+import {Col, Row, Space} from "antd";
 import {CheckList, DotLoading, InfiniteScroll, SearchBar} from "antd-mobile";
 import {PropsWithChildren, ReactNode} from "react";
 import {IoTrailSignOutline} from "react-icons/io5";
@@ -56,41 +56,50 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 							bodyStyle={{padding: 0}}
 							translation={translation}
 						>
-							{withFulltext ? <SearchBar
-								onSearch={value => {
-									sourceContext.reset();
-									filterContext?.setFilter({fulltext: value});
-									setTimeout(() => cursorContext?.setPage(0), 0);
-								}}
-								onClear={() => {
-									sourceContext.reset();
-									filterContext?.setFilter();
-									setTimeout(() => cursorContext?.setPage(0), 0);
-								}}
-							/> : null}
-							<CheckList
-								value={selectionContext.toSelection()}
-							>
-								{sourceContext.data().map(item => <CheckList.Item
-									key={item.id}
-									value={item.id}
-									onClick={() => selectionContext.item(item)}
-								>
-									{render(item)}
-								</CheckList.Item>)}
-							</CheckList>
-							<InfiniteScroll
-								loadMore={async () => sourceContext.more(true)}
-								hasMore={sourceContext.hasMore()}
-							>
-								<Space>
-									{sourceContext.result.isFetching || sourceContext.hasMore() ? (
-										<DotLoading/>
-									) : (
-										<Icon component={IoTrailSignOutline}/>
-									)}
-								</Space>
-							</InfiniteScroll>
+							{withFulltext ? <Row>
+								<Col span={22}>
+									<SearchBar
+										onSearch={value => {
+											sourceContext.reset();
+											filterContext?.setFilter({fulltext: value});
+											setTimeout(() => cursorContext?.setPage(0), 0);
+										}}
+										onClear={() => {
+											sourceContext.reset();
+											filterContext?.setFilter();
+											setTimeout(() => cursorContext?.setPage(0), 0);
+										}}
+									/>
+								</Col>
+							</Row> : null}
+							<Row>
+								<Col span={24}>
+									<CheckList
+										value={selectionContext.toSelection()}
+									>
+										{sourceContext.data().map(item => <CheckList.Item
+											key={item.id}
+											value={item.id}
+											onClick={() => selectionContext.item(item)}
+										>
+											{render(item)}
+										</CheckList.Item>)}
+									</CheckList>
+
+									<InfiniteScroll
+										loadMore={async () => sourceContext.more(true)}
+										hasMore={sourceContext.hasMore()}
+									>
+										<Space>
+											{sourceContext.result.isFetching || sourceContext.hasMore() ? (
+												<DotLoading/>
+											) : (
+												<Icon component={IoTrailSignOutline}/>
+											)}
+										</Space>
+									</InfiniteScroll>
+								</Col>
+							</Row>
 						</Drawer>
 						{children}
 					</>}
