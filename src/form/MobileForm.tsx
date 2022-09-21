@@ -106,9 +106,7 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 	const doNavigate = useNavigate();
 
 	const mutation = useMutation(mutationQueryParams);
-	const navigate: INavigate = (href, queryParams) => {
-		doNavigate(href, queryParams);
-	};
+	const navigate: INavigate = (href, queryParams) => doNavigate(href, queryParams);
 
 	return <WithToken
 		tokens={tokens}
@@ -151,9 +149,11 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 									onFieldsChange={() => onChange?.({values: formContext.values(), formContext})}
 									onValuesChange={(changed, values) => onValuesChange?.({values, changed, formContext})}
 									onFinish={values => {
-										const toast = Toast.show({icon: "loading", maskClickable: false});
+										const $t: (text: string, data?: Record<string, any>) => string = (text, data) => t(formContext.translation ? `${formContext.translation}.${text}` : text, data);
+										Toast.show({icon: "loading", maskClickable: false});
 										mutation.mutate(toMutation(values), {
 											onSuccess: response => {
+												message.success($t("success", response as any));
 												Toast.show({
 													icon: "success",
 													maskClickable: false,
@@ -165,7 +165,7 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 													values,
 													response,
 													formContext,
-													t: (text, data) => t(formContext.translation ? `${formContext.translation}.${text}` : text, data),
+													t: $t,
 												});
 											},
 											onError: error => {
@@ -175,9 +175,6 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 													duration: 3000,
 												});
 												onFailure?.({error: (error && error.response && error.response.data) || error, formContext});
-											},
-											onSettled: () => {
-												toast.close();
 											},
 										});
 									}}
