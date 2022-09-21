@@ -156,7 +156,7 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 												message.success($t("success", response as any));
 												Toast.show({
 													icon: "success",
-													maskClickable: false,
+													maskClickable: true,
 													duration: 3000,
 												});
 												shouldHide && visibleContext?.hide();
@@ -171,7 +171,7 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 											onError: error => {
 												Toast.show({
 													icon: "fail",
-													maskClickable: false,
+													maskClickable: true,
 													duration: 3000,
 												});
 												onFailure?.({error: (error && error.response && error.response.data) || error, formContext});
