@@ -12,7 +12,6 @@ export * from "./FormProvider";
 export * from "./FormUtils";
 export * from "./MobileForm";
 export * from "./MobileFormContext";
-export * from "./MobileFormHeader";
 export * from "./MobileFormItem";
 export * from "./MobileFormItemContext";
 export * from "./MobileFormItemProvider";

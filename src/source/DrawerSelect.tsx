@@ -2,6 +2,7 @@ import Icon from "@ant-design/icons";
 import {ISelection, ISelectionType, IWithIdentity} from "@leight-core/api";
 import {
 	BubbleButton,
+	Centered,
 	Drawer,
 	FulltextBar,
 	IOfSelection,
@@ -17,7 +18,7 @@ import {
 	useVisibleContext
 } from "@leight-core/client";
 import {Col, Row, Space, Typography} from "antd";
-import {CheckList, DotLoading, InfiniteScroll, Skeleton} from "antd-mobile";
+import {CheckList, DotLoading, InfiniteScroll} from "antd-mobile";
 import {CheckOutline} from "antd-mobile-icons";
 import {ReactNode} from "react";
 import {IoTrailSignOutline} from "react-icons/io5";
@@ -185,10 +186,9 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 						</Col>
 					</Row>
 				</Drawer>
-				{blockContext?.isBlocked() ? <Skeleton.Title
-					animated
-					style={{width: "100%", margin: "0"}}
-				/> : <Space>
+				{blockContext?.isBlocked() ? <Centered>
+					<DotLoading/>
+				</Centered> : <Space>
 					{icon ? <Typography.Text type={"secondary"}>{icon}</Typography.Text> : null}
 					{$toPreview(selectionContext.selection())}
 				</Space>}
