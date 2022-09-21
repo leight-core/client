@@ -2,16 +2,20 @@ import {ISelectionContext, IWithIdentity} from "@leight-core/api";
 import {useSelectionContext} from "@leight-core/client";
 import {useEffect} from "react";
 
+export interface IOfSelection<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> {
+	value?: TOnChange;
+	selectionContext: ISelectionContext<TItem>;
+}
+
 export interface IOfSelectionProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> {
 	value?: TOnChange;
 
 	/**
 	 * Resolves values of selection into selection context.
 	 *
-	 * @param value
-	 * @param selectionContext
+	 * @param ofSelection
 	 */
-	ofSelection(value: TOnChange | undefined, selectionContext: ISelectionContext<TItem>): void;
+	ofSelection(ofSelection: IOfSelection<TItem, TOnChange>): void;
 }
 
 /**
@@ -28,7 +32,10 @@ export function OfSelection<TItem extends Record<string, any> & IWithIdentity = 
 	}: IOfSelectionProps<TItem, TOnChange>) {
 	const selectionContext = useSelectionContext<TItem>();
 	useEffect(() => {
-		ofSelection(value, selectionContext);
+		ofSelection({
+			value,
+			selectionContext,
+		});
 	}, [value]);
 	return null;
 }

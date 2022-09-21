@@ -1,8 +1,24 @@
 import Icon from "@ant-design/icons";
-import {ISelection, ISelectionContext, ISelectionType, IWithIdentity} from "@leight-core/api";
-import {BubbleButton, Drawer, FulltextBar, ISelectionProviderProps, ITranslateProps, OfSelection, SelectionContext, SelectionProvider, Translate, useOptionalFilterContext, useSourceContext, useVisibleContext} from "@leight-core/client";
+import {ISelection, ISelectionType, IWithIdentity} from "@leight-core/api";
+import {
+	BubbleButton,
+	Drawer,
+	FulltextBar,
+	IOfSelection,
+	ISelectionProviderProps,
+	ITranslateProps,
+	LoaderIcon,
+	OfSelection,
+	SelectionContext,
+	SelectionProvider,
+	Translate,
+	useOptionalBlockContext,
+	useOptionalFilterContext,
+	useSourceContext,
+	useVisibleContext
+} from "@leight-core/client";
 import {Col, Row, Space, Typography} from "antd";
-import {CheckList, DotLoading, InfiniteScroll} from "antd-mobile";
+import {CheckList, DotLoading, InfiniteScroll, Skeleton} from "antd-mobile";
 import {CheckOutline} from "antd-mobile-icons";
 import {ReactNode} from "react";
 import {IoTrailSignOutline} from "react-icons/io5";
@@ -67,10 +83,9 @@ export interface IDrawerSelectProps<TItem extends Record<string, any> & IWithIde
 	/**
 	 * Opposite of toChange: should select items in the selectionContext.
 	 *
-	 * @param value
-	 * @param selectionContext
+	 * @param ofSelection
 	 */
-	ofSelection(value: TOnChange | undefined, selectionContext: ISelectionContext<TItem>): void;
+	ofSelection(ofSelection: IOfSelection<TItem, TOnChange>): void;
 
 	icon?: ReactNode;
 }
@@ -93,6 +108,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 	const sourceContext = useSourceContext<TItem>();
 	const visibleContext = useVisibleContext();
 	const filterContext = useOptionalFilterContext();
+	const blockContext = useOptionalBlockContext();
 
 	const $toPreview = (selection?: ISelection<TItem>) => {
 		const preview = toPreview(selection);
@@ -170,10 +186,13 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 						</Col>
 					</Row>
 				</Drawer>
-				<Space>
+				{blockContext?.isBlocked() ? <Space>
+					<LoaderIcon/>
+					<Skeleton.Title animated/>
+				</Space> : <Space>
 					{icon ? <Typography.Text type={"secondary"}>{icon}</Typography.Text> : null}
 					{$toPreview(selectionContext.selection())}
-				</Space>
+				</Space>}
 			</>}
 		</SelectionContext.Consumer>
 	</SelectionProvider>;

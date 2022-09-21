@@ -1,5 +1,5 @@
-import {ISelection, ISelectionContext, ISelectionType, IWithIdentity} from "@leight-core/api";
-import {DrawerSelect, IDrawerSelectProps, IMobileFormItemProps, MobileFormItem, VisibleProvider} from "@leight-core/client";
+import {ISelection, ISelectionType, IWithIdentity} from "@leight-core/api";
+import {DrawerSelect, IDrawerSelectProps, IMobileFormItemProps, IOfSelection, MobileFormItem, VisibleProvider} from "@leight-core/client";
 import {ReactNode} from "react";
 
 export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> = Omit<IMobileFormItemProps, "children"> & {
@@ -13,7 +13,7 @@ export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIden
 	drawerSelectProps?: Partial<IDrawerSelectProps<TItem, TOnChange>>;
 	toChange?(selection: ISelection<TItem>): TOnChange | undefined;
 	toPreview(selection?: ISelection<TItem>): ReactNode;
-	ofSelection(value: TOnChange | undefined, selectionContext: ISelectionContext<TItem>): void;
+	ofSelection(ofSelection: IOfSelection<TItem, TOnChange>): void;
 	icon?: ReactNode;
 };
 
