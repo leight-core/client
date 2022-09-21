@@ -1,5 +1,5 @@
 import {ISelection, ISelectionType, IWithIdentity} from "@leight-core/api";
-import {DrawerSelect, IDrawerSelectProps, IMobileFormItemProps, IOfSelection, MobileFormItem, VisibleProvider} from "@leight-core/client";
+import {DrawerSelect, IDrawerSelectProps, IMobileFormItemProps, IOfSelection, MobileFormItem, useOptionalBlockContext, VisibleProvider} from "@leight-core/client";
 import {ReactNode} from "react";
 
 export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> = Omit<IMobileFormItemProps, "children"> & {
@@ -35,6 +35,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 		<MobileFormItem
 			field={field}
 			withVisible
+			disabled={useOptionalBlockContext()?.isBlocked()}
 			{...props}
 		>
 			<DrawerSelect

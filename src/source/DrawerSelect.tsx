@@ -7,7 +7,6 @@ import {
 	IOfSelection,
 	ISelectionProviderProps,
 	ITranslateProps,
-	LoaderIcon,
 	OfSelection,
 	SelectionContext,
 	SelectionProvider,
@@ -186,10 +185,10 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 						</Col>
 					</Row>
 				</Drawer>
-				{blockContext?.isBlocked() ? <Space>
-					<LoaderIcon/>
-					<Skeleton.Title animated/>
-				</Space> : <Space>
+				{blockContext?.isBlocked() ? <Skeleton.Title
+					animated
+					style={{width: "100%", margin: "0"}}
+				/> : <Space>
 					{icon ? <Typography.Text type={"secondary"}>{icon}</Typography.Text> : null}
 					{$toPreview(selectionContext.selection())}
 				</Space>}

@@ -29,6 +29,7 @@ export class BlockContextClass implements IBlockContext {
 
 	public unblock(unlock = false): void {
 		this.lock && this.lockState[1](false);
+		unlock && (this.lock = false);
 		this.countState[1](unlock ? 0 : prev => Math.max(0, prev - 1));
 	}
 }
