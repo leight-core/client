@@ -1,9 +1,10 @@
-import {ISelection, ISelectionContext, IWithIdentity} from "@leight-core/api";
+import {ISelection, ISelectionContext, ISelectionType, IWithIdentity} from "@leight-core/api";
 import {DrawerSelect, IDrawerSelectProps, IMobileFormItemProps, MobileFormItem, VisibleProvider} from "@leight-core/client";
 import {ReactNode} from "react";
 
 export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> = Omit<IMobileFormItemProps, "children"> & {
 	render(item: TItem): ReactNode;
+	type?: ISelectionType;
 	/**
 	 * Default selection (shortcut to selectionProviderProps)
 	 */
@@ -19,6 +20,7 @@ export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIden
 export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any>(
 	{
 		render,
+		type = "single",
 		defaultSelection,
 		selected,
 		drawerSelectProps,
@@ -37,6 +39,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 		>
 			<DrawerSelect
 				render={render}
+				type={type}
 				defaultSelection={selected ? {[selected.id]: selected} : defaultSelection}
 				toChange={toChange}
 				toPreview={toPreview}

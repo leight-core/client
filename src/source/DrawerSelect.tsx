@@ -1,5 +1,5 @@
 import Icon from "@ant-design/icons";
-import {ISelection, ISelectionContext, IWithIdentity} from "@leight-core/api";
+import {ISelection, ISelectionContext, ISelectionType, IWithIdentity} from "@leight-core/api";
 import {BubbleButton, Drawer, FulltextBar, ISelectionProviderProps, ITranslateProps, OfSelection, SelectionContext, SelectionProvider, Translate, useOptionalFilterContext, useSourceContext, useVisibleContext} from "@leight-core/client";
 import {Col, Row, Space, Typography} from "antd";
 import {CheckList, DotLoading, InfiniteScroll} from "antd-mobile";
@@ -16,6 +16,7 @@ export interface IDrawerSelectProps<TItem extends Record<string, any> & IWithIde
 	 * Currently selected value(s).
 	 */
 	value?: TOnChange;
+	type?: ISelectionType;
 
 	/**
 	 * Callback used for FormItem compatibility.
@@ -77,6 +78,7 @@ export interface IDrawerSelectProps<TItem extends Record<string, any> & IWithIde
 export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any>(
 	{
 		value,
+		type = "single",
 		onChange,
 		translation,
 		defaultSelection,
@@ -98,7 +100,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 	};
 
 	return <SelectionProvider<TItem>
-		type={"single"}
+		type={type}
 		defaultSelection={defaultSelection}
 		onSelection={selection => {
 			onChange?.(toChange(selection));

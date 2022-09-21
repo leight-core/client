@@ -37,7 +37,7 @@ export function SelectionProvider<TSelection, >({type = "single", defaultEnabled
 
 	const select: ISelectionContext<TSelection>["select"] = (id, selection, select) => {
 		setSelection(prev => {
-			const $select = select === undefined ? !!prev[id] : select;
+			const $select = select === undefined ? !prev[id] : select;
 			switch (type) {
 				case "none":
 					return {};
@@ -58,18 +58,22 @@ export function SelectionProvider<TSelection, >({type = "single", defaultEnabled
 		}
 		return toSelection()[0];
 	};
-	const $selection = () => ({
-		isEmpty: isEmpty(),
-		single: (() => {
-			try {
-				return selection[toSingle()];
-			} catch (e) {
-				// swallow "Selection Empty" error
-			}
-		})(),
-		selected: toSelection(),
-		items: toSelection().reduce((prev, current) => ({...prev, [current]: selection[current]}), {}),
-	});
+	const $selection = () => {
+		const items = toSelection().reduce((prev, current) => ({...prev, [current]: selection[current]}), {});
+		return {
+			isEmpty: isEmpty(),
+			single: (() => {
+				try {
+					return selection[toSingle()];
+				} catch (e) {
+					// swallow "Selection Empty" error
+				}
+			})(),
+			selected: toSelection(),
+			selection: Object.values(items) as TSelection[],
+			items,
+		};
+	};
 
 	return <SelectionContext.Provider
 		value={{
