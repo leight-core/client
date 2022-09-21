@@ -35,6 +35,7 @@ export const Drawer: FC<IDrawerProps> = (
 				<Translate {...translation}/>
 			</Space>
 		</Centered>}
+		keyboard={false}
 		width={mobile("100vw", width)}
 		height={height}
 		headerStyle={mobile({padding: "8px 4px"})}
