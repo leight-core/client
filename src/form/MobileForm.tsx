@@ -159,7 +159,6 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 													maskClickable: false,
 													duration: 3000,
 												});
-												toast.close();
 												shouldHide && visibleContext?.hide();
 												onSuccess({
 													navigate,
