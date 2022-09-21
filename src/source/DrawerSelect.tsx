@@ -109,7 +109,10 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 	>
 		<SelectionContext.Consumer>
 			{selectionContext => <>
-				<OfSelection<TItem, TOnChange> ofSelection={ofSelection} value={value}/>
+				<OfSelection<TItem, TOnChange>
+					ofSelection={ofSelection}
+					value={value}
+				/>
 				<Drawer
 					open={visibleContext.visible}
 					onClose={e => {

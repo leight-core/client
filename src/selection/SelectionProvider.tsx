@@ -35,23 +35,19 @@ export function SelectionProvider<TSelection, >({type = "single", defaultEnabled
 		setSelection(applySelection || defaultSelection || {});
 	}, [applySelection]);
 
-	const select: ISelectionContext<TSelection>["select"] = (id, selection) => {
+	const select: ISelectionContext<TSelection>["select"] = (id, selection, select) => {
 		setSelection(prev => {
+			const $select = select === undefined ? !!prev[id] : select;
 			switch (type) {
 				case "none":
 					return {};
 				case "single":
-					return {[id]: !prev[id] ? selection : undefined};
+					return $select ? {[id]: selection} : {};
 				case "multi":
-					return {...prev, [id]: !prev[id] ? selection : undefined};
+					return {...prev, [id]: $select ? selection : undefined};
 			}
 			return {};
 		});
-	};
-	const deSelect: ISelectionContext<TSelection>["deSelect"] = id => {
-		const $selection = {...selection};
-		delete $selection[id];
-		setSelection($selection);
 	};
 	const isSelected: ISelectionContext<TSelection>["isSelected"] = id => !!selection[id];
 	const toSelection: ISelectionContext<TSelection>["toSelection"] = () => Object.keys(selection).filter(key => !!selection[key]);
@@ -87,10 +83,8 @@ export function SelectionProvider<TSelection, >({type = "single", defaultEnabled
 			toSelection,
 			toItems: () => Object.values(selection).filter(item => !!item),
 			select,
-			deSelect,
-			item: item => select(item.id, item),
-			items: items => items.map(item => select(item.id, item)),
-			deItem: item => deSelect(item.id),
+			item: (item, $select) => select(item.id, item, $select),
+			items: (items, $select) => items.map(item => select(item.id, item, $select)),
 			isSelectedItem: item => isSelected(item.id),
 			isEmpty,
 			toSingle,

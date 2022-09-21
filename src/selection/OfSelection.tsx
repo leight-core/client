@@ -28,7 +28,6 @@ export function OfSelection<TItem extends Record<string, any> & IWithIdentity = 
 	}: IOfSelectionProps<TItem, TOnChange>) {
 	const selectionContext = useSelectionContext<TItem>();
 	useEffect(() => {
-		console.log("Running OfSelection with value", value);
 		ofSelection(value, selectionContext);
 	}, [value]);
 	return null;
