@@ -23,8 +23,8 @@ export type ISelectionProviderProps<TSelection = any> = PropsWithChildren<{
 	onSelection?(event: ISelection<TSelection>): void;
 }>;
 
-export function SelectionProvider<TSelection, >({type = "single", defaultEnabled = type !== "none", defaultSelection, applySelection, onSelection, ...props}: ISelectionProviderProps<TSelection>) {
-	const [enabled, setEnabled] = useState(defaultEnabled && type !== "none");
+export function SelectionProvider<TSelection, >({type = "single", defaultEnabled = true, defaultSelection, applySelection, onSelection, ...props}: ISelectionProviderProps<TSelection>) {
+	const [enabled, setEnabled] = useState(defaultEnabled);
 	const [selection, setSelection] = useState<Record<string, TSelection | undefined>>(applySelection || defaultSelection || {});
 	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>(onSelection ? [onSelection] : []);
 
@@ -38,15 +38,10 @@ export function SelectionProvider<TSelection, >({type = "single", defaultEnabled
 	const select: ISelectionContext<TSelection>["select"] = (id, selection, select) => {
 		setSelection(prev => {
 			const $select = select === undefined ? !prev[id] : select;
-			switch (type) {
-				case "none":
-					return {};
-				case "single":
-					return $select ? {[id]: selection} : {};
-				case "multi":
-					return {...prev, [id]: $select ? selection : undefined};
+			if (type === "single") {
+				return $select ? {[id]: selection} : {};
 			}
-			return {};
+			return {...prev, [id]: $select ? selection : undefined};
 		});
 	};
 	const isSelected: ISelectionContext<TSelection>["isSelected"] = id => !!selection[id];

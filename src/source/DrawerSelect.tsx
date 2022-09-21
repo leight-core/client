@@ -85,7 +85,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		selectionProviderProps,
 		render,
 		withFulltext = true,
-		toChange = selection => toSingleSelection(selection) as TOnChange,
+		toChange = type === "single" ? selection => toSingleSelection(selection) as TOnChange : selection => toMultiSelection(selection) as TOnChange,
 		ofSelection,
 		toPreview,
 		icon,
