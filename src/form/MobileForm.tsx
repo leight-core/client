@@ -107,9 +107,6 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 
 	const mutation = useMutation(mutationQueryParams);
 	const navigate: INavigate = (href, queryParams) => {
-		Toast.show({
-			icon: "loading",
-		});
 		doNavigate(href, queryParams);
 	};
 
@@ -157,6 +154,11 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 										const toast = Toast.show({icon: "loading", maskClickable: false});
 										mutation.mutate(toMutation(values), {
 											onSuccess: response => {
+												Toast.show({
+													icon: "success",
+													maskClickable: false,
+													duration: 3000,
+												});
 												toast.close();
 												shouldHide && visibleContext?.hide();
 												onSuccess({
@@ -167,7 +169,14 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 													t: (text, data) => t(formContext.translation ? `${formContext.translation}.${text}` : text, data),
 												});
 											},
-											onError: error => onFailure?.({error: (error && error.response && error.response.data) || error, formContext}),
+											onError: error => {
+												Toast.show({
+													icon: "fail",
+													maskClickable: false,
+													duration: 3000,
+												});
+												onFailure?.({error: (error && error.response && error.response.data) || error, formContext});
+											},
 											onSettled: () => {
 												toast.close();
 											},
