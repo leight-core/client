@@ -5,7 +5,7 @@ export interface IEllipsisProps extends ComponentProps<typeof CoolEllipsis> {
 }
 
 export const Ellipsis: FC<IEllipsisProps> = props => {
-	return <Ellipsis
+	return <CoolEllipsis
 		style={{
 			wordBreak: "break-word",
 		}}
