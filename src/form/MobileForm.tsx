@@ -150,7 +150,7 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 									onValuesChange={(changed, values) => onValuesChange?.({values, changed, formContext})}
 									onFinish={values => {
 										const $t: (text: string, data?: Record<string, any>) => string = (text, data) => t(formContext.translation ? `${formContext.translation}.${text}` : text, data);
-										Toast.show({icon: "loading", maskClickable: false});
+										Toast.show({icon: "loading", maskClickable: false, duration: 0});
 										mutation.mutate(toMutation(values), {
 											onSuccess: response => {
 												message.success($t("success", response as any));
