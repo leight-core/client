@@ -102,6 +102,7 @@ export function Filter<TFilter = any>(
 		toForm = filter => filter,
 		toFilter,
 		spaceProps,
+		children,
 		...props
 	}: IFilterProps<TFilter>): JSX.Element {
 	const {t} = useTranslation();
@@ -116,7 +117,7 @@ export function Filter<TFilter = any>(
 			{...props}
 		/> :
 		<Space align={"baseline"} split={<Divider type={"vertical"}/>} {...spaceProps}>
-			<DrawerButton
+			{children && <DrawerButton
 				icon={<SearchOutlined/>}
 				type={"link"}
 				size={"small"}
@@ -133,9 +134,10 @@ export function Filter<TFilter = any>(
 					formProps={formProps}
 					toForm={toForm}
 					toFilter={toFilter}
+					children={children}
 					{...props}
 				/>
-			</DrawerButton>
+			</DrawerButton>}
 			{!filterContext.isEmpty() && <Button
 				type={"link"}
 				size={"small"}
