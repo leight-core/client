@@ -18,23 +18,6 @@ export const bootstrapLocale = async (): Promise<ILocaleConfig> => {
 		.use(LanguageDetector)
 		.init({
 			initImmediate: true,
-			resources: {
-				translation: {
-					translation: {
-						"translation.check": "",
-					},
-				},
-				cs: {
-					translation: {
-						"common.loading": "",
-					}
-				},
-				en: {
-					translation: {
-						"common.loading": "",
-					}
-				}
-			},
 			keySeparator: false,
 			nsSeparator: false,
 			interpolation: {
