@@ -1,7 +1,6 @@
 import {IBootstrapConfig} from "@leight-core/api";
 import axios from "axios";
 import axiosRetry from "axios-retry";
-import i18n from "i18next";
 import {Router} from "next/router";
 import NProgress from "nprogress";
 import {useEffect} from "react";
@@ -20,7 +19,7 @@ export const bootstrap = async (): Promise<IBootstrapConfig> => {
 	});
 
 	return {
-		locale: await bootstrapLocale(i18n.language),
+		locale: await bootstrapLocale(),
 	};
 };
 
