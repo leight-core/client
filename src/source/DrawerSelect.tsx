@@ -20,14 +20,14 @@ import {
 import {Col, Row, Space, Typography} from "antd";
 import {CheckList, DotLoading, InfiniteScroll} from "antd-mobile";
 import {CheckOutline} from "antd-mobile-icons";
-import {ReactNode} from "react";
+import {PropsWithChildren, ReactNode} from "react";
 import {IoTrailSignOutline} from "react-icons/io5";
 
 export const toSingleSelection = ({single}: ISelection<IWithIdentity>) => single?.id;
 
 export const toMultiSelection = ({selected}: ISelection<IWithIdentity>) => selected;
 
-export interface IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> {
+export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> = PropsWithChildren<{
 	/**
 	 * Currently selected value(s).
 	 */
@@ -88,7 +88,7 @@ export interface IDrawerSelectProps<TItem extends Record<string, any> & IWithIde
 	ofSelection(ofSelection: IOfSelection<TItem, TOnChange>): void;
 
 	icon?: ReactNode;
-}
+}>
 
 export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any>(
 	{
@@ -104,6 +104,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		ofSelection,
 		toPreview,
 		icon,
+		children,
 	}: IDrawerSelectProps<TItem, TOnChange>) {
 	const sourceContext = useSourceContext<TItem>();
 	const visibleContext = useVisibleContext();
@@ -192,6 +193,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 					{icon ? <Typography.Text type={"secondary"}>{icon}</Typography.Text> : null}
 					{$toPreview(selectionContext.selection())}
 				</Space>}
+				{children}
 			</>}
 		</SelectionContext.Consumer>
 	</SelectionProvider>;

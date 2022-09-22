@@ -1,8 +1,8 @@
 import {ISelection, ISelectionType, IWithIdentity} from "@leight-core/api";
 import {DrawerSelect, IDrawerSelectProps, IMobileFormItemProps, IOfSelection, MobileFormItem, useOptionalBlockContext, VisibleProvider} from "@leight-core/client";
-import {ReactNode} from "react";
+import {PropsWithChildren, ReactNode} from "react";
 
-export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> = Omit<IMobileFormItemProps, "children"> & {
+export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> = PropsWithChildren<Omit<IMobileFormItemProps, "children"> & {
 	render(item: TItem): ReactNode;
 	type?: ISelectionType;
 	/**
@@ -15,7 +15,7 @@ export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIden
 	toPreview(selection?: ISelection<TItem>): ReactNode;
 	ofSelection(ofSelection: IOfSelection<TItem, TOnChange>): void;
 	icon?: ReactNode;
-};
+}>;
 
 export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any>(
 	{
@@ -29,6 +29,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 		toPreview,
 		ofSelection,
 		icon,
+		children,
 		...props
 	}: IDrawerSelectItemProps<TItem, TOnChange>) {
 	return <VisibleProvider>
@@ -46,6 +47,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 				toPreview={toPreview}
 				ofSelection={ofSelection}
 				icon={icon}
+				children={children}
 				{...drawerSelectProps}
 			/>
 		</MobileFormItem>
