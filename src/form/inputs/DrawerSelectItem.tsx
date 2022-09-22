@@ -1,6 +1,7 @@
 import {IMobileFormContext, ISelection, ISelectionType, IVisibleContext, IWithIdentity} from "@leight-core/api";
-import {CreateItemIcon, Drawer, DrawerSelect, IDrawerProps, IDrawerSelectProps, IMobileFormItemProps, IOfSelection, MobileFormItem, useMobileFormContext, useOptionalBlockContext, VisibleContext, VisibleProvider} from "@leight-core/client";
+import {Drawer, DrawerSelect, IDrawerProps, IDrawerSelectProps, IMobileFormItemProps, IOfSelection, MobileFormItem, useMobileFormContext, useOptionalBlockContext, VisibleContext, VisibleProvider} from "@leight-core/client";
 import {SwipeAction} from "antd-mobile";
+import {AddOutline} from "antd-mobile-icons";
 import {ComponentProps, PropsWithChildren, ReactNode} from "react";
 
 export interface ICreateWithProps<TValues extends Record<string, any> = any> {
@@ -49,7 +50,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 		<VisibleContext.Consumer>
 			{visibleContext => {
 				const rightActions: ComponentProps<typeof SwipeAction>["rightActions"] = [];
-				createWith && rightActions.push({key: JSON.stringify(field) + ".create", color: "primary", text: <CreateItemIcon/>, onClick: () => visibleContext.show()});
+				createWith && rightActions.push({key: JSON.stringify(field) + ".create", color: "primary", text: <AddOutline fontSize={24}/>, onClick: () => visibleContext.show()});
 				return <>
 					<SwipeAction
 						rightActions={rightActions}
@@ -75,7 +76,10 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 							</MobileFormItem>
 						</VisibleProvider>
 					</SwipeAction>
-					<Drawer {...createWithDrawer}>
+					<Drawer
+						bodyStyle={{padding: 0}}
+						{...createWithDrawer}
+					>
 						{createWith?.({
 							formContext,
 							visibleContext,
