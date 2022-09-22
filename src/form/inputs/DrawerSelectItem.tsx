@@ -1,6 +1,12 @@
-import {ISelection, ISelectionType, IWithIdentity} from "@leight-core/api";
-import {DrawerSelect, IDrawerSelectProps, IMobileFormItemProps, IOfSelection, MobileFormItem, useOptionalBlockContext, VisibleProvider} from "@leight-core/client";
-import {PropsWithChildren, ReactNode} from "react";
+import {IMobileFormContext, ISelection, ISelectionType, IVisibleContext, IWithIdentity} from "@leight-core/api";
+import {CreateItemIcon, Drawer, DrawerSelect, IDrawerProps, IDrawerSelectProps, IMobileFormItemProps, IOfSelection, MobileFormItem, useMobileFormContext, useOptionalBlockContext, VisibleContext, VisibleProvider} from "@leight-core/client";
+import {SwipeAction} from "antd-mobile";
+import {ComponentProps, PropsWithChildren, ReactNode} from "react";
+
+export interface ICreateWithProps<TValues extends Record<string, any> = any> {
+	formContext: IMobileFormContext<TValues>;
+	visibleContext: IVisibleContext;
+}
 
 export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> = PropsWithChildren<Omit<IMobileFormItemProps, "children"> & {
 	render(item: TItem): ReactNode;
@@ -15,6 +21,8 @@ export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIden
 	toPreview(selection?: ISelection<TItem>): ReactNode;
 	ofSelection(ofSelection: IOfSelection<TItem, TOnChange>): void;
 	icon?: ReactNode;
+	createWith?(createWithProps: ICreateWithProps): ReactNode;
+	createWithDrawer?: IDrawerProps;
 }>;
 
 export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any>(
@@ -29,27 +37,52 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 		toPreview,
 		ofSelection,
 		icon,
+		createWith,
+		createWithDrawer,
 		children,
 		...props
 	}: IDrawerSelectItemProps<TItem, TOnChange>) {
+	const formContext = useMobileFormContext();
+	const blockContext = useOptionalBlockContext();
+
 	return <VisibleProvider>
-		<MobileFormItem
-			field={field}
-			withVisible
-			disabled={useOptionalBlockContext()?.isBlocked()}
-			{...props}
-		>
-			<DrawerSelect
-				render={render}
-				type={type}
-				defaultSelection={selected ? {[selected.id]: selected} : defaultSelection}
-				toChange={toChange}
-				toPreview={toPreview}
-				ofSelection={ofSelection}
-				icon={icon}
-				children={children}
-				{...drawerSelectProps}
-			/>
-		</MobileFormItem>
+		<VisibleContext.Consumer>
+			{visibleContext => {
+				const rightActions: ComponentProps<typeof SwipeAction>["rightActions"] = [];
+				createWith && rightActions.push({key: JSON.stringify(field) + ".create", color: "primary", text: <CreateItemIcon/>, onClick: () => visibleContext.show()});
+				return <>
+					<SwipeAction
+						rightActions={rightActions}
+					>
+						<VisibleProvider>
+							<MobileFormItem
+								field={field}
+								withVisible
+								disabled={blockContext?.isBlocked()}
+								{...props}
+							>
+								<DrawerSelect
+									render={render}
+									type={type}
+									defaultSelection={selected ? {[selected.id]: selected} : defaultSelection}
+									toChange={toChange}
+									toPreview={toPreview}
+									ofSelection={ofSelection}
+									icon={icon}
+									children={children}
+									{...drawerSelectProps}
+								/>
+							</MobileFormItem>
+						</VisibleProvider>
+					</SwipeAction>
+					<Drawer {...createWithDrawer}>
+						{createWith?.({
+							formContext,
+							visibleContext,
+						})}
+					</Drawer>
+				</>;
+			}}
+		</VisibleContext.Consumer>
 	</VisibleProvider>;
 }

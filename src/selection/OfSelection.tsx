@@ -36,6 +36,6 @@ export function OfSelection<TItem extends Record<string, any> & IWithIdentity = 
 			value,
 			selectionContext,
 		});
-	}, [value]);
+	}, [JSON.stringify(value)]);
 	return null;
 }
