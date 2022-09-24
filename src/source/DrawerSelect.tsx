@@ -40,6 +40,7 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	 * @param value
 	 */
 	onChange?(value?: TOnChange): void;
+	onSelection?(selection: ISelection<TItem>): void;
 
 	/**
 	 * General translation props used inside this component.
@@ -95,6 +96,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		value,
 		type = "single",
 		onChange,
+		onSelection,
 		translation,
 		defaultSelection,
 		selectionProviderProps,
@@ -120,6 +122,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		type={type}
 		defaultSelection={defaultSelection}
 		onSelection={selection => {
+			onSelection?.(selection);
 			onChange?.(toChange(selection));
 			filterContext?.setFilter({});
 			sourceContext.reset();
