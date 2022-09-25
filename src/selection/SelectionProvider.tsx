@@ -28,21 +28,30 @@ export function SelectionProvider<TSelection, >({type = "single", defaultEnabled
 	const [selection, setSelection] = useState<Record<string, TSelection | undefined>>(applySelection || defaultSelection || {});
 	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>(onSelection ? [onSelection] : []);
 
+	console.log("SelectionProvider: Pure selection", selection);
+
 	useEffect(() => {
 		setSelection(defaultSelection || {});
-	}, [defaultSelection]);
+	}, [JSON.stringify(defaultSelection)]);
 	useEffect(() => {
 		setSelection(applySelection || defaultSelection || {});
-	}, [applySelection]);
+	}, [JSON.stringify(applySelection)]);
 
-	const select: ISelectionContext<TSelection>["select"] = (id, selection, select) => {
+	const select: ISelectionContext<TSelection>["select"] = (id, $selection, select) => {
+		console.log("SelectionProvider: Current selection", selection);
 		setSelection(prev => {
+			console.log("SelectionProvider: Previous", prev);
 			const $select = select === undefined ? !prev[id] : select;
+			console.log("SelectionProvider: Selecting", type, "$select", $select, "item", $select ? {[id]: $selection} : {});
 			if (type === "single") {
-				return $select ? {[id]: selection} : {};
+				return $select ? {[id]: $selection} : {};
 			}
-			return {...prev, [id]: $select ? selection : undefined};
+			console.log("SelectionProvider: Multi", {...prev, [id]: $select ? $selection : undefined});
+			return {...prev, [id]: $select ? $selection : undefined};
 		});
+		setTimeout(() => {
+			console.log("SelectionProvider: Selection timeout; selection", selection);
+		}, 100);
 	};
 	const isSelected: ISelectionContext<TSelection>["isSelected"] = id => !!selection[id];
 	const toSelection: ISelectionContext<TSelection>["toSelection"] = () => Object.keys(selection).filter(key => !!selection[key]);
@@ -94,7 +103,10 @@ export function SelectionProvider<TSelection, >({type = "single", defaultEnabled
 				const selection = $selection();
 				onSelectionEvents.current.map(callback => callback(selection));
 			},
-			clear: () => setSelection({}),
+			clear: () => {
+				console.log("Calling clear??");
+				setSelection({});
+			},
 		}}
 		{...props}
 	/>;
