@@ -25,22 +25,19 @@ export type ISelectionProviderProps<TSelection = any> = PropsWithChildren<{
 
 export function SelectionProvider<TSelection, >({type = "single", defaultEnabled = true, defaultSelection, applySelection, onSelection, ...props}: ISelectionProviderProps<TSelection>) {
 	const [enabled, setEnabled] = useState(defaultEnabled);
-	const [selection, setSelection] = useState<Record<string, TSelection | undefined>>(applySelection || defaultSelection || {});
+	const [selection, setSelection] = useState<Record<string, TSelection | undefined>>({...defaultSelection, ...applySelection});
 	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>(onSelection ? [onSelection] : []);
 
-	console.log("SelectionProvider: Pure selection", selection);
-
 	useEffect(() => {
-		setSelection(defaultSelection || {});
+		setSelection({...defaultSelection, ...applySelection});
 	}, [JSON.stringify(defaultSelection)]);
 	useEffect(() => {
-		setSelection(applySelection || defaultSelection || {});
+		setSelection({...defaultSelection, ...applySelection});
 	}, [JSON.stringify(applySelection)]);
 
 	const select: ISelectionContext<TSelection>["select"] = (id, $selection, select) => {
-		console.log("SelectionProvider: Current selection", selection);
 		setSelection(prev => {
-			console.log("SelectionProvider: Previous", prev);
+			console.log("SelectionProvider: Current selection", selection);
 			const $select = select === undefined ? !prev[id] : select;
 			console.log("SelectionProvider: Selecting", type, "$select", $select, "item", $select ? {[id]: $selection} : {});
 			if (type === "single") {
