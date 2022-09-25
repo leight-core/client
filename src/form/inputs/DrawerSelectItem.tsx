@@ -25,6 +25,7 @@ export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIden
 	createWith?(createWithProps: ICreateWithProps): ReactNode;
 	createWithDrawer?: IDrawerProps;
 	onSelection?(selection: ISelection<TItem>): void;
+	withFulltext?: boolean;
 }>;
 
 export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any>(
@@ -42,6 +43,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 		createWith,
 		createWithDrawer,
 		onSelection,
+		withFulltext = true,
 		children,
 		...props
 	}: IDrawerSelectItemProps<TItem, TOnChange>) {
@@ -73,6 +75,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 									ofSelection={ofSelection}
 									icon={icon}
 									onSelection={onSelection}
+									withFulltext={withFulltext}
 									children={children}
 									{...drawerSelectProps}
 								/>
