@@ -75,7 +75,7 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	render(item: TItem): ReactNode;
 
 	/**
-	 * Override internal list (CheckList is the parent control, but the rest is on this method.).
+	 * Override an internal list renderer (the list itself is upon this method).
 	 */
 	renderList?(props: IDrawerSelectRenderList<TItem>): ReactNode;
 
@@ -174,25 +174,24 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 					</Row> : null}
 					<Row>
 						<Col span={24}>
-							<CheckList
+							{renderList?.({
+								sourceContext,
+								selectionContext,
+								render,
+							}) || <CheckList
 								value={selectionContext.toSelection()}
 							>
-								{renderList?.({
-										sourceContext,
-										selectionContext,
-										render,
-									}) ||
-									sourceContext.data().map(item => <CheckList.Item
-										key={item.id}
-										value={item.id}
-										onClick={e => {
-											e.stopPropagation();
-											selectionContext.item(item);
-										}}
-									>
-										{render(item)}
-									</CheckList.Item>)}
-							</CheckList>
+								{sourceContext.data().map(item => <CheckList.Item
+									key={item.id}
+									value={item.id}
+									onClick={e => {
+										e.stopPropagation();
+										selectionContext.item(item);
+									}}
+								>
+									{render(item)}
+								</CheckList.Item>)}
+							</CheckList>}
 							<InfiniteScroll
 								loadMore={async () => sourceContext.more(true)}
 								hasMore={sourceContext.hasMore()}
