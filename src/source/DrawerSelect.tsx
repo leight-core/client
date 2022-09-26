@@ -1,5 +1,5 @@
 import Icon from "@ant-design/icons";
-import {ISelection, ISelectionType, IWithIdentity} from "@leight-core/api";
+import {ISelection, ISelectionContext, ISelectionType, ISourceContext, IWithIdentity} from "@leight-core/api";
 import {
 	BubbleButton,
 	Centered,
@@ -26,6 +26,13 @@ import {IoTrailSignOutline} from "react-icons/io5";
 export const toSingleSelection = ({single}: ISelection<IWithIdentity>) => single?.id;
 
 export const toMultiSelection = ({selected}: ISelection<IWithIdentity>) => selected;
+
+export interface IDrawerSelectRenderList<TItem> {
+	sourceContext: ISourceContext<TItem>;
+	selectionContext: ISelectionContext<TItem>;
+
+	render(item: TItem): ReactNode;
+}
 
 export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> = PropsWithChildren<{
 	/**
@@ -68,6 +75,11 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	render(item: TItem): ReactNode;
 
 	/**
+	 * Override internal list (CheckList is the parent control, but the rest is on this method.).
+	 */
+	renderList?(props: IDrawerSelectRenderList<TItem>): ReactNode;
+
+	/**
 	 * Renders selected values in the form UI. When undefined is returned, placeholder is rendered.
 	 *
 	 * @param selection
@@ -101,6 +113,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		defaultSelection,
 		selectionProviderProps,
 		render,
+		renderList,
 		withFulltext = true,
 		toChange = type === "single" ? selection => toSingleSelection(selection) as TOnChange : selection => toMultiSelection(selection) as TOnChange,
 		ofSelection,
@@ -164,16 +177,21 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 							<CheckList
 								value={selectionContext.toSelection()}
 							>
-								{sourceContext.data().map(item => <CheckList.Item
-									key={item.id}
-									value={item.id}
-									onClick={e => {
-										e.stopPropagation();
-										selectionContext.item(item);
-									}}
-								>
-									{render(item)}
-								</CheckList.Item>)}
+								{renderList?.({
+										sourceContext,
+										selectionContext,
+										render,
+									}) ||
+									sourceContext.data().map(item => <CheckList.Item
+										key={item.id}
+										value={item.id}
+										onClick={e => {
+											e.stopPropagation();
+											selectionContext.item(item);
+										}}
+									>
+										{render(item)}
+									</CheckList.Item>)}
 							</CheckList>
 							<InfiniteScroll
 								loadMore={async () => sourceContext.more(true)}
