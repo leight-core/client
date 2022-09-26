@@ -1,5 +1,18 @@
 import {IMobileFormContext, ISelection, ISelectionType, IVisibleContext, IWithIdentity} from "@leight-core/api";
-import {Drawer, DrawerSelect, IDrawerProps, IDrawerSelectProps, IMobileFormItemProps, IOfSelection, MobileFormItem, useMobileFormContext, useOptionalBlockContext, VisibleContext, VisibleProvider} from "@leight-core/client";
+import {
+	Drawer,
+	DrawerSelect,
+	IDrawerProps,
+	IDrawerSelectProps,
+	IDrawerSelectRenderList,
+	IMobileFormItemProps,
+	IOfSelection,
+	MobileFormItem,
+	useMobileFormContext,
+	useOptionalBlockContext,
+	VisibleContext,
+	VisibleProvider
+} from "@leight-core/client";
 import {SwipeAction} from "antd-mobile";
 import {AddOutline} from "antd-mobile-icons";
 import {ComponentProps, PropsWithChildren, ReactNode} from "react";
@@ -11,6 +24,10 @@ export interface ICreateWithProps<TValues extends Record<string, any> = any> {
 
 export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> = PropsWithChildren<Omit<IMobileFormItemProps, "children"> & {
 	render(item: TItem): ReactNode;
+	/**
+	 * Override internal list (CheckList is the parent control, but the rest is on this method.).
+	 */
+	renderList?(props: IDrawerSelectRenderList<TItem>): ReactNode;
 	type?: ISelectionType;
 	/**
 	 * Default selection (shortcut to selectionProviderProps)
@@ -31,6 +48,7 @@ export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIden
 export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any>(
 	{
 		render,
+		renderList,
 		type = "single",
 		defaultSelection,
 		selected,
@@ -68,6 +86,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 							>
 								<DrawerSelect
 									render={render}
+									renderList={renderList}
 									type={type}
 									defaultSelection={selected ? {[selected.id]: selected} : defaultSelection}
 									toChange={toChange}
