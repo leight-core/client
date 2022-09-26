@@ -24,6 +24,7 @@ export type IMobileFormItemProps = Partial<ComponentProps<typeof Form["Item"]>> 
 	withHelp?: boolean;
 	showWith?: string[];
 	withVisible?: boolean;
+	toClear?(): any;
 
 	onNormalize?(value: any, formItemContext: IMobileFormItemContext): void,
 }
@@ -42,6 +43,7 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 		withHelp = false,
 		showWith,
 		onNormalize,
+		toClear,
 		...props
 	}) => {
 	const {t} = useTranslation();
@@ -85,14 +87,14 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 	return <ShowToken tokens={showWith}>
 		<SwipeAction
 			rightActions={rightActions}
-			leftActions={leftActions || [
+			leftActions={leftActions || toClear ? [
 				{
 					key: "clear",
 					color: "warning",
 					text: <CloseOutline fontSize={24}/>,
-					onClick: () => context.setValue(undefined),
+					onClick: () => context.setValue(toClear?.()),
 				}
-			]}
+			] : []}
 		>
 			<MobileFormItemContext.Provider value={context}>
 				<Form.Item
