@@ -1,11 +1,12 @@
 import {IMobileFormItemContext, INamePath} from "@leight-core/api";
 import {MobileFormItemContext, ShowToken, useMobileFormContext, useOptionalItemGroupContext, useOptionalVisibleContext} from "@leight-core/client";
-import {Form, Input} from "antd-mobile";
+import {Form, Input, SwipeAction} from "antd-mobile";
+import {CloseOutline} from "antd-mobile-icons";
 import {Rule} from "rc-field-form/lib/interface";
 import {ComponentProps, FC} from "react";
 import {useTranslation} from "react-i18next";
 
-export interface IMobileFormItemProps extends Partial<ComponentProps<typeof Form["Item"]>> {
+export type IMobileFormItemProps = Partial<ComponentProps<typeof Form["Item"]>> & Pick<ComponentProps<typeof SwipeAction>, "rightActions" | "leftActions"> & {
 	/**
 	 * Field name; also used for translations.
 	 */
@@ -30,6 +31,8 @@ export interface IMobileFormItemProps extends Partial<ComponentProps<typeof Form
 export const MobileFormItem: FC<IMobileFormItemProps> = (
 	{
 		field,
+		rightActions,
+		leftActions,
 		required = false,
 		showLabel = true,
 		hasTooltip = false,
@@ -80,16 +83,28 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 	};
 	onNormalize && !props.normalize && (props.normalize = value => onNormalize(value, context));
 	return <ShowToken tokens={showWith}>
-		<MobileFormItemContext.Provider value={context}>
-			<Form.Item
-				name={field}
-				label={showLabel === false ? null : t(["form-item." + fieldName + ".label"].concat(labels))}
-				rules={rules}
-				onClick={withVisible && visibleContext ? () => visibleContext?.show() : undefined}
-				{...props}
-			>
-				{children}
-			</Form.Item>
-		</MobileFormItemContext.Provider>
+		<SwipeAction
+			rightActions={rightActions}
+			leftActions={leftActions || [
+				{
+					key: "clear",
+					color: "warning",
+					text: <CloseOutline fontSize={24}/>,
+					onClick: () => context.setValue(undefined),
+				}
+			]}
+		>
+			<MobileFormItemContext.Provider value={context}>
+				<Form.Item
+					name={field}
+					label={showLabel === false ? null : t(["form-item." + fieldName + ".label"].concat(labels))}
+					rules={rules}
+					onClick={withVisible && visibleContext ? () => visibleContext?.show() : undefined}
+					{...props}
+				>
+					{children}
+				</Form.Item>
+			</MobileFormItemContext.Provider>
+		</SwipeAction>
 	</ShowToken>;
 };

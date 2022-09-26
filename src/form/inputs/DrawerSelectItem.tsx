@@ -74,33 +74,30 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 				const rightActions: ComponentProps<typeof SwipeAction>["rightActions"] = [];
 				createWith && rightActions.push({key: JSON.stringify(field) + ".create", color: "primary", text: <AddOutline fontSize={24}/>, onClick: () => visibleContext.show()});
 				return <>
-					<SwipeAction
-						rightActions={rightActions}
-					>
-						<VisibleProvider>
-							<MobileFormItem
-								field={field}
-								withVisible
-								disabled={blockContext?.isBlocked()}
-								{...props}
-							>
-								<DrawerSelect
-									render={render}
-									renderList={renderList}
-									type={type}
-									defaultSelection={selected ? {[selected.id]: selected} : defaultSelection}
-									toChange={toChange}
-									toPreview={toPreview}
-									ofSelection={ofSelection}
-									icon={icon}
-									onSelection={onSelection}
-									withFulltext={withFulltext}
-									children={children}
-									{...drawerSelectProps}
-								/>
-							</MobileFormItem>
-						</VisibleProvider>
-					</SwipeAction>
+					<VisibleProvider>
+						<MobileFormItem
+							field={field}
+							withVisible
+							rightActions={rightActions}
+							disabled={blockContext?.isBlocked()}
+							{...props}
+						>
+							<DrawerSelect
+								render={render}
+								renderList={renderList}
+								type={type}
+								defaultSelection={selected ? {[selected.id]: selected} : defaultSelection}
+								toChange={toChange}
+								toPreview={toPreview}
+								ofSelection={ofSelection}
+								icon={icon}
+								onSelection={onSelection}
+								withFulltext={withFulltext}
+								children={children}
+								{...drawerSelectProps}
+							/>
+						</MobileFormItem>
+					</VisibleProvider>
 					<Drawer
 						bodyStyle={{padding: 0}}
 						{...createWithDrawer}
