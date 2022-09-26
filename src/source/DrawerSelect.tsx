@@ -154,6 +154,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 					onClose={e => {
 						e.stopPropagation();
 						visibleContext.hide();
+						sourceContext.reset();
 					}}
 					destroyOnClose
 					bodyStyle={{padding: 0}}
