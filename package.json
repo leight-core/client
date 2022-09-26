@@ -1,5 +1,5 @@
 {
-	"version": "0.6.202",
+	"version": "0.6.203",
 	"name": "@leight-core/client",
 	"description": "All that shiny client stuff.",
 	"license": "MIT",
@@ -22,7 +22,7 @@
 	},
 	"dependencies": {
 		"@fingerprintjs/fingerprintjs": "^3.3.6",
-		"@leight-core/api": "^0.6.156",
+		"@leight-core/api": "^0.6.157",
 		"@leight-core/utils": "^0.5.37",
 		"@tanstack/query-sync-storage-persister": "^4.6.0",
 		"@tanstack/react-query": "^4.6.0",
@@ -47,7 +47,7 @@
 		"@ant-design/icons": "^4.7.0",
 		"antd": "^4.23.2",
 		"next": "^12.1.6",
-		"next-auth": "^4.12.0",
+		"next-auth": "^4.10.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},
