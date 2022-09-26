@@ -139,7 +139,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 			onSelection?.(selection);
 			onChange?.(toChange(selection));
 			filterContext?.setFilter({});
-			sourceContext.reset();
+			setTimeout(() => sourceContext.reset(), 0);
 		}}
 		{...selectionProviderProps}
 	>
@@ -154,7 +154,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 					onClose={e => {
 						e.stopPropagation();
 						visibleContext.hide();
-						sourceContext.reset();
+						setTimeout(() => sourceContext.reset(), 0);
 					}}
 					destroyOnClose
 					bodyStyle={{padding: 0}}
