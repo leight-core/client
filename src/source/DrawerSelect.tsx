@@ -1,5 +1,5 @@
 import Icon from "@ant-design/icons";
-import {ISelection, ISelectionContext, ISelectionType, ISourceContext, IWithIdentity} from "@leight-core/api";
+import {IFilterContext, ISelection, ISelectionContext, ISelectionType, ISourceContext, IWithIdentity} from "@leight-core/api";
 import {
 	BubbleButton,
 	Centered,
@@ -30,6 +30,7 @@ export const toMultiSelection = ({selected}: ISelection<IWithIdentity>) => selec
 export interface IDrawerSelectRenderList<TItem> {
 	sourceContext: ISourceContext<TItem>;
 	selectionContext: ISelectionContext<TItem>;
+	filterContext: IFilterContext | null;
 
 	render(item: TItem): ReactNode;
 }
@@ -177,6 +178,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 							{renderList?.({
 								sourceContext,
 								selectionContext,
+								filterContext,
 								render,
 							}) || <CheckList
 								value={selectionContext.toSelection()}
