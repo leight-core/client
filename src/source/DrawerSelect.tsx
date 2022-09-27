@@ -1,4 +1,3 @@
-import Icon from "@ant-design/icons";
 import {ICursorContext, IFilterContext, ISelection, ISelectionContext, ISelectionType, ISourceContext, IWithIdentity} from "@leight-core/api";
 import {
 	BubbleButton,
@@ -24,7 +23,6 @@ import {Col, Row, Space, Typography} from "antd";
 import {CheckList, DotLoading, InfiniteScroll, ProgressCircle} from "antd-mobile";
 import {CheckOutline} from "antd-mobile-icons";
 import {PropsWithChildren, ReactNode} from "react";
-import {IoTrailSignOutline} from "react-icons/io5";
 
 export const toSingleSelection = ({single}: ISelection<IWithIdentity>) => single?.id;
 
@@ -224,21 +222,17 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 										sourceContext,
 										cursorContext,
 									}) || <Space>
-										{sourceContext.result.isFetching || sourceContext.hasMore() ? (
-											!cursorContext?.page || !cursorContext?.pages ?
-												<DotLoading/> : <>
-													<DotLoading/>
-													<ProgressCircle
-														percent={toPercent(cursorContext?.page || 0, cursorContext?.pages || 0)}
-														style={{"--size": "64px"}}
-													>
-														{`${cursorContext?.page}/${cursorContext?.pages}`}
-													</ProgressCircle>
-													<DotLoading/>
-												</>
-										) : (
-											<Icon component={IoTrailSignOutline}/>
-										)}
+										{!cursorContext?.page || !cursorContext?.pages ?
+											<DotLoading/> : <>
+												{sourceContext.result.isFetching && <DotLoading/>}
+												<ProgressCircle
+													percent={toPercent(cursorContext?.page || 0, cursorContext?.pages || 0)}
+													style={{"--size": "64px"}}
+												>
+													{`${cursorContext?.page}/${cursorContext?.pages}`}
+												</ProgressCircle>
+												{sourceContext.result.isFetching && <DotLoading/>}
+											</>}
 									</Space>}
 								</InfiniteScroll>
 							</Col>
