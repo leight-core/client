@@ -226,8 +226,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 									}) || <Space>
 										{sourceContext.result.isFetching || sourceContext.hasMore() ? (
 											!cursorContext?.page || !cursorContext?.pages ?
-												<DotLoading/> :
-												<Space direction={"vertical"}>
+												<DotLoading/> : <>
 													<DotLoading/>
 													<ProgressCircle
 														percent={toPercent(cursorContext?.page || 0, cursorContext?.pages || 0)}
@@ -235,7 +234,8 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 													>
 														{`${cursorContext?.page}/${cursorContext?.pages}`}
 													</ProgressCircle>
-												</Space>
+													<DotLoading/>
+												</>
 										) : (
 											<Icon component={IoTrailSignOutline}/>
 										)}
