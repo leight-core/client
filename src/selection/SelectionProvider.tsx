@@ -23,6 +23,7 @@ export type ISelectionProviderProps<TSelection = any> = PropsWithChildren<{
 }>;
 
 export function SelectionProvider<TSelection, >({type = "single", defaultSelection, applySelection, onSelection, ...props}: ISelectionProviderProps<TSelection>) {
+	const [$default, $setDefault] = useState<Record<string, TSelection>>({...defaultSelection, ...applySelection});
 	const [$selection, $setSelection] = useState<Record<string, TSelection>>({...defaultSelection, ...applySelection});
 	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>(onSelection ? [onSelection] : []);
 	const selectionRef = useRef<Record<string, TSelection>>($selection);
@@ -87,8 +88,13 @@ export function SelectionProvider<TSelection, >({type = "single", defaultSelecti
 		handleSelection: () => {
 			const selection = context.selection();
 			onSelectionEvents.current.map(callback => callback(selection));
+			$setDefault($selection);
 		},
-		clear: () => setSelection(() => ({})),
+		clear: () => {
+			setSelection(() => ({}));
+			$setDefault(() => ({}));
+		},
+		reset: () => setSelection(() => $default),
 	};
 
 	return <SelectionContext.Provider

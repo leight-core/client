@@ -152,8 +152,10 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 				<Drawer
 					open={visibleContext.visible}
 					onClose={e => {
+						console.log("Resetting drawer");
 						e.stopPropagation();
 						visibleContext.hide();
+						selectionContext.reset();
 						setTimeout(() => sourceContext.reset(), 0);
 					}}
 					destroyOnClose
