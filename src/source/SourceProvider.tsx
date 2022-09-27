@@ -85,7 +85,9 @@ export const SourceProvider = <TResponse, >(
 	}, queryParamsContext?.queryParams, {
 		keepPreviousData: true,
 		refetchInterval: live,
-		onSuccess: count => cursorContext?.setPages(count),
+		onSuccess: count => {
+			cursorContext?.setPages(Math.ceil(count / (cursorContext?.size || 1)));
+		},
 	});
 
 	const hasData = () => Array.isArray(data) && data.length > 0;
