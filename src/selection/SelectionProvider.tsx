@@ -98,9 +98,13 @@ export function SelectionProvider<TSelection, >({type = "single", defaultSelecti
 			setSelection(() => ({}));
 			$setDefault(() => ({}));
 		},
-		defaults: items => $setDefault(items.reduce((prev, current) => {
-			return {...prev, [current.id]: current};
-		}, {})),
+		defaults: items => {
+			context.reset();
+			$setDefault(items.reduce((prev, current) => {
+				return {...prev, [current.id]: current};
+			}, {}));
+			context.items(items, true);
+		},
 		reset: () => setSelection(() => $default),
 	};
 
