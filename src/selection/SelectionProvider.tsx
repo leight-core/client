@@ -1,8 +1,9 @@
 import {ISelection, ISelectionContext, ISelectionType} from "@leight-core/api";
 import {SelectionContext} from "@leight-core/client";
-import {PropsWithChildren, useEffect, useRef, useState} from "react";
+import {isCallable} from "@leight-core/utils";
+import {ReactNode, useEffect, useRef, useState} from "react";
 
-export type ISelectionProviderProps<TSelection = any> = PropsWithChildren<{
+export interface ISelectionProviderProps<TSelection = any> {
 	/**
 	 * Selection type.
 	 */
@@ -15,14 +16,17 @@ export type ISelectionProviderProps<TSelection = any> = PropsWithChildren<{
 	 * Apply the given selection all the times (regardless of values set by a user)
 	 */
 	applySelection?: Record<string, TSelection>;
+
 	/**
 	 * Default selection handler.
 	 * @param selection
 	 */
 	onSelection?(selection: ISelection<TSelection>): void;
-}>;
 
-export function SelectionProvider<TSelection, >({type = "single", defaultSelection, applySelection, onSelection, ...props}: ISelectionProviderProps<TSelection>) {
+	children?: ReactNode | ((selectionContext: ISelectionContext<TSelection>) => ReactNode);
+}
+
+export function SelectionProvider<TSelection, >({type = "single", defaultSelection, applySelection, onSelection, children}: ISelectionProviderProps<TSelection>) {
 	const [$default, $setDefault] = useState<Record<string, TSelection>>({...defaultSelection, ...applySelection});
 	const [$selection, $setSelection] = useState<Record<string, TSelection>>({...defaultSelection, ...applySelection});
 	const onSelectionEvents = useRef<((event: ISelection<TSelection>) => void)[]>(onSelection ? [onSelection] : []);
@@ -99,6 +103,7 @@ export function SelectionProvider<TSelection, >({type = "single", defaultSelecti
 
 	return <SelectionContext.Provider
 		value={context}
-		{...props}
-	/>;
+	>
+		{isCallable(children) ? <SelectionContext.Consumer>{children as any}</SelectionContext.Consumer> : children as ReactNode}
+	</SelectionContext.Provider>;
 }

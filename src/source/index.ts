@@ -12,4 +12,5 @@ export * from "./QuerySourceSelect";
 export * from "./SourceContext";
 export * from "./SourceControlProvider";
 export * from "./SourceProvider";
+export * from "./SourceReset";
 export * from "./utils";

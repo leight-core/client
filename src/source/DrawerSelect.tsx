@@ -7,14 +7,15 @@ import {
 	FulltextBar,
 	IOfSelection,
 	ISelectionProviderProps,
+	ISourceProviderProps,
 	ITranslateProps,
 	OfSelection,
-	SelectionContext,
 	SelectionProvider,
+	SourceProvider,
+	SourceReset,
 	Translate,
 	useOptionalBlockContext,
 	useOptionalFilterContext,
-	useSourceContext,
 	useVisibleContext
 } from "@leight-core/client";
 import {Col, Row, Space, Typography} from "antd";
@@ -41,6 +42,7 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	 */
 	value?: TOnChange;
 	type?: ISelectionType;
+	sourceProviderProps: ISourceProviderProps<TItem>;
 
 	/**
 	 * Callback used for FormItem compatibility.
@@ -113,6 +115,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		translation,
 		defaultSelection,
 		selectionProviderProps,
+		sourceProviderProps,
 		render,
 		renderList,
 		withFulltext = true,
@@ -122,7 +125,6 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		icon,
 		children,
 	}: IDrawerSelectProps<TItem, TOnChange>) {
-	const sourceContext = useSourceContext<TItem>();
 	const visibleContext = useVisibleContext();
 	const filterContext = useOptionalFilterContext();
 	const blockContext = useOptionalBlockContext();
@@ -139,86 +141,90 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 			onSelection?.(selection);
 			onChange?.(toChange(selection));
 			filterContext?.setFilter({});
-			setTimeout(() => sourceContext.reset(), 0);
 		}}
 		{...selectionProviderProps}
 	>
-		<SelectionContext.Consumer>
-			{selectionContext => <>
-				<OfSelection<TItem, TOnChange>
-					ofSelection={ofSelection}
-					value={value}
-				/>
-				<Drawer
-					open={visibleContext.visible}
-					onClose={e => {
+		{selectionContext => <>
+			<OfSelection<TItem, TOnChange>
+				ofSelection={ofSelection}
+				value={value}
+			/>
+			<Drawer
+				open={visibleContext.visible}
+				onClose={e => {
+					e.stopPropagation();
+					visibleContext.hide();
+					selectionContext.reset();
+				}}
+				destroyOnClose
+				bodyStyle={{padding: 0}}
+				translation={translation}
+				icon={icon}
+			>
+				<BubbleButton
+					icon={<CheckOutline fontSize={32}/>}
+					onClick={e => {
 						e.stopPropagation();
+						selectionContext.handleSelection();
 						visibleContext.hide();
-						selectionContext.reset();
-						setTimeout(() => sourceContext.reset(), 0);
 					}}
-					destroyOnClose
-					bodyStyle={{padding: 0}}
-					translation={translation}
-					icon={icon}
+				/>
+				{withFulltext ? <Row justify={"center"} style={{margin: "0.75em"}}>
+					<Col span={24}>
+						<FulltextBar/>
+					</Col>
+				</Row> : null}
+				<SourceProvider<TItem>
+					withCount
+					{...sourceProviderProps}
 				>
-					<BubbleButton
-						icon={<CheckOutline fontSize={32}/>}
-						onClick={e => {
-							e.stopPropagation();
-							selectionContext.handleSelection();
-							visibleContext.hide();
-						}}
-					/>
-					{withFulltext ? <Row justify={"center"} style={{margin: "0.75em"}}>
-						<Col span={24}>
-							<FulltextBar/>
-						</Col>
-					</Row> : null}
-					<Row>
-						<Col span={24}>
-							{renderList?.({
-								sourceContext,
-								selectionContext,
-								filterContext,
-								render,
-							}) || <CheckList
-								value={selectionContext.toSelection()}
-							>
-								{sourceContext.data().map(item => <CheckList.Item
-									key={item.id}
-									value={item.id}
-									onClick={e => {
-										e.stopPropagation();
-										selectionContext.item(item);
-									}}
+					{sourceContext => <>
+						<SourceReset/>
+						<Row>
+							<Col span={24}>
+								{renderList?.({
+									sourceContext,
+									selectionContext,
+									filterContext,
+									render,
+								}) || <CheckList
+									value={selectionContext.toSelection()}
 								>
-									{render(item)}
-								</CheckList.Item>)}
-							</CheckList>}
-							<InfiniteScroll
-								loadMore={async () => sourceContext.more(true)}
-								hasMore={sourceContext.hasMore()}
-							>
-								<Space>
-									{sourceContext.result.isFetching || sourceContext.hasMore() ? (
-										<DotLoading/>
-									) : (
-										<Icon component={IoTrailSignOutline}/>
-									)}
-								</Space>
-							</InfiniteScroll>
-						</Col>
-					</Row>
-				</Drawer>
-				{blockContext?.isBlocked() ? <Centered>
-					<DotLoading/>
-				</Centered> : <Space>
-					{icon ? <Typography.Text type={"secondary"}>{icon}</Typography.Text> : null}
-					{$toPreview(selectionContext.selection())}
-				</Space>}
-				{children}
-			</>}
-		</SelectionContext.Consumer>
+									{sourceContext.data().map(item => <CheckList.Item
+										key={item.id}
+										value={item.id}
+										onClick={e => {
+											e.stopPropagation();
+											selectionContext.item(item);
+										}}
+									>
+										{render(item)}
+									</CheckList.Item>)}
+								</CheckList>}
+								<InfiniteScroll
+									loadMore={async () => sourceContext.more(true)}
+									hasMore={sourceContext.hasMore()}
+								>
+									<Space>
+										{sourceContext.result.isFetching || sourceContext.hasMore() ? (
+											<DotLoading/>
+										) : (
+											<Icon component={IoTrailSignOutline}/>
+										)}
+									</Space>
+								</InfiniteScroll>
+							</Col>
+						</Row>
+					</>}
+				</SourceProvider>
+			</Drawer>
+			{blockContext?.isBlocked() ? <Centered>
+				<DotLoading/>
+			</Centered> : <Space>
+				{icon ? <Typography.Text type={"secondary"}>{icon}</Typography.Text> : null}
+				{$toPreview(selectionContext.selection())}
+			</Space>}
+			{children}
+		</>}
 	</SelectionProvider>;
 }

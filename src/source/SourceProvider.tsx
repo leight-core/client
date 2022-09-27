@@ -1,10 +1,10 @@
-import {IQuery, IQueryHook} from "@leight-core/api";
+import {IQuery, IQueryHook, ISourceContext} from "@leight-core/api";
 import {SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
-import {merge, uniqueOf} from "@leight-core/utils";
+import {isCallable, merge, uniqueOf} from "@leight-core/utils";
 import {useQuery as useCoolQuery, UseQueryOptions} from "@tanstack/react-query";
-import {PropsWithChildren, useState} from "react";
+import {ReactNode, useState} from "react";
 
-export type ISourceProviderProps<TResponse> = PropsWithChildren<{
+export interface ISourceProviderProps<TResponse> {
 	name: string;
 	/**
 	 * Source of the query
@@ -22,9 +22,12 @@ export type ISourceProviderProps<TResponse> = PropsWithChildren<{
 	 * Query options.
 	 */
 	options?: UseQueryOptions<any, any, TResponse[]>;
+
 	onSuccess?(response: TResponse[]): void;
+
 	withCount?: boolean;
-}>;
+	children?: ReactNode | ((sourceContext: ISourceContext<TResponse>) => ReactNode);
+}
 
 export const SourceProvider = <TResponse, >(
 	{
@@ -35,7 +38,7 @@ export const SourceProvider = <TResponse, >(
 		live = false,
 		options,
 		onSuccess,
-		...props
+		children,
 	}: ISourceProviderProps<TResponse>
 ) => {
 	const filterContext = useOptionalFilterContext<any>();
@@ -124,6 +127,7 @@ export const SourceProvider = <TResponse, >(
 				cursorContext?.next(append);
 			},
 		}}
-		{...props}
-	/>;
+	>
+		{isCallable(children) ? <SourceContext.Consumer>{children as any}</SourceContext.Consumer> : children as ReactNode}
+	</SourceContext.Provider>;
 };

@@ -7,10 +7,10 @@ import {
 	IDrawerSelectRenderList,
 	IMobileFormItemProps,
 	IOfSelection,
+	ISourceProviderProps,
 	MobileFormItem,
 	useMobileFormContext,
 	useOptionalBlockContext,
-	VisibleContext,
 	VisibleProvider
 } from "@leight-core/client";
 import {SwipeAction} from "antd-mobile";
@@ -28,6 +28,7 @@ export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIden
 	 * Override internal list (CheckList is the parent control, but the rest is on this method.).
 	 */
 	renderList?(props: IDrawerSelectRenderList<TItem>): ReactNode;
+	sourceProviderProps: ISourceProviderProps<TItem>;
 	type?: ISelectionType;
 	/**
 	 * Default selection (shortcut to selectionProviderProps)
@@ -49,6 +50,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 	{
 		render,
 		renderList,
+		sourceProviderProps,
 		type = "single",
 		defaultSelection,
 		selected,
@@ -69,46 +71,45 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 	const blockContext = useOptionalBlockContext();
 
 	return <VisibleProvider>
-		<VisibleContext.Consumer>
-			{visibleContext => {
-				const rightActions: ComponentProps<typeof SwipeAction>["rightActions"] = [];
-				createWith && rightActions.push({key: JSON.stringify(field) + ".create", color: "primary", text: <AddOutline fontSize={24}/>, onClick: () => visibleContext.show()});
-				return <>
-					<VisibleProvider>
-						<MobileFormItem
-							field={field}
-							withVisible
-							rightActions={rightActions}
-							disabled={blockContext?.isBlocked()}
-							{...props}
-						>
-							<DrawerSelect
-								render={render}
-								renderList={renderList}
-								type={type}
-								defaultSelection={selected ? {[selected.id]: selected} : defaultSelection}
-								toChange={toChange}
-								toPreview={toPreview}
-								ofSelection={ofSelection}
-								icon={icon}
-								onSelection={onSelection}
-								withFulltext={withFulltext}
-								children={children}
-								{...drawerSelectProps}
-							/>
-						</MobileFormItem>
-					</VisibleProvider>
-					<Drawer
-						bodyStyle={{padding: 0}}
-						{...createWithDrawer}
+		{visibleContext => {
+			const rightActions: ComponentProps<typeof SwipeAction>["rightActions"] = [];
+			createWith && rightActions.push({key: JSON.stringify(field) + ".create", color: "primary", text: <AddOutline fontSize={24}/>, onClick: () => visibleContext.show()});
+			return <>
+				<VisibleProvider>
+					<MobileFormItem
+						field={field}
+						withVisible
+						rightActions={rightActions}
+						disabled={blockContext?.isBlocked()}
+						{...props}
 					>
-						{createWith?.({
-							formContext,
-							visibleContext,
-						})}
-					</Drawer>
-				</>;
-			}}
-		</VisibleContext.Consumer>
+						<DrawerSelect
+							render={render}
+							renderList={renderList}
+							sourceProviderProps={sourceProviderProps}
+							type={type}
+							defaultSelection={selected ? {[selected.id]: selected} : defaultSelection}
+							toChange={toChange}
+							toPreview={toPreview}
+							ofSelection={ofSelection}
+							icon={icon}
+							onSelection={onSelection}
+							withFulltext={withFulltext}
+							children={children}
+							{...drawerSelectProps}
+						/>
+					</MobileFormItem>
+				</VisibleProvider>
+				<Drawer
+					bodyStyle={{padding: 0}}
+					{...createWithDrawer}
+				>
+					{createWith?.({
+						formContext,
+						visibleContext,
+					})}
+				</Drawer>
+			</>;
+		}}
 	</VisibleProvider>;
 }
