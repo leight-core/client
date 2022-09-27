@@ -19,8 +19,9 @@ import {
 	useOptionalFilterContext,
 	useVisibleContext
 } from "@leight-core/client";
+import {toPercent} from "@leight-core/utils";
 import {Col, Row, Space, Typography} from "antd";
-import {CheckList, DotLoading, InfiniteScroll} from "antd-mobile";
+import {CheckList, DotLoading, InfiniteScroll, ProgressCircle} from "antd-mobile";
 import {CheckOutline} from "antd-mobile-icons";
 import {PropsWithChildren, ReactNode} from "react";
 import {IoTrailSignOutline} from "react-icons/io5";
@@ -224,7 +225,17 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 										cursorContext,
 									}) || <Space>
 										{sourceContext.result.isFetching || sourceContext.hasMore() ? (
-											<DotLoading/>
+											!cursorContext?.page || !cursorContext?.pages ?
+												<DotLoading/> :
+												<Space direction={"vertical"}>
+													<DotLoading/>
+													<ProgressCircle
+														percent={toPercent(cursorContext?.page || 0, cursorContext?.pages || 0)}
+														style={{"--size": "64px"}}
+													>
+														{`${cursorContext?.page}/${cursorContext?.pages}`}
+													</ProgressCircle>
+												</Space>
 										) : (
 											<Icon component={IoTrailSignOutline}/>
 										)}
