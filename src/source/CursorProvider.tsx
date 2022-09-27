@@ -1,20 +1,24 @@
+import {ICursorContext} from "@leight-core/api";
 import {CursorContext} from "@leight-core/client";
-import {FC, PropsWithChildren, useEffect, useState} from "react";
+import {isCallable} from "@leight-core/utils";
+import {FC, ReactNode, useEffect, useState} from "react";
 
-export type ICursorProviderProps = PropsWithChildren<{
+export interface ICursorProviderProps {
 	name: string;
 	defaultPage?: number;
 	defaultSize?: number;
-}>;
+	children?: ReactNode | ((cursorContext: ICursorContext) => ReactNode);
+}
 
 export const CursorProvider: FC<ICursorProviderProps> = (
 	{
 		name,
 		defaultPage = 0,
 		defaultSize = 10,
-		...props
+		children,
 	}) => {
 	const [[page, size], setPage] = useState<[number, number]>([defaultPage, defaultSize]);
+	const [pages, setPages] = useState<number>();
 	const [append, setAppend] = useState<boolean>();
 	const [prepend, setPrepend] = useState<boolean>();
 	useEffect(() => {
@@ -27,10 +31,12 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 		value={{
 			name,
 			page,
+			pages,
 			size,
 			append,
 			prepend,
 			setPage: (page, size = defaultSize) => setPage([page, size]),
+			setPages,
 			next: append => {
 				setAppend(append);
 				setPage([page + 1, size]);
@@ -40,6 +46,7 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 				setPage([Math.max(0, page - 1), size]);
 			},
 		}}
-		{...props}
-	/>;
+	>
+		{isCallable(children) ? <CursorContext.Consumer>{children as any}</CursorContext.Consumer> : children as ReactNode}
+	</CursorContext.Provider>;
 };
