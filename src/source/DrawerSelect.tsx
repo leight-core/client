@@ -175,24 +175,25 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 				translation={translation}
 				icon={icon}
 			>
-				<BubbleButton
-					icon={<CheckOutline fontSize={32}/>}
-					onClick={e => {
-						e.stopPropagation();
-						selectionContext.handleSelection();
-						visibleContext.hide();
-					}}
-				/>
-				{withFulltext ? <Row justify={"center"} style={{margin: "0.75em"}}>
-					<Col span={24}>
-						<FulltextBar/>
-					</Col>
-				</Row> : null}
 				<SourceProvider<TItem>
 					withCount
 					{...sourceProviderProps}
 				>
 					{sourceContext => <>
+						<BubbleButton
+							icon={<CheckOutline fontSize={32}/>}
+							onClick={e => {
+								e.stopPropagation();
+								selectionContext.handleSelection();
+								visibleContext.hide();
+							}}
+						/>
+						{withFulltext ? <Row justify={"center"} style={{margin: "0.75em"}}>
+							<Col span={24}>
+								<FulltextBar/>
+							</Col>
+						</Row> : null}
+
 						<SourceReset/>
 						<Row>
 							<Col span={24}>
