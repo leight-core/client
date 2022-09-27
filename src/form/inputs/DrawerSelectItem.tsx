@@ -1,4 +1,4 @@
-import {IMobileFormContext, ISelection, ISelectionType, IVisibleContext, IWithIdentity} from "@leight-core/api";
+import {IMobileFormContext, ISelection, ISelectionType, ISourceContext, IVisibleContext, IWithIdentity} from "@leight-core/api";
 import {
 	Drawer,
 	DrawerSelect,
@@ -28,6 +28,7 @@ export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIden
 	 * Override internal list (CheckList is the parent control, but the rest is on this method.).
 	 */
 	renderList?(props: IDrawerSelectRenderList<TItem>): ReactNode;
+	renderLoading?(sourceContext: ISourceContext<TItem>): ReactNode;
 	sourceProviderProps: ISourceProviderProps<TItem>;
 	type?: ISelectionType;
 	/**
@@ -50,6 +51,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 	{
 		render,
 		renderList,
+		renderLoading,
 		sourceProviderProps,
 		type = "single",
 		defaultSelection,
@@ -86,6 +88,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 						<DrawerSelect
 							render={render}
 							renderList={renderList}
+							renderLoading={renderLoading}
 							sourceProviderProps={sourceProviderProps}
 							type={type}
 							defaultSelection={selected ? {[selected.id]: selected} : defaultSelection}

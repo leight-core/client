@@ -81,6 +81,12 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	 * Override an internal list renderer (the list itself is upon this method).
 	 */
 	renderList?(props: IDrawerSelectRenderList<TItem>): ReactNode;
+	/**
+	 * Override loading state indicator including no more data/empty list.
+	 *
+	 * @param sourceContext
+	 */
+	renderLoading?(sourceContext: ISourceContext<TItem>): ReactNode;
 
 	/**
 	 * Renders selected values in the form UI. When undefined is returned, placeholder is rendered.
@@ -118,6 +124,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		sourceProviderProps,
 		render,
 		renderList,
+		renderLoading,
 		withFulltext = true,
 		toChange = type === "single" ? selection => toSingleSelection(selection) as TOnChange : selection => toMultiSelection(selection) as TOnChange,
 		ofSelection,
@@ -205,13 +212,13 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 									loadMore={async () => sourceContext.more(true)}
 									hasMore={sourceContext.hasMore()}
 								>
-									<Space>
+									{renderLoading?.(sourceContext) || <Space>
 										{sourceContext.result.isFetching || sourceContext.hasMore() ? (
 											<DotLoading/>
 										) : (
 											<Icon component={IoTrailSignOutline}/>
 										)}
-									</Space>
+									</Space>}
 								</InfiniteScroll>
 							</Col>
 						</Row>
