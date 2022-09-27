@@ -1,5 +1,5 @@
 import Icon from "@ant-design/icons";
-import {IFilterContext, ISelection, ISelectionContext, ISelectionType, ISourceContext, IWithIdentity} from "@leight-core/api";
+import {ICursorContext, IFilterContext, ISelection, ISelectionContext, ISelectionType, ISourceContext, IWithIdentity} from "@leight-core/api";
 import {
 	BubbleButton,
 	Centered,
@@ -15,6 +15,7 @@ import {
 	SourceReset,
 	Translate,
 	useOptionalBlockContext,
+	useOptionalCursorContext,
 	useOptionalFilterContext,
 	useVisibleContext
 } from "@leight-core/client";
@@ -34,6 +35,11 @@ export interface IDrawerSelectRenderList<TItem> {
 	filterContext: IFilterContext | null;
 
 	render(item: TItem): ReactNode;
+}
+
+export interface IDrawerSelectRenderLoading<TItem> {
+	sourceContext: ISourceContext<TItem>;
+	cursorContext: ICursorContext | null;
 }
 
 export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> = PropsWithChildren<{
@@ -84,9 +90,9 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	/**
 	 * Override loading state indicator including no more data/empty list.
 	 *
-	 * @param sourceContext
+	 * @param props
 	 */
-	renderLoading?(sourceContext: ISourceContext<TItem>): ReactNode;
+	renderLoading?(props: IDrawerSelectRenderLoading<TItem>): ReactNode;
 
 	/**
 	 * Renders selected values in the form UI. When undefined is returned, placeholder is rendered.
@@ -133,6 +139,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		children,
 	}: IDrawerSelectProps<TItem, TOnChange>) {
 	const visibleContext = useVisibleContext();
+	const cursorContext = useOptionalCursorContext();
 	const filterContext = useOptionalFilterContext();
 	const blockContext = useOptionalBlockContext();
 
@@ -212,7 +219,10 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 									loadMore={async () => sourceContext.more(true)}
 									hasMore={sourceContext.hasMore()}
 								>
-									{renderLoading?.(sourceContext) || <Space>
+									{renderLoading?.({
+										sourceContext,
+										cursorContext,
+									}) || <Space>
 										{sourceContext.result.isFetching || sourceContext.hasMore() ? (
 											<DotLoading/>
 										) : (
