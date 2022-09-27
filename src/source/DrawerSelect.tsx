@@ -154,7 +154,6 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		onSelection={selection => {
 			onSelection?.(selection);
 			onChange?.(toChange(selection));
-			filterContext?.setFilter({});
 		}}
 		{...selectionProviderProps}
 	>
