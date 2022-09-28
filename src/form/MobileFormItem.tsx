@@ -25,6 +25,7 @@ export type IMobileFormItemProps = Partial<ComponentProps<typeof Form["Item"]>> 
 	showWith?: string[];
 	withVisible?: boolean;
 	toClear?(): any;
+	onClear?(clearWith?: any): void;
 
 	onNormalize?(value: any, formItemContext: IMobileFormItemContext): void,
 }
@@ -44,6 +45,7 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 		showWith,
 		onNormalize,
 		toClear,
+		onClear,
 		...props
 	}) => {
 	const {t} = useTranslation();
@@ -92,7 +94,11 @@ export const MobileFormItem: FC<IMobileFormItemProps> = (
 					key: "clear",
 					color: "warning",
 					text: <CloseOutline fontSize={24}/>,
-					onClick: () => context.setValue(toClear?.()),
+					onClick: () => {
+						const value = toClear?.();
+						context.setValue(value);
+						onClear?.(value);
+					},
 				}
 			] : []}
 		>
