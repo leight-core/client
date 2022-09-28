@@ -46,6 +46,11 @@ export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIden
 	createWithDrawer?: IDrawerProps;
 	onSelection?(selection: ISelection<TItem>): void;
 	withFulltext?: boolean;
+	/**
+	 * Override placeholder key for translation (this is not translation itself).
+	 */
+	placeholder?: string;
+
 }>;
 
 export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any>(
@@ -67,6 +72,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 		createWithDrawer,
 		onSelection,
 		withFulltext = true,
+		placeholder,
 		children,
 		...props
 	}: IDrawerSelectItemProps<TItem, TOnChange>) {
@@ -99,6 +105,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 							icon={icon}
 							onSelection={onSelection}
 							withFulltext={withFulltext}
+							placeholder={placeholder}
 							children={children}
 							{...drawerSelectProps}
 						/>

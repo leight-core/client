@@ -20,7 +20,7 @@ import {
 } from "@leight-core/client";
 import {toPercent} from "@leight-core/utils";
 import {Col, Row, Typography} from "antd";
-import {CheckList, DotLoading, InfiniteScroll, ProgressCircle, Space} from "antd-mobile";
+import {CheckList, DotLoading, ErrorBlock, InfiniteScroll, ProgressCircle, Space} from "antd-mobile";
 import {CheckOutline} from "antd-mobile-icons";
 import {PropsWithChildren, ReactNode} from "react";
 
@@ -37,6 +37,11 @@ export interface IDrawerSelectRenderList<TItem> {
 }
 
 export interface IDrawerSelectRenderLoading<TItem> {
+	sourceContext: ISourceContext<TItem>;
+	cursorContext: ICursorContext | null;
+}
+
+export interface IDrawerSelectRenderEmpty<TItem> {
 	sourceContext: ISourceContext<TItem>;
 	cursorContext: ICursorContext | null;
 }
@@ -92,6 +97,7 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	 * @param props
 	 */
 	renderLoading?(props: IDrawerSelectRenderLoading<TItem>): ReactNode;
+	renderEmpty?(props: IDrawerSelectRenderEmpty<TItem>): ReactNode;
 
 	/**
 	 * Renders selected values in the form UI. When undefined is returned, placeholder is rendered.
@@ -115,6 +121,10 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	ofSelection(ofSelection: IOfSelection<TItem, TOnChange>): void;
 
 	icon?: ReactNode;
+	/**
+	 * Override placeholder key for translation (this is not translation itself).
+	 */
+	placeholder?: string;
 }>
 
 export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any>(
@@ -130,11 +140,13 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		render,
 		renderList,
 		renderLoading,
+		renderEmpty,
 		withFulltext = true,
 		toChange = type === "single" ? selection => toSingleSelection(selection) as TOnChange : selection => toMultiSelection(selection) as TOnChange,
 		ofSelection,
 		toPreview,
 		icon,
+		placeholder,
 		children,
 	}: IDrawerSelectProps<TItem, TOnChange>) {
 	const visibleContext = useVisibleContext();
@@ -144,7 +156,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 
 	const $toPreview = (selection?: ISelection<TItem>) => {
 		const preview = toPreview(selection);
-		return preview === undefined ? <Typography.Text type={"secondary"}><Translate {...translation} text={"placeholder"}/></Typography.Text> : preview;
+		return preview === undefined ? <Typography.Text type={"secondary"}><Translate {...translation} text={placeholder || "placeholder"}/></Typography.Text> : preview;
 	};
 
 	return <SelectionProvider<TItem>
@@ -221,15 +233,21 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 									{renderLoading?.({
 										sourceContext,
 										cursorContext,
-									}) || !cursorContext?.page || !cursorContext?.pages ?
-										<DotLoading/> : !cursorContext?.page || !cursorContext?.pages ?
-											<DotLoading/> : <Row align={"top"} justify={"center"} gutter={4}>
-												<Col span={"auto"}>{`${cursorContext?.page}/${cursorContext?.pages}`}</Col>
-												{cursorContext.page !== cursorContext.pages && <Col span={2}><ProgressCircle
-													percent={toPercent(cursorContext?.page || 0, cursorContext?.pages || 0)}
-													style={{"--size": "18px", "--track-width": "2px"}}
-												/></Col>}
-											</Row>}
+									}) || (cursorContext?.page === undefined || cursorContext?.pages === undefined ?
+										<DotLoading/> : (cursorContext.pages > 0 ? <Row align={"top"} justify={"center"} gutter={4}>
+											<Col span={"auto"}>{`${cursorContext?.page}/${cursorContext?.pages}`}</Col>
+											{cursorContext.page !== cursorContext.pages && <Col span={2}><ProgressCircle
+												percent={toPercent(cursorContext?.page || 0, cursorContext?.pages || 0)}
+												style={{"--size": "18px", "--track-width": "2px"}}
+											/></Col>}
+										</Row> : renderEmpty?.({
+											sourceContext,
+											cursorContext,
+										}) || <ErrorBlock
+											status={"empty"}
+											title={<Translate {...translation} text={"empty.title"}/>}
+											description={<Translate {...translation} text={"empty.description"}/>}
+										/>))}
 								</InfiniteScroll>
 							</Col>
 						</Row>
