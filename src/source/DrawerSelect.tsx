@@ -19,8 +19,8 @@ import {
 	useVisibleContext
 } from "@leight-core/client";
 import {toPercent} from "@leight-core/utils";
-import {Col, Row, Space, Typography} from "antd";
-import {CheckList, DotLoading, InfiniteScroll, ProgressCircle} from "antd-mobile";
+import {Col, Row, Typography} from "antd";
+import {CheckList, DotLoading, InfiniteScroll, ProgressCircle, Space} from "antd-mobile";
 import {CheckOutline} from "antd-mobile-icons";
 import {PropsWithChildren, ReactNode} from "react";
 
@@ -223,16 +223,13 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 										cursorContext,
 									}) || <Space>
 										{!cursorContext?.page || !cursorContext?.pages ?
-											<DotLoading/> : <>
-												{sourceContext.result.isFetching && <DotLoading/>}
-												<ProgressCircle
+											<DotLoading/> : <Space direction={"vertical"} align={"center"} block style={{"--gap": "0px"}}>
+												<Typography.Text type={"secondary"}>{`${cursorContext?.page}/${cursorContext?.pages}`}</Typography.Text>
+												{cursorContext.page !== cursorContext.pages && <ProgressCircle
 													percent={toPercent(cursorContext?.page || 0, cursorContext?.pages || 0)}
-													style={{"--size": "64px"}}
-												>
-													{`${cursorContext?.page}/${cursorContext?.pages}`}
-												</ProgressCircle>
-												{sourceContext.result.isFetching && <DotLoading/>}
-											</>}
+													style={{"--size": "24px", "--track-width": "2px"}}
+												/>}
+											</Space>}
 									</Space>}
 								</InfiniteScroll>
 							</Col>
