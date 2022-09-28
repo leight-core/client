@@ -221,16 +221,15 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 									{renderLoading?.({
 										sourceContext,
 										cursorContext,
-									}) || <Space>
-										{!cursorContext?.page || !cursorContext?.pages ?
-											<DotLoading/> : <Space direction={"vertical"} align={"center"} block style={{"--gap": "0px"}}>
-												<Typography.Text type={"secondary"}>{`${cursorContext?.page}/${cursorContext?.pages}`}</Typography.Text>
-												{cursorContext.page !== cursorContext.pages && <ProgressCircle
+									}) || !cursorContext?.page || !cursorContext?.pages ?
+										<DotLoading/> : !cursorContext?.page || !cursorContext?.pages ?
+											<DotLoading/> : <Row align={"top"} justify={"center"} gutter={4}>
+												<Col span={"auto"}>{`${cursorContext?.page}/${cursorContext?.pages}`}</Col>
+												{cursorContext.page !== cursorContext.pages && <Col span={2}><ProgressCircle
 													percent={toPercent(cursorContext?.page || 0, cursorContext?.pages || 0)}
-													style={{"--size": "24px", "--track-width": "2px"}}
-												/>}
-											</Space>}
-									</Space>}
+													style={{"--size": "18px", "--track-width": "2px"}}
+												/></Col>}
+											</Row>}
 								</InfiniteScroll>
 							</Col>
 						</Row>
