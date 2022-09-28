@@ -113,35 +113,35 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 		label={translation ? `${translation}.403` : undefined}
 		{...withTokenProps}
 	>
-		<FormBlockContext.Consumer>
-			{formBlockContext =>
-				<Spin indicator={<LoaderIcon/>} spinning={formBlockContext.isBlocked()}>
-					<MobileFormProvider
-						translation={translation}
-					>
-						{formContext => {
-							function handleError(formError: IFormError | IMobileFormErrorHandler<any, any>, error: any, formContext: IMobileFormContext) {
-								let handle = formError;
-								if (!isCallable(handle)) {
-									handle = () => formContext.setErrors({
-										errors: [
-											(formError as IFormError),
-										],
-									});
-								}
-								(handle as IMobileFormErrorHandler<any, any>)({error, formContext});
-							}
+		<MobileFormProvider
+			translation={translation}
+		>
+			{formContext => {
+				function handleError(formError: IFormError | IMobileFormErrorHandler<any, any>, error: any, formContext: IMobileFormContext) {
+					let handle = formError;
+					if (!isCallable(handle)) {
+						handle = () => formContext.setErrors({
+							errors: [
+								(formError as IFormError),
+							],
+						});
+					}
+					(handle as IMobileFormErrorHandler<any, any>)({error, formContext});
+				}
 
-							onFailure = onFailure || (({error, formContext}) => {
-								const map = toError({error, formContext});
-								const formError = map[error];
-								const general = map["general"];
-								formError && handleError(formError, error, formContext);
-								!formError && general && handleError(general, error, formContext);
-								message.error(t("error." + error));
-							});
+				onFailure = onFailure || (({error, formContext}) => {
+					const map = toError({error, formContext});
+					const formError = map[error];
+					const general = map["general"];
+					formError && handleError(formError, error, formContext);
+					!formError && general && handleError(general, error, formContext);
+					message.error(t("error." + error));
+				});
 
-							return <Form
+				return <FormBlockContext.Consumer>
+					{formBlockContext =>
+						<Spin indicator={<LoaderIcon/>} spinning={formBlockContext.isBlocked()}>
+							<Form
 								layout={"vertical"}
 								form={formContext.form}
 								initialValues={toForm()}
@@ -179,10 +179,10 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 								}}
 								footer={submit && formContext.isSubmitVisible ? <MobileSubmit icon={icon} label={submit}/> : undefined}
 								{...props}
-							/>;
-						}}
-					</MobileFormProvider>
-				</Spin>}
-		</FormBlockContext.Consumer>
+							/>
+						</Spin>}
+				</FormBlockContext.Consumer>;
+			}}
+		</MobileFormProvider>
 	</WithToken>;
 }
