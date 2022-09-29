@@ -11,7 +11,7 @@ export const FulltextBar: FC<IFulltextBarProps> = props => {
 	const filterContext = useFilterContext<IWithFulltext>();
 	const cursorContext = useOptionalCursorContext();
 	return <SearchBar
-		defaultValue={filterContext.filter?.fulltext}
+		value={filterContext.filter?.fulltext}
 		onSearch={value => {
 			sourceContext.reset();
 			filterContext.setFilter({fulltext: value});
