@@ -88,7 +88,11 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 	return <VisibleProvider>
 		{visibleContext => {
 			const rightActions: ComponentProps<typeof SwipeAction>["rightActions"] = [];
-			createWith && rightActions.push({key: JSON.stringify(field) + ".create", color: "primary", text: <AddOutline fontSize={24}/>, onClick: () => visibleContext.show()});
+			createWith && rightActions.push({
+				key: JSON.stringify(field) + ".create", color: "primary", text: <AddOutline fontSize={24}/>, onClick: () => {
+					setTimeout(() => visibleContext.show(), 150);
+				}
+			});
 			return <>
 				<VisibleProvider>
 					<MobileFormItem
