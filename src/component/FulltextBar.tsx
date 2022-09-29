@@ -1,17 +1,23 @@
 import {IWithFulltext} from "@leight-core/api";
 import {useFilterContext, useOptionalCursorContext, useSourceContext} from "@leight-core/client";
 import {SearchBar} from "antd-mobile";
-import {ComponentProps, FC} from "react";
+import {ComponentProps, FC, useEffect, useState} from "react";
 
 export interface IFulltextBarProps extends Partial<ComponentProps<typeof SearchBar>> {
 }
 
 export const FulltextBar: FC<IFulltextBarProps> = props => {
-	const sourceContext = useSourceContext();
 	const filterContext = useFilterContext<IWithFulltext>();
+	const {fulltext} = filterContext.filter || {fulltext: ""};
+	const sourceContext = useSourceContext();
 	const cursorContext = useOptionalCursorContext();
+	const [value, setValue] = useState(fulltext);
+	useEffect(() => {
+		setValue(fulltext);
+	}, [fulltext]);
 	return <SearchBar
-		value={filterContext.filter?.fulltext}
+		value={value}
+		onChange={setValue}
 		onSearch={value => {
 			sourceContext.reset();
 			filterContext.setFilter({fulltext: value});

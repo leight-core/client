@@ -13,6 +13,7 @@ export interface IListLoaderRenderEmpty<TItem> {
 export interface IListLoaderRenderNothing<TItem> {
 	sourceContext: ISourceContext<TItem>;
 	cursorContext: ICursorContext | null;
+	withTotal: boolean;
 }
 
 export interface IListLoaderProps<TItem> {
@@ -50,6 +51,7 @@ export function ListLoader<TItem>(
 				{renderNothing?.({
 					sourceContext,
 					cursorContext,
+					withTotal: (cursorContext?.total || 0) > 0,
 				})}
 			</ErrorBlock>)}
 	</>;
