@@ -5,6 +5,7 @@ import {
 	Drawer,
 	FulltextBar,
 	IListLoaderRenderEmpty,
+	IListLoaderRenderNothing,
 	IOfSelection,
 	ISelectionProviderProps,
 	ISourceProviderProps,
@@ -94,6 +95,7 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	 */
 	renderLoading?(props: IDrawerSelectRenderLoading<TItem>): ReactNode;
 	renderEmpty?(props: IListLoaderRenderEmpty<TItem>): ReactNode;
+	renderNothing?(props: IListLoaderRenderNothing<TItem>): ReactNode;
 
 	/**
 	 * Renders selected values in the form UI. When undefined is returned, placeholder is rendered.
@@ -137,6 +139,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		renderList,
 		renderLoading,
 		renderEmpty,
+		renderNothing,
 		withFulltext = true,
 		toChange = type === "single" ? selection => toSingleSelection(selection) as TOnChange : selection => toMultiSelection(selection) as TOnChange,
 		ofSelection,
@@ -232,6 +235,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 									}) || <ListLoader
 										translation={translation}
 										renderEmpty={renderEmpty}
+										renderNothing={renderNothing}
 									/>}
 								</InfiniteScroll>
 							</Col>

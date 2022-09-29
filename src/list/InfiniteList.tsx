@@ -1,5 +1,5 @@
 import {ICursorContext, IFilterContext, INavigate, ISourceContext, ITranslationProps} from "@leight-core/api";
-import {FulltextBar, IListLoaderRenderEmpty, ListLoader, useCursorContext, useNavigate, useOptionalFilterContext, useSourceContext} from "@leight-core/client";
+import {FulltextBar, IListLoaderRenderEmpty, IListLoaderRenderNothing, ListLoader, useCursorContext, useNavigate, useOptionalFilterContext, useSourceContext} from "@leight-core/client";
 import {InfiniteScroll, List} from "antd-mobile";
 import {ComponentProps, FC, ReactNode} from "react";
 
@@ -30,6 +30,8 @@ export interface IInfiniteListProps<TResponse> extends Partial<Omit<ComponentPro
 	renderLoading?(props: IInfiniteListSelectRenderLoading<TResponse>): ReactNode;
 
 	renderEmpty?(props: IListLoaderRenderEmpty<TResponse>): ReactNode;
+
+	renderNothing?(props: IListLoaderRenderNothing<TResponse>): ReactNode;
 }
 
 export interface IInfiniteListItemProps extends Omit<ComponentProps<typeof List["Item"]>, "onClick"> {
@@ -52,6 +54,7 @@ export const InfiniteList = <TResponse, >(
 		withFulltext = false,
 		renderLoading,
 		renderEmpty,
+		renderNothing,
 		header,
 		...props
 	}: IInfiniteListProps<TResponse>) => {
@@ -75,7 +78,11 @@ export const InfiniteList = <TResponse, >(
 			{renderLoading?.({
 				sourceContext,
 				cursorContext,
-			}) || <ListLoader<TResponse> translation={translation} renderEmpty={renderEmpty}/>}
+			}) || <ListLoader<TResponse>
+				translation={translation}
+				renderEmpty={renderEmpty}
+				renderNothing={renderNothing}
+			/>}
 		</InfiniteScroll>
 	</>;
 };

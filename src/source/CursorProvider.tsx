@@ -38,7 +38,7 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 		append,
 		prepend,
 		setPage: (page, size = defaultSize) => setPage([page, size]),
-		setPages: pages => setPages(pages ? Math.ceil(pages / size) : undefined),
+		setPages: pages => setPages(pages !== undefined ? Math.ceil(pages / size) : undefined),
 		setPageCount: setPages,
 		setTotal,
 		next: append => {
@@ -49,12 +49,8 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 			setPrepend(prepend);
 			setPage([Math.max(0, page - 1), size]);
 		},
-		hasMore: () => {
-			return pages ? page < pages : false;
-		},
-		more: append => {
-			context.next(append);
-		},
+		hasMore: () => pages ? page < pages : false,
+		more: append => context.next(append),
 	};
 
 	return <CursorContext.Provider

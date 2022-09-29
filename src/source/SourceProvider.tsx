@@ -80,21 +80,17 @@ export const SourceProvider = <TResponse, >(
 			setData(uniqueOf(response));
 		},
 	}, options || {}));
+	useCountQuery({}, queryParamsContext?.queryParams, {
+		keepPreviousData: true,
+		refetchInterval: live,
+		onSuccess: total => cursorContext?.setTotal(total),
+	});
 	useCountQuery({
 		filter: filterContext?.filter,
 	}, queryParamsContext?.queryParams, {
 		keepPreviousData: true,
 		refetchInterval: live,
-		onSuccess: count => {
-			cursorContext?.setPages(count);
-		},
-	});
-	useCountQuery({}, queryParamsContext?.queryParams, {
-		keepPreviousData: true,
-		refetchInterval: live,
-		onSuccess: total => {
-			cursorContext?.setTotal(total);
-		},
+		onSuccess: count => cursorContext?.setPages(count),
 	});
 
 	const hasData = () => Array.isArray(data) && data.length > 0;
