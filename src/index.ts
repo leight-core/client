@@ -7,6 +7,7 @@ export * from "./button";
 export * from "./component";
 export * from "./context";
 export * from "./date";
+export * from "./dialog";
 export * from "./drawer";
 export * from "./entity";
 export * from "./event";
