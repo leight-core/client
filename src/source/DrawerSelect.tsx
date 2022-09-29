@@ -227,7 +227,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 								</CheckList>}
 								<InfiniteScroll
 									loadMore={async () => cursorContext.more(true)}
-									hasMore={cursorContext.hasMore()}
+									hasMore={!sourceContext.result.isFetching && cursorContext.hasMore()}
 								>
 									{renderLoading?.({
 										sourceContext,
