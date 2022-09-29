@@ -1,8 +1,29 @@
-import {IQueryParams} from "@leight-core/api";
-import {CursorProvider, FilterProvider, ICursorProviderProps, IFilterProviderProps, IOrderByProviderProps, IQueryParamsProviderProps, OrderByProvider, QueryParamsProvider} from "@leight-core/client";
-import {PropsWithChildren} from "react";
+import {ICursorContext, IFilterContext, IOrderByContext, IQueryParams, IQueryParamsContext} from "@leight-core/api";
+import {
+	CursorContext,
+	CursorProvider,
+	FilterContext,
+	FilterProvider,
+	ICursorProviderProps,
+	IFilterProviderProps,
+	IOrderByProviderProps,
+	IQueryParamsProviderProps,
+	OrderByContext,
+	OrderByProvider,
+	QueryParamsContext,
+	QueryParamsProvider
+} from "@leight-core/client";
+import {isCallable} from "@leight-core/utils";
+import {ReactNode} from "react";
 
-export type ISourceControlProviderProps<TFilter = any, TOrderBy = any, TQueryParams extends IQueryParams | void = void> = PropsWithChildren<{
+export interface ISourceControlProviderRender<TFilter = any, TOrderBy = any, TQueryParams extends IQueryParams | undefined = undefined> {
+	queryContext: IQueryParamsContext<TQueryParams>;
+	filterContext: IFilterContext<TFilter>;
+	orderByContext: IOrderByContext<TOrderBy>;
+	cursorContext: ICursorContext;
+}
+
+export interface ISourceControlProviderProps<TFilter = any, TOrderBy = any, TQueryParams extends IQueryParams | undefined = undefined> {
 	name: string;
 	filterProviderProps?: IFilterProviderProps<TFilter>;
 	orderByProviderProps?: IOrderByProviderProps<TOrderBy>;
@@ -25,9 +46,10 @@ export type ISourceControlProviderProps<TFilter = any, TOrderBy = any, TQueryPar
 	defaultPage?: number;
 	defaultSize?: number;
 	defaultQueryParams?: TQueryParams;
-}>
+	children?: ReactNode | ((render: ISourceControlProviderRender<TFilter, TOrderBy, TQueryParams>) => ReactNode);
+}
 
-export function SourceControlProvider<TFilter = any, TOrderBy = any, TQueryParams extends IQueryParams | void = void>(
+export function SourceControlProvider<TFilter = any, TOrderBy = any, TQueryParams extends IQueryParams | undefined = undefined>(
 	{
 		name,
 		filterProviderProps,
@@ -43,7 +65,7 @@ export function SourceControlProvider<TFilter = any, TOrderBy = any, TQueryParam
 		defaultQueryParams,
 		children,
 	}: ISourceControlProviderProps<TFilter, TOrderBy, TQueryParams>) {
-	return <QueryParamsProvider
+	return <QueryParamsProvider<TQueryParams>
 		defaultQueryParams={defaultQueryParams}
 		{...queryParamsProviderProps}
 	>
@@ -65,7 +87,20 @@ export function SourceControlProvider<TFilter = any, TOrderBy = any, TQueryParam
 					defaultSize={defaultSize}
 					{...cursorProviderProps}
 				>
-					{children}
+					{isCallable(children) ? <QueryParamsContext.Consumer>
+						{queryContext => <FilterContext.Consumer>
+							{filterContext => <OrderByContext.Consumer>
+								{orderByContext => <CursorContext.Consumer>
+									{cursorContext => (children as ((render: ISourceControlProviderRender<TFilter, TOrderBy, TQueryParams>) => ReactNode))({
+										cursorContext,
+										orderByContext,
+										queryContext,
+										filterContext,
+									})}
+								</CursorContext.Consumer>}
+							</OrderByContext.Consumer>}
+						</FilterContext.Consumer>}
+					</QueryParamsContext.Consumer> : children as ReactNode}
 				</CursorProvider>
 			</OrderByProvider>
 		</FilterProvider>
