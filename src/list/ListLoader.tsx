@@ -46,7 +46,7 @@ export function ListLoader<TItem>(
 			}) || <ErrorBlock
 				status={"empty"}
 				title={<Translate {...translation} text={cursorContext.total ? "empty.title" : "empty.nothing.title"}/>}
-				description={<Translate {...translation} text={cursorContext.total ? "empty.title" : "empty.nothing.description"}/>}
+				description={<Translate {...translation} text={cursorContext.total ? "empty.title.description" : "empty.nothing.description"}/>}
 			>
 				{renderNothing?.({
 					sourceContext,
