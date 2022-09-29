@@ -80,13 +80,20 @@ export const SourceProvider = <TResponse, >(
 			setData(uniqueOf(response));
 		},
 	}, options || {}));
-	const count = useCountQuery({
+	useCountQuery({
 		filter: filterContext?.filter,
 	}, queryParamsContext?.queryParams, {
 		keepPreviousData: true,
 		refetchInterval: live,
 		onSuccess: count => {
-			cursorContext?.setPages(Math.ceil(count / (cursorContext?.size || 1)));
+			cursorContext?.setPages(count);
+		},
+	});
+	useCountQuery({}, queryParamsContext?.queryParams, {
+		keepPreviousData: true,
+		refetchInterval: live,
+		onSuccess: total => {
+			cursorContext?.setTotal(total);
 		},
 	});
 
@@ -96,38 +103,12 @@ export const SourceProvider = <TResponse, >(
 		value={{
 			name,
 			result: query,
-			count: withCount ? count : undefined,
 			hasData,
 			map: mapper => hasData() ? (data?.map(mapper) || []) : [],
 			data: () => hasData() ? (data || []) : [],
 			reset: () => {
 				setData([]);
 				cursorContext?.setPage(0);
-			},
-			hasMore: () => {
-				if (query.isFetching) {
-					return false;
-				}
-				if (!withCount) {
-					console.warn(`Querying ${name}.hasMore() without counting enabled!`);
-					return false;
-				}
-				if (!count.isSuccess) {
-					return false;
-				}
-				if (!cursorContext) {
-					console.warn(`Querying ${name}.hasMore() without cursor context (cannot do paging without it)!`);
-					return false;
-				}
-				const pages = Math.ceil(count.data / cursorContext.size);
-				return cursorContext.page < pages;
-			},
-			more: async append => {
-				if (!cursorContext) {
-					console.warn(`Requesting ${name}.more() without cursor context!`);
-					return;
-				}
-				cursorContext?.next(append);
 			},
 		}}
 	>

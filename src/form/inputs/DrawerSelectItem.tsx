@@ -6,6 +6,7 @@ import {
 	IDrawerSelectProps,
 	IDrawerSelectRenderList,
 	IDrawerSelectRenderLoading,
+	IListLoaderRenderEmpty,
 	IMobileFormItemProps,
 	IOfSelection,
 	ISourceProviderProps,
@@ -30,6 +31,7 @@ export type IDrawerSelectItemProps<TItem extends Record<string, any> & IWithIden
 	 */
 	renderList?(props: IDrawerSelectRenderList<TItem>): ReactNode;
 	renderLoading?(props: IDrawerSelectRenderLoading<TItem>): ReactNode;
+	renderEmpty?(props: IListLoaderRenderEmpty<TItem>): ReactNode;
 	sourceProviderProps: ISourceProviderProps<TItem>;
 	type?: ISelectionType;
 	/**
@@ -58,6 +60,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 		render,
 		renderList,
 		renderLoading,
+		renderEmpty,
 		sourceProviderProps,
 		type = "single",
 		defaultSelection,
@@ -96,6 +99,7 @@ export function DrawerSelectItem<TItem extends Record<string, any> & IWithIdenti
 							render={render}
 							renderList={renderList}
 							renderLoading={renderLoading}
+							renderEmpty={renderEmpty}
 							sourceProviderProps={sourceProviderProps}
 							type={type}
 							defaultSelection={selected ? {[selected.id]: selected} : defaultSelection}

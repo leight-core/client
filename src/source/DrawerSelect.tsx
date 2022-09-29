@@ -4,23 +4,24 @@ import {
 	Centered,
 	Drawer,
 	FulltextBar,
+	IListLoaderRenderEmpty,
 	IOfSelection,
 	ISelectionProviderProps,
 	ISourceProviderProps,
 	ITranslateProps,
+	ListLoader,
 	OfSelection,
 	SelectionProvider,
 	SourceProvider,
 	SourceReset,
 	Translate,
+	useCursorContext,
 	useOptionalBlockContext,
-	useOptionalCursorContext,
 	useOptionalFilterContext,
 	useVisibleContext
 } from "@leight-core/client";
-import {toPercent} from "@leight-core/utils";
 import {Col, Row, Typography} from "antd";
-import {CheckList, DotLoading, ErrorBlock, InfiniteScroll, ProgressCircle, Space} from "antd-mobile";
+import {CheckList, DotLoading, InfiniteScroll, Space} from "antd-mobile";
 import {CheckOutline} from "antd-mobile-icons";
 import {PropsWithChildren, ReactNode} from "react";
 
@@ -37,11 +38,6 @@ export interface IDrawerSelectRenderList<TItem> {
 }
 
 export interface IDrawerSelectRenderLoading<TItem> {
-	sourceContext: ISourceContext<TItem>;
-	cursorContext: ICursorContext | null;
-}
-
-export interface IDrawerSelectRenderEmpty<TItem> {
 	sourceContext: ISourceContext<TItem>;
 	cursorContext: ICursorContext | null;
 }
@@ -97,7 +93,7 @@ export type IDrawerSelectProps<TItem extends Record<string, any> & IWithIdentity
 	 * @param props
 	 */
 	renderLoading?(props: IDrawerSelectRenderLoading<TItem>): ReactNode;
-	renderEmpty?(props: IDrawerSelectRenderEmpty<TItem>): ReactNode;
+	renderEmpty?(props: IListLoaderRenderEmpty<TItem>): ReactNode;
 
 	/**
 	 * Renders selected values in the form UI. When undefined is returned, placeholder is rendered.
@@ -150,7 +146,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		children,
 	}: IDrawerSelectProps<TItem, TOnChange>) {
 	const visibleContext = useVisibleContext();
-	const cursorContext = useOptionalCursorContext();
+	const cursorContext = useCursorContext();
 	const filterContext = useOptionalFilterContext();
 	const blockContext = useOptionalBlockContext();
 
@@ -227,27 +223,16 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 									</CheckList.Item>)}
 								</CheckList>}
 								<InfiniteScroll
-									loadMore={async () => sourceContext.more(true)}
-									hasMore={sourceContext.hasMore()}
+									loadMore={async () => cursorContext.more(true)}
+									hasMore={cursorContext.hasMore()}
 								>
 									{renderLoading?.({
 										sourceContext,
 										cursorContext,
-									}) || (cursorContext?.page === undefined || cursorContext?.pages === undefined ?
-										<DotLoading/> : (cursorContext.pages > 0 ? <Row align={"top"} justify={"center"} gutter={4}>
-											<Col span={"auto"}>{`${cursorContext?.page}/${cursorContext?.pages}`}</Col>
-											{cursorContext.page !== cursorContext.pages && <Col span={2}><ProgressCircle
-												percent={toPercent(cursorContext?.page || 0, cursorContext?.pages || 0)}
-												style={{"--size": "18px", "--track-width": "2px"}}
-											/></Col>}
-										</Row> : renderEmpty?.({
-											sourceContext,
-											cursorContext,
-										}) || <ErrorBlock
-											status={"empty"}
-											title={<Translate {...translation} text={"empty.title"}/>}
-											description={<Translate {...translation} text={"empty.description"}/>}
-										/>))}
+									}) || <ListLoader
+										translation={translation}
+										renderEmpty={renderEmpty}
+									/>}
 								</InfiniteScroll>
 							</Col>
 						</Row>

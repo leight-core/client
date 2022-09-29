@@ -19,6 +19,7 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 	}) => {
 	const [[page, size], setPage] = useState<[number, number]>([defaultPage, defaultSize]);
 	const [pages, setPages] = useState<number>();
+	const [total, setTotal] = useState<number>();
 	const [append, setAppend] = useState<boolean>();
 	const [prepend, setPrepend] = useState<boolean>();
 	useEffect(() => {
@@ -27,25 +28,37 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 	useEffect(() => {
 		setPage([page, defaultSize]);
 	}, [defaultSize]);
+
+	const context: ICursorContext = {
+		name,
+		page,
+		pages,
+		total,
+		size,
+		append,
+		prepend,
+		setPage: (page, size = defaultSize) => setPage([page, size]),
+		setPages: pages => setPages(pages ? Math.ceil(pages / size) : undefined),
+		setPageCount: setPages,
+		setTotal,
+		next: append => {
+			setAppend(append);
+			setPage([page + 1, size]);
+		},
+		prev: prepend => {
+			setPrepend(prepend);
+			setPage([Math.max(0, page - 1), size]);
+		},
+		hasMore: () => {
+			return pages ? page < pages : false;
+		},
+		more: append => {
+			context.next(append);
+		},
+	};
+
 	return <CursorContext.Provider
-		value={{
-			name,
-			page,
-			pages,
-			size,
-			append,
-			prepend,
-			setPage: (page, size = defaultSize) => setPage([page, size]),
-			setPages,
-			next: append => {
-				setAppend(append);
-				setPage([page + 1, size]);
-			},
-			prev: prepend => {
-				setPrepend(prepend);
-				setPage([Math.max(0, page - 1), size]);
-			},
-		}}
+		value={context}
 	>
 		{isCallable(children) ? <CursorContext.Consumer>{children as any}</CursorContext.Consumer> : children as ReactNode}
 	</CursorContext.Provider>;
