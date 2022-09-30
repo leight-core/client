@@ -197,7 +197,7 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 								visibleContext.hide();
 							}}
 						/>
-						{withFulltext ? <Row justify={"center"} style={{margin: "0.75em"}}>
+						{withFulltext && (cursorContext.total || 0) > 0 ? <Row justify={"center"} style={{margin: "0.75em"}}>
 							<Col span={24}>
 								<FulltextBar/>
 							</Col>

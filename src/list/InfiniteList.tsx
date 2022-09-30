@@ -5,6 +5,7 @@ import {ComponentProps, FC, ReactNode} from "react";
 
 export interface IInfiniteListHeaderRequest<TResponse> {
 	sourceContext: ISourceContext<TResponse>;
+	cursorContext: ICursorContext;
 	filterContext?: IFilterContext | null;
 }
 
@@ -66,7 +67,7 @@ export const InfiniteList = <TResponse, >(
 	}
 	return <>
 		<List
-			header={withFulltext ? <FulltextBar/> : header?.({sourceContext, filterContext})}
+			header={withFulltext && (cursorContext.total || 0) > 0 ? <FulltextBar/> : header?.({sourceContext, cursorContext, filterContext})}
 			{...props}
 		>
 			{sourceContext.data().map(item => children?.(item))}
