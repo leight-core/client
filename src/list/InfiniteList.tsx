@@ -73,7 +73,7 @@ export const InfiniteList = <TResponse, >(
 		</List>
 		<InfiniteScroll
 			loadMore={async () => cursorContext.more(true)}
-			hasMore={cursorContext.hasMore()}
+			hasMore={!sourceContext.result.isFetching && cursorContext.hasMore()}
 		>
 			{renderLoading?.({
 				sourceContext,
