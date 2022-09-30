@@ -48,8 +48,8 @@ export function SelectionProvider<TSelection, >({type = "single", defaultSelecti
 	const context: ISelectionContext<TSelection> = {
 		isSelected: id => !!selectionRef.current[id],
 		asSelection: () => selectionRef.current,
-		toSelection: () => Object.keys(selectionRef.current).filter(key => !!selectionRef.current[key]),
-		toItems: () => Object.values(selectionRef.current).filter(item => !!item),
+		toSelection: () => Object.keys(selectionRef.current),
+		toItems: () => Object.values(selectionRef.current),
 		select: (id, $selection, select) => {
 			setSelection(prev => {
 				const $select = select === undefined ? !prev[id] : select;
@@ -58,7 +58,7 @@ export function SelectionProvider<TSelection, >({type = "single", defaultSelecti
 				}
 				prev[id] = $selection;
 				!$select && (delete prev[id]);
-				return prev;
+				return {...prev};
 			});
 		},
 		item: (item, $select) => context.select(item.id, item, $select),

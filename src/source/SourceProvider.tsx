@@ -1,10 +1,10 @@
-import {IQuery, IQueryHook, ISourceContext} from "@leight-core/api";
+import {IQuery, IQueryHook, ISourceContext, IWithIdentity} from "@leight-core/api";
 import {SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
 import {isCallable, merge, uniqueOf} from "@leight-core/utils";
 import {useQuery as useCoolQuery, UseQueryOptions} from "@tanstack/react-query";
 import {ReactNode, useState} from "react";
 
-export interface ISourceProviderProps<TResponse> {
+export interface ISourceProviderProps<TResponse extends IWithIdentity> {
 	name: string;
 	/**
 	 * Source of the query
@@ -29,7 +29,7 @@ export interface ISourceProviderProps<TResponse> {
 	children?: ReactNode | ((sourceContext: ISourceContext<TResponse>) => ReactNode);
 }
 
-export const SourceProvider = <TResponse, >(
+export const SourceProvider = <TResponse extends IWithIdentity>(
 	{
 		name,
 		useQuery,
@@ -67,17 +67,17 @@ export const SourceProvider = <TResponse, >(
 		onSuccess: (response: TResponse[]) => {
 			onSuccess?.(response);
 			if (cursorContext?.append) {
-				setData(prev => uniqueOf<TResponse>(prev.concat(response)));
+				setData(prev => uniqueOf(prev.concat(response), "id"));
 				return;
 			}
 			if (cursorContext?.prepend) {
 				setData(prev => {
 					prev.unshift(...response);
-					return uniqueOf(prev);
+					return uniqueOf(prev, "id");
 				});
 				return;
 			}
-			setData(uniqueOf(response));
+			setData(uniqueOf(response, "id"));
 		},
 	}, options || {}));
 	useCountQuery({}, queryParamsContext?.queryParams, {
