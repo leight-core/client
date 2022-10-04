@@ -1,5 +1,5 @@
 import {ISourceContext} from "@leight-core/api";
-import {LoaderIcon, PaginationContext, PaginationProvider, Template, useSourceContext} from "@leight-core/client";
+import {LoaderIcon, PaginationProvider, Template, useSourceContext} from "@leight-core/client";
 import {UseQueryResult} from "@tanstack/react-query";
 import {List as CoolList, ListProps, SpinProps} from "antd";
 import React, {ReactNode} from "react";
@@ -38,27 +38,25 @@ export const List = <TResponse, >(
 	}: IListProps<TResponse>) => {
 	const sourceContext = useSourceContext<TResponse>();
 	return <PaginationProvider>
-		<PaginationContext.Consumer>
-			{paginationContext => <CoolList
-				header={header?.(sourceContext)}
-				footer={footer?.(sourceContext)}
-				dataSource={sourceContext.data()}
-				loading={{
-					spinning: sourceContext.result[withLoading],
-					delay: 250,
-					indicator: <Template
-						icon={<LoaderIcon/>}
-					/>,
-					...loading,
-				}}
-				locale={{
-					emptyText,
-				}}
-				renderItem={children}
-				pagination={paginationContext.pagination()}
-				size={"large"}
-				{...props}
-			/>}
-		</PaginationContext.Consumer>
+		{paginationContext => <CoolList
+			header={header?.(sourceContext)}
+			footer={footer?.(sourceContext)}
+			dataSource={sourceContext.data()}
+			loading={{
+				spinning: sourceContext.result[withLoading],
+				delay: 250,
+				indicator: <Template
+					icon={<LoaderIcon/>}
+				/>,
+				...loading,
+			}}
+			locale={{
+				emptyText,
+			}}
+			renderItem={children}
+			pagination={paginationContext.pagination()}
+			size={"large"}
+			{...props}
+		/>}
 	</PaginationProvider>;
 };

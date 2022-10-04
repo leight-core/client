@@ -1,4 +1,4 @@
-import {LoaderIcon, PaginationContext, PaginationProvider, Template, useSourceContext} from "@leight-core/client";
+import {LoaderIcon, PaginationProvider, Template, useSourceContext} from "@leight-core/client";
 import {isString} from "@leight-core/utils";
 import {UseQueryResult} from "@tanstack/react-query";
 import {Empty, SpinProps, Table as CoolTable, TableProps} from "antd";
@@ -47,31 +47,28 @@ export const Table = <TResponse, >(
 	};
 
 	return <PaginationProvider>
-		<PaginationContext.Consumer>
-			{paginationContext =>
-				<CoolTable<any>
-					style={{minHeight: "50vh"}}
-					showSorterTooltip={false}
-					dataSource={sourceContext.data()}
-					rowKey={((record: any) => record.id) as any}
-					loading={{
-						spinning: sourceContext.result[withLoading],
-						delay: 250,
-						indicator: <Template
-							icon={<LoaderIcon/>}
-						/>,
-						...loading,
-					}}
-					size={"large"}
-					locale={{emptyText: <Empty description={t("common.nothing-found")}/>}}
-					pagination={{
-						...paginationContext.pagination(),
-						position: ["bottomRight"],
-					}}
-					{...props}
-				>
-					{children?.filter(i => i).map(createColumn)}
-				</CoolTable>}
-		</PaginationContext.Consumer>
+		{paginationContext => <CoolTable<any>
+			style={{minHeight: "50vh"}}
+			showSorterTooltip={false}
+			dataSource={sourceContext.data()}
+			rowKey={((record: any) => record.id) as any}
+			loading={{
+				spinning: sourceContext.result[withLoading],
+				delay: 250,
+				indicator: <Template
+					icon={<LoaderIcon/>}
+				/>,
+				...loading,
+			}}
+			size={"large"}
+			locale={{emptyText: <Empty description={t("common.nothing-found")}/>}}
+			pagination={{
+				...paginationContext.pagination(),
+				position: ["bottomRight"],
+			}}
+			{...props}
+		>
+			{children?.filter(i => i).map(createColumn)}
+		</CoolTable>}
 	</PaginationProvider>;
 };

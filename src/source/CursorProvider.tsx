@@ -20,6 +20,7 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 	const [[page, size], setPage] = useState<[number, number]>([defaultPage, defaultSize]);
 	const [pages, setPages] = useState<number>();
 	const [total, setTotal] = useState<number>();
+	const [count, setCount] = useState<number>();
 	const [append, setAppend] = useState<boolean>();
 	const [prepend, setPrepend] = useState<boolean>();
 	useEffect(() => {
@@ -34,11 +35,15 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 		page,
 		pages,
 		total,
+		count,
 		size,
 		append,
 		prepend,
 		setPage: (page, size = defaultSize) => setPage([page, size]),
-		setPages: pages => setPages(pages !== undefined ? Math.ceil(pages / size) : undefined),
+		setPages: count => {
+			setCount(count);
+			setPages(count !== undefined ? Math.ceil(count / size) : undefined);
+		},
 		setPageCount: setPages,
 		setTotal,
 		next: append => {

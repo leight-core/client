@@ -1,10 +1,14 @@
+import {IPaginationContext} from "@leight-core/api";
 import {PaginationContext, useCursorContext, useSourceContext} from "@leight-core/client";
-import {FC, PropsWithChildren} from "react";
+import {isCallable} from "@leight-core/utils";
+import {FC, ReactNode} from "react";
 import {useTranslation} from "react-i18next";
 
-export type IPaginationProviderProps = PropsWithChildren;
+export interface IPaginationProviderProps {
+	children?: ReactNode | ((paginationContext: IPaginationContext) => ReactNode);
+}
 
-export const PaginationProvider: FC<IPaginationProviderProps> = props => {
+export const PaginationProvider: FC<IPaginationProviderProps> = ({children}) => {
 	const {t} = useTranslation();
 	const sourceContext = useSourceContext();
 	const cursorContext = useCursorContext();
@@ -23,6 +27,7 @@ export const PaginationProvider: FC<IPaginationProviderProps> = props => {
 				onChange: (current, size) => cursorContext?.setPage(current - 1, size),
 			}),
 		}}
-		{...props}
-	/>;
+	>
+		{isCallable(children) ? <PaginationContext.Consumer>{children as any}</PaginationContext.Consumer> : children as ReactNode}
+	</PaginationContext.Provider>;
 };
