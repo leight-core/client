@@ -23,7 +23,7 @@ export const PaginationProvider: FC<IPaginationProviderProps> = ({children}) => 
 				showSizeChanger: false,
 				showQuickJumper: false,
 				hideOnSinglePage: true,
-				showTotal: (total, [from, to]) => t(`${sourceContext.name}.list.total`, {data: {total, from, to}}),
+				showTotal: (total, [from, to]) => t(`${sourceContext.name}.list.total`, {total, from, to}),
 				onChange: (current, size) => cursorContext?.setPage(current - 1, size),
 			}),
 		}}
