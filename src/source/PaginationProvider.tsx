@@ -17,7 +17,7 @@ export const PaginationProvider: FC<IPaginationProviderProps> = ({children}) => 
 			pagination: () => ({
 				responsive: true,
 				current: cursorContext.page + 1,
-				total: cursorContext.pages,
+				total: cursorContext.count,
 				pageSize: cursorContext.size,
 				defaultPageSize: cursorContext.size,
 				showSizeChanger: false,
