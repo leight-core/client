@@ -1,9 +1,21 @@
 import {AntDesignOutlined} from "@ant-design/icons";
-import {Centered, LoaderIcon} from "@leight-core/client";
-import {isCallable} from "@leight-core/utils";
-import {Card, Col, Divider, Layout, LayoutProps, Result, Row, Typography} from "antd";
-import {ReactNode} from "react";
-import {useTranslation} from "react-i18next";
+import {
+	Centered,
+	LoaderIcon
+}                          from "@leight-core/client";
+import {isCallable}        from "@leight-core/utils";
+import {
+	Card,
+	Col,
+	Divider,
+	Layout,
+	LayoutProps,
+	Result,
+	Row,
+	Typography
+}                          from "antd";
+import {ReactNode}         from "react";
+import {useTranslation}    from "react-i18next";
 
 export interface ILoaderLayoutProps<TResult = any> extends Partial<Omit<LayoutProps, "children">> {
 	logo?: ReactNode;

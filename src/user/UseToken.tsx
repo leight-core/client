@@ -1,5 +1,9 @@
 import {useOptionalUserContext} from "@leight-core/client";
-import {cloneElement, FC, ReactElement} from "react";
+import {
+	cloneElement,
+	FC,
+	ReactElement
+}                               from "react";
 
 export interface IUseTokenProps {
 	tokens?: string[];

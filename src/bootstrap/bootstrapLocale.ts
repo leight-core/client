@@ -1,15 +1,15 @@
-import {ILocaleConfig} from "@leight-core/api";
-import dayjs from "dayjs";
-import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import moment from "moment";
+import {ILocaleConfig}    from "@leight-core/api";
+import dayjs              from "dayjs";
+import i18n               from "i18next";
+import LanguageDetector   from "i18next-browser-languagedetector";
+import moment             from "moment";
 import {initReactI18next} from "react-i18next";
-import locales from "./locale.json";
+import locales            from "./locale.json";
 
 const defaultLocale = {
-	dayjs: "en-gb",
+	dayjs:  "en-gb",
 	moment: "en-gb",
-	antd: "en_GB",
+	antd:   "en_GB",
 };
 
 export const bootstrapLocale = async (): Promise<ILocaleConfig> => {
@@ -18,8 +18,8 @@ export const bootstrapLocale = async (): Promise<ILocaleConfig> => {
 		.use(LanguageDetector)
 		.init({
 			initImmediate: true,
-			keySeparator: false,
-			nsSeparator: false,
+			keySeparator:  false,
+			nsSeparator:   false,
 			interpolation: {
 				escapeValue: false,
 			},

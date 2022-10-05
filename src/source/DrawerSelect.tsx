@@ -1,4 +1,12 @@
-import {ICursorContext, IFilterContext, ISelection, ISelectionContext, ISelectionType, ISourceContext, IWithIdentity} from "@leight-core/api";
+import {
+	ICursorContext,
+	IFilterContext,
+	ISelection,
+	ISelectionContext,
+	ISelectionType,
+	ISourceContext,
+	IWithIdentity
+}                     from "@leight-core/api";
 import {
 	BubbleButton,
 	Centered,
@@ -20,11 +28,23 @@ import {
 	useOptionalBlockContext,
 	useOptionalFilterContext,
 	useVisibleContext
-} from "@leight-core/client";
-import {Col, Row, Typography} from "antd";
-import {CheckList, DotLoading, InfiniteScroll, Space} from "antd-mobile";
+}                     from "@leight-core/client";
+import {
+	Col,
+	Row,
+	Typography
+}                     from "antd";
+import {
+	CheckList,
+	DotLoading,
+	InfiniteScroll,
+	Space
+}                     from "antd-mobile";
 import {CheckOutline} from "antd-mobile-icons";
-import {PropsWithChildren, ReactNode} from "react";
+import {
+	PropsWithChildren,
+	ReactNode
+}                     from "react";
 
 export const toSingleSelection = ({single}: ISelection<IWithIdentity>) => single?.id;
 
@@ -149,9 +169,9 @@ export function DrawerSelect<TItem extends Record<string, any> & IWithIdentity =
 		children,
 	}: IDrawerSelectProps<TItem, TOnChange>) {
 	const visibleContext = useVisibleContext();
-	const cursorContext = useCursorContext();
-	const filterContext = useOptionalFilterContext();
-	const blockContext = useOptionalBlockContext();
+	const cursorContext  = useCursorContext();
+	const filterContext  = useOptionalFilterContext();
+	const blockContext   = useOptionalBlockContext();
 
 	const $toPreview = (selection?: ISelection<TItem>) => {
 		const preview = toPreview(selection);

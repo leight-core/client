@@ -1,6 +1,12 @@
-import {isString} from "@leight-core/utils";
-import {Space, SpaceProps} from "antd";
-import {FC, ReactNode} from "react";
+import {isString}       from "@leight-core/utils";
+import {
+	Space,
+	SpaceProps
+}                       from "antd";
+import {
+	FC,
+	ReactNode
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IBreadcrumbIconProps extends Partial<SpaceProps> {

@@ -1,6 +1,9 @@
 import {Divider} from "antd";
-import {FC} from "react";
-import {ITemplateProps, Template} from "./Template";
+import {FC}      from "react";
+import {
+	ITemplateProps,
+	Template
+}                from "./Template";
 
 export interface IEditTemplateProps extends ITemplateProps {
 }

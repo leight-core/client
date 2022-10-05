@@ -1,4 +1,7 @@
-import {Context, useContext as coolUseContext} from "react";
+import {
+	Context,
+	useContext as coolUseContext
+} from "react";
 
 /**
  * Ensure that context exists or an error is thrown.

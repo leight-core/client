@@ -1,6 +1,9 @@
 import {IQueryParams} from "@leight-core/api";
-import Link from "next/link";
-import {FC, PropsWithChildren} from "react";
+import Link           from "next/link";
+import {
+	FC,
+	PropsWithChildren
+}                     from "react";
 
 export type ILinkToProps = PropsWithChildren<{
 	/**

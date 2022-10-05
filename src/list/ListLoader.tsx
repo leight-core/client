@@ -1,8 +1,23 @@
-import {ICursorContext, ISourceContext, ITranslationProps} from "@leight-core/api";
-import {Translate, useCursorContext, useSourceContext} from "@leight-core/client";
+import {
+	ICursorContext,
+	ISourceContext,
+	ITranslationProps
+}                  from "@leight-core/api";
+import {
+	Translate,
+	useCursorContext,
+	useSourceContext
+}                  from "@leight-core/client";
 import {toPercent} from "@leight-core/utils";
-import {Col, Row} from "antd";
-import {DotLoading, ErrorBlock, ProgressCircle} from "antd-mobile";
+import {
+	Col,
+	Row
+}                  from "antd";
+import {
+	DotLoading,
+	ErrorBlock,
+	ProgressCircle
+}                  from "antd-mobile";
 import {ReactNode} from "react";
 
 export interface IListLoaderRenderEmpty<TItem> {

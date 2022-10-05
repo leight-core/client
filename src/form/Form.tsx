@@ -1,10 +1,39 @@
-import {IFormContext, IFormError, IFormErrorHandler, IFormErrorMap, IMutationHook, INavigate, IQueryParams, IToFormError} from "@leight-core/api";
-import {IFormChanged, IFormFailure, IFormSuccess, IFormValuesChanged} from "@leight-core/api/lib/cjs/form/form";
-import {FormProvider, ItemGroupProvider, LoaderIcon, useBlockContext, useFormBlockContext, useFormContext, useNavigate, useOptionalVisibleContext, usePassThroughMutation, WithToken} from "@leight-core/client";
-import {isCallable} from "@leight-core/utils";
-import {Form as CoolForm, message, Spin} from "antd";
+import {
+	IFormContext,
+	IFormError,
+	IFormErrorHandler,
+	IFormErrorMap,
+	IMutationHook,
+	INavigate,
+	IQueryParams,
+	IToFormError
+}                              from "@leight-core/api";
+import {
+	IFormChanged,
+	IFormFailure,
+	IFormSuccess,
+	IFormValuesChanged
+}                              from "@leight-core/api/lib/cjs/form/form";
+import {
+	FormProvider,
+	ItemGroupProvider,
+	LoaderIcon,
+	useBlockContext,
+	useFormBlockContext,
+	useFormContext,
+	useNavigate,
+	useOptionalVisibleContext,
+	usePassThroughMutation,
+	WithToken
+}                              from "@leight-core/client";
+import {isCallable}            from "@leight-core/utils";
+import {
+	Form as CoolForm,
+	message,
+	Spin
+}                              from "antd";
 import React, {ComponentProps} from "react";
-import {useTranslation} from "react-i18next";
+import {useTranslation}        from "react-i18next";
 
 export interface IFormProps<TRequest, TResponse, TQueryParams extends IQueryParams = any> extends Partial<Omit<ComponentProps<typeof CoolForm>, "onValuesChange" | "onChange">> {
 	/**
@@ -76,12 +105,12 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams>(
 		children,
 		...props
 	}: IFormProps<TRequest, TResponse, TQueryParams>) => {
-	const formContext = useFormContext();
-	const blockContext = useBlockContext();
+	const formContext      = useFormContext();
+	const blockContext     = useBlockContext();
 	const formBlockContext = useFormBlockContext();
-	const visibleContext = useOptionalVisibleContext();
-	const doNavigate = useNavigate();
-	const {t} = useTranslation();
+	const visibleContext   = useOptionalVisibleContext();
+	const doNavigate       = useNavigate();
+	const {t}              = useTranslation();
 
 	const mutation = useMutation(mutationQueryParams, {
 		onSettled: () => {
@@ -108,9 +137,9 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams>(
 	}
 
 	onFailure = onFailure || (({error, formContext}) => {
-		const map = toError({error, formContext});
+		const map       = toError({error, formContext});
 		const formError = map[error];
-		const general = map["general"];
+		const general   = map["general"];
 		formError && handleError(formError, error, formContext);
 		!formError && general && handleError(general, error, formContext);
 		message.error(t("error." + error));
@@ -137,7 +166,7 @@ const FormInternal = <TRequest, TResponse, TQueryParams extends IQueryParams>(
 						t: (text, data) => t(formContext.translation ? `${formContext.translation}.${text}` : text, data),
 					});
 				},
-				onError: error => onFailure?.({error: (error && error.response && error.response.data) || error, formContext}),
+				onError:   error => onFailure?.({error: (error && error.response && error.response.data) || error, formContext}),
 			});
 		}}
 		labelAlign={"left"}

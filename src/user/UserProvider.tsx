@@ -1,7 +1,15 @@
 import {UserOutlined} from "@ant-design/icons";
 import {IUserRequest} from "@leight-core/api";
-import {LoaderLayout, User, UserContext} from "@leight-core/client";
-import {FC, PropsWithChildren, ReactNode} from "react";
+import {
+	LoaderLayout,
+	User,
+	UserContext
+}                     from "@leight-core/client";
+import {
+	FC,
+	PropsWithChildren,
+	ReactNode
+}                     from "react";
 
 export type IUserProviderProps = PropsWithChildren<{
 	logo?: ReactNode;

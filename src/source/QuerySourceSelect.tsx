@@ -1,8 +1,25 @@
-import {IBaseSelectOption, IToOptionMapper} from "@leight-core/api";
-import {useOptionalFilterContext, useOptionalFormContext, useOptionalFormItemContext, useSourceContext, useUpdate} from "@leight-core/client";
-import {isString} from "@leight-core/utils";
-import {Empty, Select, SelectProps} from "antd";
-import React, {PropsWithChildren, useEffect, useRef} from "react";
+import {
+	IBaseSelectOption,
+	IToOptionMapper
+}                       from "@leight-core/api";
+import {
+	useOptionalFilterContext,
+	useOptionalFormContext,
+	useOptionalFormItemContext,
+	useSourceContext,
+	useUpdate
+}                       from "@leight-core/client";
+import {isString}       from "@leight-core/utils";
+import {
+	Empty,
+	Select,
+	SelectProps
+}                       from "antd";
+import React, {
+	PropsWithChildren,
+	useEffect,
+	useRef
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IQuerySourceValue<TResponse> extends IBaseSelectOption {
@@ -61,11 +78,11 @@ export const QuerySourceSelect = <TResponse, >(
 		toId = value => ({id: value}),
 		...props
 	}: PropsWithChildren<IQuerySourceSelectProps<TResponse>>) => {
-	const tid = useRef<any>();
-	const {t} = useTranslation();
-	const sourceContext = useSourceContext<TResponse>();
-	const filterContext = useOptionalFilterContext<any>();
-	const formContext = useOptionalFormContext();
+	const tid             = useRef<any>();
+	const {t}             = useTranslation();
+	const sourceContext   = useSourceContext<TResponse>();
+	const filterContext   = useOptionalFilterContext<any>();
+	const formContext     = useOptionalFormContext();
 	const formItemContext = useOptionalFormItemContext();
 	formItemContext && usePlaceholder && (props.placeholder = formItemContext.label);
 	useUpdate([clearOn], () => {
@@ -80,7 +97,7 @@ export const QuerySourceSelect = <TResponse, >(
 		filter && filterContext?.setFilter(toId(value));
 	}, []);
 
-	const $onSelect: any = (value: string, option: IQuerySourceValue<TResponse>) => onSelect?.(option);
+	const $onSelect: any   = (value: string, option: IQuerySourceValue<TResponse>) => onSelect?.(option);
 	const $onDeselect: any = (value: string, option: IQuerySourceValue<TResponse>) => onDeselect?.(option);
 
 	return sourceContext.result.isSuccess ? <Select<string, IQuerySourceValue<TResponse>>

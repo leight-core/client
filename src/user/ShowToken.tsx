@@ -1,5 +1,8 @@
 import {useOptionalUserContext} from "@leight-core/client";
-import {FC, PropsWithChildren} from "react";
+import {
+	FC,
+	PropsWithChildren
+}                               from "react";
 
 export type IShowTokenProps = PropsWithChildren<{
 	tokens?: string[];

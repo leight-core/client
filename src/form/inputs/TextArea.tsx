@@ -1,6 +1,10 @@
 import {useOptionalFormItemContext} from "@leight-core/client";
-import {Input} from "antd";
-import {ComponentProps, FC, forwardRef} from "react";
+import {Input}                      from "antd";
+import {
+	ComponentProps,
+	FC,
+	forwardRef
+}                                   from "react";
 
 export interface ITextAreaProps extends Partial<ComponentProps<typeof Input.TextArea>> {
 	usePlaceholder?: boolean;

@@ -1,5 +1,8 @@
-import {Space, Typography} from "antd";
-import {FC} from "react";
+import {
+	Space,
+	Typography
+}                       from "antd";
+import {FC}             from "react";
 import {useTranslation} from "react-i18next";
 
 export interface ITabTitleProps {

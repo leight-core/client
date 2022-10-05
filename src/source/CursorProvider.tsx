@@ -1,7 +1,12 @@
 import {ICursorContext} from "@leight-core/api";
-import {CursorContext} from "@leight-core/client";
-import {isCallable} from "@leight-core/utils";
-import {FC, ReactNode, useEffect, useState} from "react";
+import {CursorContext}  from "@leight-core/client";
+import {isCallable}     from "@leight-core/utils";
+import {
+	FC,
+	ReactNode,
+	useEffect,
+	useState
+}                       from "react";
 
 export interface ICursorProviderProps {
 	name: string;
@@ -17,17 +22,26 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 		defaultSize = 10,
 		children,
 	}) => {
-	const [[page, size], setPage] = useState<[number, number]>([defaultPage, defaultSize]);
-	const [pages, setPages] = useState<number>();
-	const [total, setTotal] = useState<number>();
-	const [count, setCount] = useState<number>();
-	const [append, setAppend] = useState<boolean>();
-	const [prepend, setPrepend] = useState<boolean>();
+	const [[page, size], setPage] = useState<[number, number]>([
+		defaultPage,
+		defaultSize
+	]);
+	const [pages, setPages]       = useState<number>();
+	const [total, setTotal]       = useState<number>();
+	const [count, setCount]       = useState<number>();
+	const [append, setAppend]     = useState<boolean>();
+	const [prepend, setPrepend]   = useState<boolean>();
 	useEffect(() => {
-		setPage([defaultPage, size]);
+		setPage([
+			defaultPage,
+			size
+		]);
 	}, [defaultPage]);
 	useEffect(() => {
-		setPage([page, defaultSize]);
+		setPage([
+			page,
+			defaultSize
+		]);
 	}, [defaultSize]);
 
 	const context: ICursorContext = {
@@ -39,23 +53,32 @@ export const CursorProvider: FC<ICursorProviderProps> = (
 		size,
 		append,
 		prepend,
-		setPage: (page, size = defaultSize) => setPage([page, size]),
-		setPages: count => {
+		setPage:      (page, size = defaultSize) => setPage([
+			page,
+			size
+		]),
+		setPages:     count => {
 			setCount(count);
 			setPages(count !== undefined ? Math.ceil(count / size) : undefined);
 		},
 		setPageCount: setPages,
 		setTotal,
-		next: append => {
+		next:         append => {
 			setAppend(append);
-			setPage([page + 1, size]);
+			setPage([
+				page + 1,
+				size
+			]);
 		},
-		prev: prepend => {
+		prev:         prepend => {
 			setPrepend(prepend);
-			setPage([Math.max(0, page - 1), size]);
+			setPage([
+				Math.max(0, page - 1),
+				size
+			]);
 		},
-		hasMore: () => pages ? page < pages : false,
-		more: append => context.next(append),
+		hasMore:      () => pages ? page < pages : false,
+		more:         append => context.next(append),
 	};
 
 	return <CursorContext.Provider

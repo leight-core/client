@@ -1,7 +1,11 @@
 import {IVisibleContext} from "@leight-core/api";
-import {VisibleContext} from "@leight-core/client";
-import {isCallable} from "@leight-core/utils";
-import {FC, ReactNode, useState} from "react";
+import {VisibleContext}  from "@leight-core/client";
+import {isCallable}      from "@leight-core/utils";
+import {
+	FC,
+	ReactNode,
+	useState
+}                        from "react";
 
 export interface IVisibleProviderProps {
 	defaultVisible?: boolean;

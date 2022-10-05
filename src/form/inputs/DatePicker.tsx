@@ -1,6 +1,9 @@
 import {useOptionalFormItemContext} from "@leight-core/client";
-import {DatePicker as CoolDatePicker, DatePickerProps} from "antd";
-import {FC} from "react";
+import {
+	DatePicker as CoolDatePicker,
+	DatePickerProps
+}                                   from "antd";
+import {FC}                         from "react";
 
 export type IDatePickerProps = {
 	format?: string

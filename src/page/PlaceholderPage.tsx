@@ -1,6 +1,11 @@
-import {EmptyPage, ITemplateProps, LoaderIcon, Template} from "@leight-core/client";
+import {
+	EmptyPage,
+	ITemplateProps,
+	LoaderIcon,
+	Template
+}             from "@leight-core/client";
 import {Card} from "antd";
-import {FC} from "react";
+import {FC}   from "react";
 
 export interface IPlaceholderPageProps extends Partial<ITemplateProps> {
 }

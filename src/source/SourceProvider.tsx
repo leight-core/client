@@ -1,8 +1,29 @@
-import {IQuery, IQueryHook, ISourceContext, IWithIdentity} from "@leight-core/api";
-import {SourceContext, useOptionalCursorContext, useOptionalFilterContext, useOptionalOrderByContext, useOptionalQueryParamsContext} from "@leight-core/client";
-import {isCallable, merge, uniqueOf} from "@leight-core/utils";
-import {useQuery as useCoolQuery, UseQueryOptions} from "@tanstack/react-query";
-import {ReactNode, useState} from "react";
+import {
+	IQuery,
+	IQueryHook,
+	ISourceContext,
+	IWithIdentity
+} from "@leight-core/api";
+import {
+	SourceContext,
+	useOptionalCursorContext,
+	useOptionalFilterContext,
+	useOptionalOrderByContext,
+	useOptionalQueryParamsContext
+} from "@leight-core/client";
+import {
+	isCallable,
+	merge,
+	uniqueOf
+} from "@leight-core/utils";
+import {
+	useQuery as useCoolQuery,
+	UseQueryOptions
+} from "@tanstack/react-query";
+import {
+	ReactNode,
+	useState
+} from "react";
 
 export interface ISourceProviderProps<TResponse extends IWithIdentity> {
 	name: string;
@@ -41,11 +62,11 @@ export const SourceProvider = <TResponse extends IWithIdentity>(
 		children,
 	}: ISourceProviderProps<TResponse>
 ) => {
-	const filterContext = useOptionalFilterContext<any>();
-	const orderByContext = useOptionalOrderByContext<any>();
-	const cursorContext = useOptionalCursorContext();
+	const filterContext      = useOptionalFilterContext<any>();
+	const orderByContext     = useOptionalOrderByContext<any>();
+	const cursorContext      = useOptionalCursorContext();
 	const queryParamsContext = useOptionalQueryParamsContext<any>();
-	const [data, setData] = useState<TResponse[]>([]);
+	const [data, setData]    = useState<TResponse[]>([]);
 
 	if (!withCount) {
 		useCountQuery = undefined;
@@ -57,14 +78,14 @@ export const SourceProvider = <TResponse extends IWithIdentity>(
 	}
 
 	const query = useQuery({
-		size: cursorContext?.size,
-		page: cursorContext?.page,
-		filter: filterContext?.filter,
+		size:    cursorContext?.size,
+		page:    cursorContext?.page,
+		filter:  filterContext?.filter,
 		orderBy: orderByContext?.orderBy,
 	}, queryParamsContext?.queryParams, merge({
 		keepPreviousData: true,
-		refetchInterval: live,
-		onSuccess: (response: TResponse[]) => {
+		refetchInterval:  live,
+		onSuccess:        (response: TResponse[]) => {
 			onSuccess?.(response);
 			if (cursorContext?.append) {
 				setData(prev => uniqueOf(prev.concat(response), "id"));
@@ -82,15 +103,15 @@ export const SourceProvider = <TResponse extends IWithIdentity>(
 	}, options || {}));
 	useCountQuery({}, queryParamsContext?.queryParams, {
 		keepPreviousData: true,
-		refetchInterval: live,
-		onSuccess: total => cursorContext?.setTotal(total),
+		refetchInterval:  live,
+		onSuccess:        total => cursorContext?.setTotal(total),
 	});
 	useCountQuery({
 		filter: filterContext?.filter,
 	}, queryParamsContext?.queryParams, {
 		keepPreviousData: true,
-		refetchInterval: live,
-		onSuccess: count => cursorContext?.setPages(count),
+		refetchInterval:  live,
+		onSuccess:        count => cursorContext?.setPages(count),
 	});
 
 	const hasData = () => Array.isArray(data) && data.length > 0;
@@ -100,9 +121,9 @@ export const SourceProvider = <TResponse extends IWithIdentity>(
 			name,
 			result: query,
 			hasData,
-			map: mapper => hasData() ? (data?.map(mapper) || []) : [],
-			data: () => hasData() ? (data || []) : [],
-			reset: () => {
+			map:    mapper => hasData() ? (data?.map(mapper) || []) : [],
+			data:   () => hasData() ? (data || []) : [],
+			reset:  () => {
 				setData([]);
 				cursorContext?.setPage(0);
 			},

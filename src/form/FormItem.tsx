@@ -1,8 +1,20 @@
-import {IFormItemContext, INamePath} from "@leight-core/api";
-import {FormItemContext, ShowToken, useFormContext, useOptionalItemGroupContext} from "@leight-core/client";
-import {Form, FormItemProps, Input} from "antd";
-import {Rule} from "rc-field-form/lib/interface";
-import {FC} from "react";
+import {
+	IFormItemContext,
+	INamePath
+}                       from "@leight-core/api";
+import {
+	FormItemContext,
+	ShowToken,
+	useFormContext,
+	useOptionalItemGroupContext
+}                       from "@leight-core/client";
+import {
+	Form,
+	FormItemProps,
+	Input
+}                       from "antd";
+import {Rule}           from "rc-field-form/lib/interface";
+import {FC}             from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IFormItemProps extends Partial<FormItemProps> {
@@ -48,17 +60,17 @@ export const FormItem: FC<IFormItemProps> = (
 	if (noMargin) {
 		props.style = {margin: 0};
 	}
-	const formContext = useFormContext();
+	const formContext      = useFormContext();
 	const itemGroupContext = useOptionalItemGroupContext();
-	field = ([] as (string | number)[]).concat(itemGroupContext?.prefix || [], Array.isArray(field) ? field : [field]);
-	const fieldName = Array.isArray(field) ? field.join(".") : field;
-	const rules: Rule[] = [];
-	labels = Array.isArray(labels) ? labels : [labels];
+	field                  = ([] as (string | number)[]).concat(itemGroupContext?.prefix || [], Array.isArray(field) ? field : [field]);
+	const fieldName        = Array.isArray(field) ? field.join(".") : field;
+	const rules: Rule[]    = [];
+	labels                 = Array.isArray(labels) ? labels : [labels];
 	formContext.translation && labels.push(formContext.translation + "." + fieldName + ".label");
 	itemGroupContext?.translation && labels.push(itemGroupContext.translation + "." + fieldName + ".label");
 	required && rules.push({
 		required: true,
-		message: t(["form-item." + fieldName + ".required"].concat(labels.map(item => item + ".required"))) as string,
+		message:  t(["form-item." + fieldName + ".required"].concat(labels.map(item => item + ".required"))) as string,
 	});
 	/**
 	 * This is... a hack I really don't understand!
@@ -74,9 +86,9 @@ export const FormItem: FC<IFormItemProps> = (
 	itemGroupContext?.translation && withHelp && (props.help = t(itemGroupContext.translation + "." + fieldName + ".label.help"));
 	const context: IFormItemContext = {
 		field,
-		label: t(["form-item." + fieldName + ".label"].concat(labels)) as string,
-		getValue: () => formContext.form.getFieldValue(field),
-		setValue: value => formContext.form.setFields([{name: field, value}]),
+		label:     t(["form-item." + fieldName + ".label"].concat(labels)) as string,
+		getValue:  () => formContext.form.getFieldValue(field),
+		setValue:  value => formContext.form.setFields([{name: field, value}]),
 		setErrors: (errors: string[]) => {
 			setTimeout(() => {
 				formContext.form.setFields([{name: field, errors: errors.map(item => t(item))}]);

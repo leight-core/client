@@ -1,6 +1,14 @@
 import {FilterContext} from "@leight-core/client";
-import {cleanOf, isEmpty, merge} from "@leight-core/utils";
-import {PropsWithChildren, useEffect, useState} from "react";
+import {
+	cleanOf,
+	isEmpty,
+	merge
+}                      from "@leight-core/utils";
+import {
+	PropsWithChildren,
+	useEffect,
+	useState
+}                      from "react";
 
 export type IFilterProviderProps<TFilter = any> = PropsWithChildren<{
 	name: string;
@@ -19,7 +27,7 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, def
 	/**
 	 * Currently set filter; applied with defaults/applied.
 	 */
-	const [filter, setFilter] = useState<TFilter | undefined>(applyFilter || defaultFilter);
+	const [filter, setFilter]   = useState<TFilter | undefined>(applyFilter || defaultFilter);
 	/**
 	 * Filter set by the user; this is useful to distinguish isEmpty() which could contain applied filters which
 	 * should not be visible by the user
@@ -28,7 +36,7 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, def
 	/**
 	 * When used in a form, for example, this is the source used to build-up this filter.
 	 */
-	const [source, setSource] = useState(defaultSource);
+	const [source, setSource]   = useState(defaultSource);
 
 	const $setFilter = (value?: TFilter, request?: TFilter, source?: any) => {
 		const filter = cleanOf(value);
@@ -39,14 +47,17 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, def
 
 	useEffect(() => {
 		$setFilter(merge<any, any>(defaultFilter || {}, applyFilter || {}));
-	}, [defaultFilter, applyFilter]);
+	}, [
+		defaultFilter,
+		applyFilter
+	]);
 
 	return <FilterContext.Provider
 		value={{
 			name,
 			filter,
 			source,
-			setFilter: (filter, source) => setTimeout(() => {
+			setFilter:   (filter, source) => setTimeout(() => {
 				$setFilter({...filter, ...applyFilter}, filter, source);
 			}, 0),
 			applyFilter: (apply, source) => setTimeout(() => {
@@ -55,7 +66,7 @@ export function FilterProvider<TFilter, >({name, defaultFilter, applyFilter, def
 			mergeFilter: (apply, source) => setTimeout(() => {
 				$setFilter(merge<any, any>(merge<any, any>(filter || {}, apply || {}), applyFilter || {}), apply, source);
 			}, 0),
-			isEmpty: () => isEmpty(request),
+			isEmpty:     () => isEmpty(request),
 		}}
 		{...props}
 	/>;

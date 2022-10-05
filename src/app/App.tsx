@@ -1,9 +1,24 @@
 import {ITranslationsQuery} from "@leight-core/api";
-import {DayjsProvider, I18NextProvider, IResponsiveProviderProps, LayoutBlockProvider, MenuSelectionProvider, ResponsiveProvider, TranslationLoader} from "@leight-core/client";
-import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
-import {i18n} from "i18next";
-import {FC, PropsWithChildren, ReactNode} from "react";
-import {CookiesProvider} from "react-cookie";
+import {
+	DayjsProvider,
+	I18NextProvider,
+	IResponsiveProviderProps,
+	LayoutBlockProvider,
+	MenuSelectionProvider,
+	ResponsiveProvider,
+	TranslationLoader
+}                           from "@leight-core/client";
+import {
+	QueryClient,
+	QueryClientProvider
+}                           from "@tanstack/react-query";
+import {i18n}               from "i18next";
+import {
+	FC,
+	PropsWithChildren,
+	ReactNode
+}                           from "react";
+import {CookiesProvider}    from "react-cookie";
 
 export type IAppProps = PropsWithChildren<{
 	logo?: ReactNode;

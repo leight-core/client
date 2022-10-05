@@ -1,6 +1,15 @@
 import {MoreOutlined} from "@ant-design/icons";
-import {Button, ButtonProps, Dropdown, DropDownProps, Menu} from "antd";
-import {FC, ReactNode} from "react";
+import {
+	Button,
+	ButtonProps,
+	Dropdown,
+	DropDownProps,
+	Menu
+}                     from "antd";
+import {
+	FC,
+	ReactNode
+}                     from "react";
 
 export interface IQuickMenuProps extends Partial<DropDownProps> {
 	icon?: ReactNode;

@@ -1,9 +1,24 @@
-import {IQueryParams} from "@leight-core/api";
-import {Centered, toLink} from "@leight-core/client";
-import {toHumanBytes} from "@leight-core/utils";
-import {message, Progress, Typography, Upload} from "antd";
-import {RcFile, UploadChangeParam} from "antd/lib/upload";
-import {ComponentProps, FC, useState} from "react";
+import {IQueryParams}   from "@leight-core/api";
+import {
+	Centered,
+	toLink
+}                       from "@leight-core/client";
+import {toHumanBytes}   from "@leight-core/utils";
+import {
+	message,
+	Progress,
+	Typography,
+	Upload
+}                       from "antd";
+import {
+	RcFile,
+	UploadChangeParam
+}                       from "antd/lib/upload";
+import {
+	ComponentProps,
+	FC,
+	useState
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IUploaderProps extends Partial<ComponentProps<typeof Upload.Dragger>> {
@@ -30,18 +45,21 @@ export interface IUploaderProps extends Partial<ComponentProps<typeof Upload.Dra
 }
 
 export const Uploader: FC<IUploaderProps> = ({name, limit, translation, action, queryParams, ...props}) => {
-	const [loading, setLoading] = useState(false);
-	const [status, setStatus] = useState<any>("active");
+	const [loading, setLoading]   = useState(false);
+	const [status, setStatus]     = useState<any>("active");
 	const [progress, setProgress] = useState(0);
-	const {t} = useTranslation();
-	const onBeforeUpload = (file: RcFile): boolean => {
+	const {t}                     = useTranslation();
+	const onBeforeUpload          = (file: RcFile): boolean => {
 		const hasValidSize = file.size / 1024 / 1024 < limit;
 		if (!hasValidSize) {
-			message.error(t([translation + ".file-too-large", "component.error.file-too-large"], {size: toHumanBytes(file.size), limit: toHumanBytes(limit * 1024 * 1024)}));
+			message.error(t([
+				translation + ".file-too-large",
+				"component.error.file-too-large"
+			], {size: toHumanBytes(file.size), limit: toHumanBytes(limit * 1024 * 1024)}));
 		}
 		return hasValidSize;
 	};
-	const onChange = (info: UploadChangeParam) => {
+	const onChange                = (info: UploadChangeParam) => {
 		const current = info.fileList.length - 1;
 		switch (info.fileList[current].status) {
 			case "uploading":

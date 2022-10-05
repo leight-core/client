@@ -1,10 +1,10 @@
 import {IBootstrapConfig} from "@leight-core/api";
-import axios from "axios";
-import axiosRetry from "axios-retry";
-import {Router} from "next/router";
-import NProgress from "nprogress";
-import {useEffect} from "react";
-import {bootstrapLocale} from "./bootstrapLocale";
+import axios              from "axios";
+import axiosRetry         from "axios-retry";
+import {Router}           from "next/router";
+import NProgress          from "nprogress";
+import {useEffect}        from "react";
+import {bootstrapLocale}  from "./bootstrapLocale";
 
 export const bootstrap = async (): Promise<IBootstrapConfig> => {
 	Router.events.on("routeChangeStart", () => NProgress.start());
@@ -14,7 +14,7 @@ export const bootstrap = async (): Promise<IBootstrapConfig> => {
 	axios.defaults.timeout = 1000 * 60;
 
 	axiosRetry(axios, {
-		retries: 3,
+		retries:    3,
 		retryDelay: axiosRetry.exponentialDelay,
 	});
 

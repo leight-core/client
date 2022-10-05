@@ -1,6 +1,9 @@
-import {IQueryParams} from "@leight-core/api";
+import {IQueryParams}       from "@leight-core/api";
 import {QueryParamsContext} from "@leight-core/client";
-import {PropsWithChildren, useState} from "react";
+import {
+	PropsWithChildren,
+	useState
+}                           from "react";
 
 export interface IQueryParamsProviderProps<TQueryParams extends IQueryParams | void = void> {
 	/**

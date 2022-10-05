@@ -1,8 +1,11 @@
-import FingerprintJS from "@fingerprintjs/fingerprintjs";
+import FingerprintJS        from "@fingerprintjs/fingerprintjs";
 import {FingerprintContext} from "@leight-core/client";
-import {useQuery} from "@tanstack/react-query";
-import axios from "axios";
-import {FC, PropsWithChildren} from "react";
+import {useQuery}           from "@tanstack/react-query";
+import axios                from "axios";
+import {
+	FC,
+	PropsWithChildren
+}                           from "react";
 
 export type IFingerprintProviderProps = PropsWithChildren;
 

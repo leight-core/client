@@ -1,6 +1,10 @@
-import {LoaderIcon} from "@leight-core/client";
-import {Result} from "antd";
-import {FC, PropsWithChildren, ReactNode} from "react";
+import {LoaderIcon}     from "@leight-core/client";
+import {Result}         from "antd";
+import {
+	FC,
+	PropsWithChildren,
+	ReactNode
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export type ILoaderProps = PropsWithChildren<{

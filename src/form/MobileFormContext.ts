@@ -1,6 +1,9 @@
 import {IMobileFormContext} from "@leight-core/api";
-import {useContext, useOptionalContext} from "@leight-core/client";
-import {createContext} from "react";
+import {
+	useContext,
+	useOptionalContext
+}                           from "@leight-core/client";
+import {createContext}      from "react";
 
 /**
  * Access to current MobileForm Context; do not use this directly, see {@link useMobileFormContext}.

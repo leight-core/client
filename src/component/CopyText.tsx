@@ -1,5 +1,8 @@
-import {Typography} from "antd";
-import {FC, PropsWithChildren} from "react";
+import {Typography}     from "antd";
+import {
+	FC,
+	PropsWithChildren
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export type ICopyTextProps = PropsWithChildren<{
@@ -14,8 +17,11 @@ export const CopyText: FC<ICopyTextProps> = ({children, tooltip, copy}) => {
 	const {t} = useTranslation();
 	return <Typography.Text
 		copyable={{
-			text: copy,
-			tooltips: [t(tooltip + ".copy"), t(tooltip + ".copied")]
+			text:     copy,
+			tooltips: [
+				t(tooltip + ".copy"),
+				t(tooltip + ".copied")
+			]
 		}}
 		children={children}
 	/>;

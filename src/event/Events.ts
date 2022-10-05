@@ -1,4 +1,10 @@
-import {IBaseEventTypes, IEvent, IEventHandlers, IEventIndex, IEvents} from "@leight-core/api";
+import {
+	IBaseEventTypes,
+	IEvent,
+	IEventHandlers,
+	IEventIndex,
+	IEvents
+} from "@leight-core/api";
 
 /**
  * Simple EventBus implementation intended to be used locally on call site near to the execution site (thus not application-wide).

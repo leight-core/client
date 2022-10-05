@@ -1,5 +1,8 @@
 import {useSourceContext} from "@leight-core/client";
-import {FC, useEffect} from "react";
+import {
+	FC,
+	useEffect
+}                         from "react";
 
 export interface ISourceResetProps {
 }

@@ -1,4 +1,7 @@
-import React, {FC, PropsWithChildren} from "react";
+import React, {
+	FC,
+	PropsWithChildren
+}                   from "react";
 import {LoaderIcon} from "./LoaderIcon";
 
 export type ISpinner = PropsWithChildren<{

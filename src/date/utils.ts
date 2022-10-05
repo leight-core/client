@@ -1,6 +1,12 @@
 import dayjs, {ConfigType} from "dayjs";
-import {Duration, DurationUnitType} from "dayjs/plugin/duration";
-import moment, {Moment, MomentInput} from "moment";
+import {
+	Duration,
+	DurationUnitType
+}                          from "dayjs/plugin/duration";
+import moment, {
+	Moment,
+	MomentInput
+}                          from "moment";
 
 export const toLocalDate = (input?: ConfigType | null, fallback = "-"): string => {
 	return input ? dayjs(input).format("L") : fallback;

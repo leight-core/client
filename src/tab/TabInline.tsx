@@ -1,6 +1,9 @@
-import {isString} from "@leight-core/utils";
-import {Space} from "antd";
-import {FC, ReactNode} from "react";
+import {isString}       from "@leight-core/utils";
+import {Space}          from "antd";
+import {
+	FC,
+	ReactNode
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export interface ITabInlineProps {

@@ -1,5 +1,11 @@
-import {Col, Row} from "antd";
-import React, {ComponentProps, FC} from "react";
+import {
+	Col,
+	Row
+} from "antd";
+import React, {
+	ComponentProps,
+	FC
+} from "react";
 
 export type IPushRightProps = ComponentProps<typeof Col>;
 

@@ -1,5 +1,8 @@
-import {Menu} from "antd";
-import React, {ComponentProps, FC} from "react";
+import {Menu}           from "antd";
+import React, {
+	ComponentProps,
+	FC
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IMenuGroupProps extends Partial<ComponentProps<typeof Menu.ItemGroup>> {

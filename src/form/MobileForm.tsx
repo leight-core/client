@@ -11,12 +11,30 @@ import {
 	INavigate,
 	IQueryParams,
 	IToMobileFormError
-} from "@leight-core/api";
-import {FormBlockContext, LoaderIcon, MobileFormProvider, MobileSubmit, useNavigate, useOptionalVisibleContext, usePassThroughMutation, WithToken} from "@leight-core/client";
-import {isCallable} from "@leight-core/utils";
-import {message, Spin} from "antd";
-import {Form, Toast} from "antd-mobile";
-import React, {ComponentProps, ReactNode} from "react";
+}                       from "@leight-core/api";
+import {
+	FormBlockContext,
+	LoaderIcon,
+	MobileFormProvider,
+	MobileSubmit,
+	useNavigate,
+	useOptionalVisibleContext,
+	usePassThroughMutation,
+	WithToken
+}                       from "@leight-core/client";
+import {isCallable}     from "@leight-core/utils";
+import {
+	message,
+	Spin
+}                       from "antd";
+import {
+	Form,
+	Toast
+}                       from "antd-mobile";
+import React, {
+	ComponentProps,
+	ReactNode
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IMobileFormProps<TRequest, TResponse, TQueryParams extends IQueryParams = any> extends ComponentProps<typeof Form> {
@@ -101,11 +119,11 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 		icon,
 		...props
 	}: IMobileFormProps<TRequest, TResponse, TQueryParams>) {
-	const {t} = useTranslation();
+	const {t}            = useTranslation();
 	const visibleContext = useOptionalVisibleContext();
-	const doNavigate = useNavigate();
+	const doNavigate     = useNavigate();
 
-	const mutation = useMutation(mutationQueryParams);
+	const mutation            = useMutation(mutationQueryParams);
 	const navigate: INavigate = (href, queryParams) => doNavigate(href, queryParams);
 
 	return <WithToken
@@ -130,9 +148,9 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 				}
 
 				onFailure = onFailure || (({error, formContext}) => {
-					const map = toError({error, formContext});
+					const map       = toError({error, formContext});
 					const formError = map[error];
-					const general = map["general"];
+					const general   = map["general"];
 					formError && handleError(formError, error, formContext);
 					!formError && general && handleError(general, error, formContext);
 					message.error(t("error." + error));
@@ -154,9 +172,9 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 										onSuccess: response => {
 											message.success($t("success", response as any));
 											Toast.show({
-												icon: "success",
+												icon:          "success",
 												maskClickable: false,
-												duration: 500,
+												duration:      500,
 											});
 											shouldHide && visibleContext?.hide();
 											onSuccess({
@@ -167,11 +185,11 @@ export function MobileForm<TRequest = any, TResponse = void, TQueryParams extend
 												t: $t,
 											});
 										},
-										onError: error => {
+										onError:   error => {
 											Toast.show({
-												icon: "fail",
+												icon:          "fail",
 												maskClickable: false,
-												duration: 500,
+												duration:      500,
 											});
 											onFailure?.({error: (error && error.response && error.response.data) || error, formContext});
 										},

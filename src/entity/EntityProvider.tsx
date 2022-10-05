@@ -1,5 +1,8 @@
 import {EntityContext} from "@leight-core/client";
-import {PropsWithChildren, useState} from "react";
+import {
+	PropsWithChildren,
+	useState
+}                      from "react";
 
 export type IEntityProviderProps<TEntity> = PropsWithChildren<{
 	defaultEntity?: TEntity;

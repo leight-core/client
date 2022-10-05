@@ -1,8 +1,14 @@
 import {IQueryParams} from "@leight-core/api";
-import {LinkTo} from "@leight-core/client";
-import {ItemType} from "antd/lib/menu/hooks/useItems";
-import {FC, ReactNode} from "react";
-import {Trans, useTranslation} from "react-i18next";
+import {LinkTo}       from "@leight-core/client";
+import {ItemType}     from "antd/lib/menu/hooks/useItems";
+import {
+	FC,
+	ReactNode
+}                     from "react";
+import {
+	Trans,
+	useTranslation
+}                     from "react-i18next";
 
 export interface IMenuItemProps {
 	/**
@@ -27,12 +33,14 @@ export const MenuItem: FC<IMenuItemProps> = ({title, icon, href, query}) => {
 	</LinkTo>;
 };
 
-export type ICreateMenuItemProps = {
-	title?: string;
-	href: string;
-	icon: ReactNode;
-	query?: IQueryParams | void;
-} & Partial<ItemType>;
+export type ICreateMenuItemProps =
+	{
+		title?: string;
+		href: string;
+		icon: ReactNode;
+		query?: IQueryParams | void;
+	}
+	& Partial<ItemType>;
 
 /**
  * Because MenuItem component **must have** a key which is duplicate with an ID (as a key is not possible to read),
@@ -42,8 +50,8 @@ export type ICreateMenuItemProps = {
  */
 export function CreateMenuItem({icon, href, title, query, ...props}: ICreateMenuItemProps) {
 	return {
-		icon: title ? icon : <MenuItem icon={icon} href={href} query={query}/>,
-		key: href,
+		icon:  title ? icon : <MenuItem icon={icon} href={href} query={query}/>,
+		key:   href,
 		href,
 		query,
 		label: title ? <MenuItem title={title} href={href} query={query}/> : undefined,
@@ -51,17 +59,19 @@ export function CreateMenuItem({icon, href, title, query, ...props}: ICreateMenu
 	};
 }
 
-export type ICreateMenuGroupProps = {
-	title: string;
-	icon: ReactNode;
-	items: ItemType[];
-} & Partial<ItemType>;
+export type ICreateMenuGroupProps =
+	{
+		title: string;
+		icon: ReactNode;
+		items: ItemType[];
+	}
+	& Partial<ItemType>;
 
 export function CreateMenuGroup({icon, title, items, ...props}: ICreateMenuGroupProps) {
 	return {
 		icon,
-		key: title,
-		label: <Trans i18nKey={title}/>,
+		key:      title,
+		label:    <Trans i18nKey={title}/>,
 		children: items,
 		...props,
 	};

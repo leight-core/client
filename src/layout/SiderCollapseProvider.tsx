@@ -1,5 +1,10 @@
 import {SiderCollapseContext} from "@leight-core/client";
-import {FC, PropsWithChildren, useEffect, useState} from "react";
+import {
+	FC,
+	PropsWithChildren,
+	useEffect,
+	useState
+}                             from "react";
 
 export type ISiderCollapseProviderProps = PropsWithChildren<{
 	defaultCollapsed?: boolean;

@@ -1,8 +1,17 @@
-import {isString} from "@leight-core/utils";
-import {Button, ButtonProps, Modal, ModalProps} from "antd";
-import {ComponentProps, FC, useState} from "react";
+import {isString}       from "@leight-core/utils";
+import {
+	Button,
+	ButtonProps,
+	Modal,
+	ModalProps
+}                       from "antd";
+import {
+	ComponentProps,
+	FC,
+	useState
+}                       from "react";
 import {useTranslation} from "react-i18next";
-import {UseToken} from "../user";
+import {UseToken}       from "../user";
 
 export interface IModalButtonProps extends Omit<Partial<ModalProps>, "onOk"> {
 	button?: ButtonProps;
@@ -11,7 +20,7 @@ export interface IModalButtonProps extends Omit<Partial<ModalProps>, "onOk"> {
 }
 
 export const ModalButton: FC<IModalButtonProps> = ({button, onOk, tokens, ...props}) => {
-	const {t} = useTranslation();
+	const {t}             = useTranslation();
 	const [open, setOpen] = useState(false);
 	if (button && isString(button.children)) {
 		button.children = t(button.children as string);

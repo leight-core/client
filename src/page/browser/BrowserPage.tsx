@@ -1,13 +1,36 @@
 import {QuestionCircleOutlined} from "@ant-design/icons";
-import {INavigate, IQueryParams} from "@leight-core/api";
-import {BrowserPageHeader, DrawerButton, EmptyPage, IBrowserPageHeaderProps, IDrawerButtonProps, IEmptyPageProps, Template, useIsBrowser, useNavigate} from "@leight-core/client";
-import {BreadcrumbProps, Card, CardProps, Divider} from "antd";
-import Breadcrumb from "antd/lib/breadcrumb";
-import * as React from "react";
-import {FC, ReactNode} from "react";
-import {Trans} from "react-i18next";
+import {
+	INavigate,
+	IQueryParams
+}                               from "@leight-core/api";
+import {
+	BrowserPageHeader,
+	DrawerButton,
+	EmptyPage,
+	IBrowserPageHeaderProps,
+	IDrawerButtonProps,
+	IEmptyPageProps,
+	Template,
+	useIsBrowser,
+	useNavigate
+}                               from "@leight-core/client";
+import {
+	BreadcrumbProps,
+	Card,
+	CardProps,
+	Divider
+}                               from "antd";
+import Breadcrumb               from "antd/lib/breadcrumb";
+import * as React               from "react";
+import {
+	FC,
+	ReactNode
+}                               from "react";
+import {Trans}                  from "react-i18next";
 
-export type IPageBreadcrumb = BreadcrumbProps | React.ReactElement<typeof Breadcrumb>;
+export type IPageBreadcrumb =
+	BreadcrumbProps
+	| React.ReactElement<typeof Breadcrumb>;
 
 export interface IBrowserPageProps extends IEmptyPageProps {
 	onBack?(navigate: INavigate<IQueryParams>): void;
@@ -52,7 +75,7 @@ export const BrowserPage: FC<IBrowserPageProps> = (
 		...props
 	}) => {
 	const isBrowser = useIsBrowser();
-	const navigate = useNavigate<IQueryParams>();
+	const navigate  = useNavigate<IQueryParams>();
 	if (!isBrowser) {
 		return null;
 	}

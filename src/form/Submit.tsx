@@ -1,6 +1,15 @@
-import {useFormContext, UseToken} from "@leight-core/client";
-import {Button, Form} from "antd";
-import React, {ComponentProps, FC} from "react";
+import {
+	useFormContext,
+	UseToken
+}                       from "@leight-core/client";
+import {
+	Button,
+	Form
+}                       from "antd";
+import React, {
+	ComponentProps,
+	FC
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export interface ISubmitProps extends Partial<ComponentProps<typeof Button>> {
@@ -16,7 +25,7 @@ export interface ISubmitProps extends Partial<ComponentProps<typeof Button>> {
 }
 
 export const Submit: FC<ISubmitProps> = ({noStyle, label, tokens, ...props}) => {
-	const {t} = useTranslation();
+	const {t}         = useTranslation();
 	const formContext = useFormContext();
 	return <UseToken tokens={tokens}>
 		<Form.Item

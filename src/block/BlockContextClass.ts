@@ -1,5 +1,8 @@
 import {IBlockContext} from "@leight-core/api";
-import {Dispatch, SetStateAction} from "react";
+import {
+	Dispatch,
+	SetStateAction
+}                      from "react";
 
 export class BlockContextClass implements IBlockContext {
 	lockState: [boolean, Dispatch<SetStateAction<boolean>>];

@@ -1,6 +1,9 @@
 import {useIsMobile} from "@leight-core/client";
-import {Space, SpaceProps} from "antd";
-import {FC} from "react";
+import {
+	Space,
+	SpaceProps
+}                    from "antd";
+import {FC}          from "react";
 
 export interface IButtonBarProps extends Partial<SpaceProps> {
 	inline?: boolean;

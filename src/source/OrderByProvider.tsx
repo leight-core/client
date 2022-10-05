@@ -1,5 +1,9 @@
 import {OrderByContext} from "@leight-core/client";
-import {PropsWithChildren, useEffect, useState} from "react";
+import {
+	PropsWithChildren,
+	useEffect,
+	useState
+}                       from "react";
 
 export type IOrderByProviderProps<TOrderBy = any> = PropsWithChildren<{
 	name: string;

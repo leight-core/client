@@ -1,5 +1,8 @@
 import {FC} from "react";
-import {ITemplateProps, Template} from "./Template";
+import {
+	ITemplateProps,
+	Template
+}           from "./Template";
 
 export interface IPreviewTemplateProps extends ITemplateProps {
 }

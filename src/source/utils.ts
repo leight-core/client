@@ -1,10 +1,26 @@
-import {IBaseSelectOption, IHookCallback, IMutationHook, IPromiseCallback, IQueryHook, IQueryParams} from "@leight-core/api";
-import {toLink} from "@leight-core/client";
+import {
+	IBaseSelectOption,
+	IHookCallback,
+	IMutationHook,
+	IPromiseCallback,
+	IQueryHook,
+	IQueryParams
+}                                   from "@leight-core/api";
+import {toLink}                     from "@leight-core/client";
 import {createSyncStoragePersister} from "@tanstack/query-sync-storage-persister";
-import {QueryClient, useMutation, useQuery, UseQueryResult} from "@tanstack/react-query";
-import {persistQueryClient} from "@tanstack/react-query-persist-client";
-import axios, {AxiosRequestConfig, AxiosResponse, Method} from "axios";
-import {useEffect} from "react";
+import {
+	QueryClient,
+	useMutation,
+	useQuery,
+	UseQueryResult
+}                                   from "@tanstack/react-query";
+import {persistQueryClient}         from "@tanstack/react-query-persist-client";
+import axios, {
+	AxiosRequestConfig,
+	AxiosResponse,
+	Method
+}                                   from "axios";
+import {useEffect}                  from "react";
 
 /**
  * @param cacheTime cache time in hours
@@ -13,7 +29,7 @@ export function createQueryClient(cacheTime = 24): QueryClient {
 	return new QueryClient({
 		defaultOptions: {
 			queries: {
-				cacheTime: 1000 * 60 * 60 * cacheTime,
+				cacheTime:        1000 * 60 * 60 * cacheTime,
 				keepPreviousData: true,
 			}
 		}
@@ -28,7 +44,7 @@ export function useQueryPersistence(queryClient: QueryClient, name: string, bust
 		persistQueryClient({
 			queryClient,
 			persister: createSyncStoragePersister({storage: window.sessionStorage}),
-			buster: buster || process.env.BUILD_ID,
+			buster:    buster || process.env.BUILD_ID,
 		});
 	}, []);
 	return enable;
@@ -36,11 +52,11 @@ export function useQueryPersistence(queryClient: QueryClient, name: string, bust
 
 export const toPromise = <TRequest, TResponse>(method: Method, url: string, request?: TRequest, config?: AxiosRequestConfig<TRequest>) => new Promise<TResponse>((resolve, reject) => {
 	axios.request<TResponse, AxiosResponse<TResponse>, TRequest>({
-		method,
-		url,
-		data: request,
-		...config,
-	})
+			method,
+			url,
+			data: request,
+			...config,
+		})
 		.then(result => resolve(result.data))
 		.catch(reject);
 });
@@ -51,7 +67,10 @@ export const toPromise = <TRequest, TResponse>(method: Method, url: string, requ
 export function createQueryHook<TRequest, TResponse, TQueryParams extends IQueryParams = any>(link: string, method: Method): IQueryHook<TRequest, TResponse, TQueryParams> {
 	return (request?, query?, options?, config?) => {
 		return useQuery(
-			[link, {query, request}],
+			[
+				link,
+				{query, request}
+			],
 			() => toPromise<TRequest, TResponse>(method, toLink(link, query), request, config),
 			{
 				keepPreviousData: true,
@@ -63,7 +82,12 @@ export function createQueryHook<TRequest, TResponse, TQueryParams extends IQuery
 
 export function createMutationHook<TRequest, TResponse, TQueryParams extends IQueryParams = any>(link: string, method: Method): IMutationHook<TRequest, TResponse, TQueryParams> {
 	return (query?, options?, config?) => {
-		return useMutation<TResponse, any, TRequest>(["mutation", link, method, {query}], request => toPromise<TRequest, TResponse>(method, toLink(link, query), request, config), options);
+		return useMutation<TResponse, any, TRequest>([
+			"mutation",
+			link,
+			method,
+			{query}
+		], request => toPromise<TRequest, TResponse>(method, toLink(link, query), request, config), options);
 	};
 }
 

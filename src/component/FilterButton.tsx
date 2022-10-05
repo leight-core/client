@@ -1,5 +1,12 @@
-import {useCursorContext, useFilterContext} from "@leight-core/client";
-import {Button, ButtonProps, Tooltip} from "antd";
+import {
+	useCursorContext,
+	useFilterContext
+}                       from "@leight-core/client";
+import {
+	Button,
+	ButtonProps,
+	Tooltip
+}                       from "antd";
 import {useTranslation} from "react-i18next";
 
 export interface IFilterButtonProps<TFilter> extends Partial<ButtonProps> {
@@ -9,7 +16,7 @@ export interface IFilterButtonProps<TFilter> extends Partial<ButtonProps> {
 }
 
 export const FilterButton = <TFilter, >({label, tooltip = "common.filter.by-value.tooltip", applyFilter, ...props}: IFilterButtonProps<TFilter>) => {
-	const {t} = useTranslation();
+	const {t}           = useTranslation();
 	const cursorContext = useCursorContext();
 	const filterContext = useFilterContext();
 	return <Tooltip title={tooltip ? t(tooltip) : undefined}>

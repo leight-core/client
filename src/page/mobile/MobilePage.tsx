@@ -1,10 +1,27 @@
-import {INavigate, IQueryParams} from "@leight-core/api";
-import {MobileContent, PageProvider, useIsMobile, useMenuSelectionContext, useNavigate} from "@leight-core/client";
-import {isString} from "@leight-core/utils";
-import {Space} from "antd";
-import {NavBar, SafeArea} from "antd-mobile";
-import Head from "next/head";
-import {ComponentProps, FC, PropsWithChildren, ReactNode, useEffect} from "react";
+import {
+	INavigate,
+	IQueryParams
+}                       from "@leight-core/api";
+import {
+	MobileContent,
+	useIsMobile,
+	useMenuSelectionContext,
+	useNavigate
+}                       from "@leight-core/client";
+import {isString}       from "@leight-core/utils";
+import {Space}          from "antd";
+import {
+	NavBar,
+	SafeArea
+}                       from "antd-mobile";
+import Head             from "next/head";
+import {
+	ComponentProps,
+	FC,
+	PropsWithChildren,
+	ReactNode,
+	useEffect
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 const appHeight = () => {
@@ -64,64 +81,62 @@ export const MobilePage: FC<IMobilePageProps> = (
 
 	tabTitle = tabTitle || (title ? `${title}.title` : undefined);
 	return <MobileContent>
-		<PageProvider>
-			{tabTitle && <Head><title key={"title"}>{t(tabTitle, values)}</title></Head>}
-			<SafeArea position={"top"}/>
-			<div
-				className={"app-height"}
-				style={{
-					padding: "0",
-					margin: "0",
-					overflow: "hidden",
-					width: "100vw",
-					height: "var(--app-height)",
+		{tabTitle && <Head><title key={"title"}>{t(tabTitle, values)}</title></Head>}
+		<SafeArea position={"top"}/>
+		<div
+			className={"app-height"}
+			style={{
+				padding:  "0",
+				margin:   "0",
+				overflow: "hidden",
+				width:    "100vw",
+				height:   "var(--app-height)",
 
-					display: "flex",
-					flexDirection: "column",
-					backgroundColor: "#FFF",
+				display:         "flex",
+				flexDirection:   "column",
+				backgroundColor: "#FFF",
+			}}
+		>
+			<div style={{
+				flex:         0,
+				borderBottom: "solid 1px var(--adm-color-border)",
+			}}>
+				{header || (header !== null && <NavBar
+					backArrow={!!onBack}
+					onBack={() => onBack?.(navigate)}
+					{...navbarProps}
+				>
+					<Space size={4}>
+						{icon}
+						{isString(title) ? t(`${title}.title`) : title}
+					</Space>
+				</NavBar>)}
+			</div>
+			<div
+				style={{
+					flex:           1,
+					display:        "flex",
+					justifyContent: "start",
+					alignItems:     "start",
+					overflow:       "auto",
 				}}
 			>
 				<div style={{
-					flex: 0,
-					borderBottom: "solid 1px var(--adm-color-border)",
+					width:    "100vw",
+					overflow: "auto",
 				}}>
-					{header || (header !== null && <NavBar
-						backArrow={!!onBack}
-						onBack={() => onBack?.(navigate)}
-						{...navbarProps}
-					>
-						<Space size={4}>
-							{icon}
-							{isString(title) ? t(`${title}.title`) : title}
-						</Space>
-					</NavBar>)}
+					{children}
 				</div>
-				<div
-					style={{
-						flex: 1,
-						display: "flex",
-						justifyContent: "start",
-						alignItems: "start",
-						overflow: "auto",
-					}}
-				>
-					<div style={{
-						width: "100vw",
-						overflow: "auto",
-					}}>
-						{children}
-					</div>
-				</div>
-				{footer && <div
-					style={{
-						flex: 0,
-						borderTop: "solid 1px var(--adm-color-border)",
-					}}
-				>
-					{footer}
-				</div>}
 			</div>
-			<SafeArea position={"bottom"}/>
-		</PageProvider>
+			{footer && <div
+				style={{
+					flex:      0,
+					borderTop: "solid 1px var(--adm-color-border)",
+				}}
+			>
+				{footer}
+			</div>}
+		</div>
+		<SafeArea position={"bottom"}/>
 	</MobileContent>;
 };

@@ -1,7 +1,7 @@
 import {ITranslationProps} from "@leight-core/api";
-import {isString} from "@leight-core/utils";
-import {FC} from "react";
-import {useTranslation} from "react-i18next";
+import {isString}          from "@leight-core/utils";
+import {FC}                from "react";
+import {useTranslation}    from "react-i18next";
 
 export type ITranslateProps = ITranslationProps;
 

@@ -1,8 +1,20 @@
-import {Col, List, ListProps, Row, Tabs} from "antd";
-import {FC, ReactNode} from "react";
+import {
+	Col,
+	List,
+	ListProps,
+	Row,
+	Tabs
+}                       from "antd";
+import {
+	FC,
+	ReactNode
+}                       from "react";
 import {useTranslation} from "react-i18next";
-import {BrowserContent, MobileContent} from "../responsive";
-import {TabInline} from "../tab";
+import {
+	BrowserContent,
+	MobileContent
+}                       from "../responsive";
+import {TabInline}      from "../tab";
 
 export type IPreviewPropsChildren = {
 	/**

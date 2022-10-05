@@ -1,7 +1,18 @@
-import {BlockProvider, PageProvider, ScrollToTop, useBlockContext, useLayoutBlockContext, useMenuSelectionContext, useOptionalSiderCollapseContext} from "@leight-core/client";
-import {Spin} from "antd";
-import Head from "next/head";
-import {FC, PropsWithChildren, useEffect} from "react";
+import {
+	BlockProvider,
+	ScrollToTop,
+	useBlockContext,
+	useLayoutBlockContext,
+	useMenuSelectionContext,
+	useOptionalSiderCollapseContext
+}                       from "@leight-core/client";
+import {Spin}           from "antd";
+import Head             from "next/head";
+import {
+	FC,
+	PropsWithChildren,
+	useEffect
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export type IEmptyPageProps = PropsWithChildren<{
@@ -52,7 +63,7 @@ export const EmptyPage: FC<IEmptyPageProps> = (
 		values,
 		...props
 	}) => {
-	const {t} = useTranslation();
+	const {t}          = useTranslation();
 	const blockContext = useLayoutBlockContext();
 	useMenuSelectionContext().useSelection(menuSelection);
 	useOptionalSiderCollapseContext()?.useCollapse(collapsed, true);
@@ -60,11 +71,11 @@ export const EmptyPage: FC<IEmptyPageProps> = (
 		blockContext.unblock(true);
 	}, []);
 	tabTitle = tabTitle || (title ? `${title}.title` : undefined);
-	return <PageProvider>
+	return <>
 		{tabTitle && <Head><title key={"title"}>{t(tabTitle, values)}</title></Head>}
 		<ScrollToTop/>
 		<BlockProvider locked={blocked}>
 			<EmptyPageInternal {...props}/>
 		</BlockProvider>
-	</PageProvider>;
+	</>;
 };

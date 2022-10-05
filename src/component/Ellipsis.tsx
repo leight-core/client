@@ -1,5 +1,8 @@
 import {Ellipsis as CoolEllipsis} from "antd-mobile";
-import {ComponentProps, FC} from "react";
+import {
+	ComponentProps,
+	FC
+}                                 from "react";
 
 export interface IEllipsisProps extends ComponentProps<typeof CoolEllipsis> {
 }

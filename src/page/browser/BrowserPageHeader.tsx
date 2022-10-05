@@ -1,7 +1,20 @@
 import {isString} from "@leight-core/utils";
-import {Col, PageHeader as CoolPageHeader, PageHeaderProps as CoolPageHeaderProps, Row, Space} from "antd";
-import {ComponentProps, FC, ReactNode} from "react";
-import {Trans, useTranslation} from "react-i18next";
+import {
+	Col,
+	PageHeader as CoolPageHeader,
+	PageHeaderProps as CoolPageHeaderProps,
+	Row,
+	Space
+}                 from "antd";
+import {
+	ComponentProps,
+	FC,
+	ReactNode
+}                 from "react";
+import {
+	Trans,
+	useTranslation
+}                 from "react-i18next";
 
 export interface IBrowserPageHeaderProps extends Partial<CoolPageHeaderProps> {
 	icon?: ReactNode;
@@ -11,7 +24,7 @@ export interface IBrowserPageHeaderProps extends Partial<CoolPageHeaderProps> {
 }
 
 export const BrowserPageHeader: FC<IBrowserPageHeaderProps> = ({title, icon, headerPostfix, values, components, ...props}) => {
-	const {t} = useTranslation();
+	const {t}    = useTranslation();
 	const $title = isString(title) ? <span>
 		<Trans
 			t={t}

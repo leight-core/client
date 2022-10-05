@@ -1,5 +1,12 @@
-import {Template, useOptionalUserContext} from "@leight-core/client";
-import {ComponentProps, FC, PropsWithChildren} from "react";
+import {
+	Template,
+	useOptionalUserContext
+} from "@leight-core/client";
+import {
+	ComponentProps,
+	FC,
+	PropsWithChildren
+} from "react";
 
 export type IWithTokenProps = PropsWithChildren<{
 	tokens?: string[];

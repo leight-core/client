@@ -1,7 +1,24 @@
-import {LoaderIcon, PlaceholderPage, useLayoutBlockContext, useSiderCollapseContext} from "@leight-core/client";
-import {Layout, Spin} from "antd";
-import React, {CSSProperties, FC, PropsWithChildren, ReactNode, Suspense} from "react";
-import {BrowserView, MobileView} from "react-device-detect";
+import {
+	LoaderIcon,
+	PlaceholderPage,
+	useLayoutBlockContext,
+	useSiderCollapseContext
+} from "@leight-core/client";
+import {
+	Layout,
+	Spin
+} from "antd";
+import React, {
+	CSSProperties,
+	FC,
+	PropsWithChildren,
+	ReactNode,
+	Suspense
+} from "react";
+import {
+	BrowserView,
+	MobileView
+} from "react-device-detect";
 
 type ILayoutSiderProps = PropsWithChildren<{
 	sizeSize?: number;

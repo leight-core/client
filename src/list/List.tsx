@@ -1,7 +1,16 @@
-import {ISourceContext} from "@leight-core/api";
-import {LoaderIcon, PaginationProvider, Template, useSourceContext} from "@leight-core/client";
-import {UseQueryResult} from "@tanstack/react-query";
-import {List as CoolList, ListProps, SpinProps} from "antd";
+import {ISourceContext}   from "@leight-core/api";
+import {
+	LoaderIcon,
+	PaginationProvider,
+	Template,
+	useSourceContext
+}                         from "@leight-core/client";
+import {UseQueryResult}   from "@tanstack/react-query";
+import {
+	List as CoolList,
+	ListProps,
+	SpinProps
+}                         from "antd";
 import React, {ReactNode} from "react";
 
 export interface IListProps<TResponse> extends Partial<Omit<ListProps<TResponse>, "children" | "header" | "footer">> {
@@ -23,7 +32,7 @@ export interface IListProps<TResponse> extends Partial<Omit<ListProps<TResponse>
 	emptyText?: ReactNode;
 }
 
-export const ListItem = CoolList.Item;
+export const ListItem     = CoolList.Item;
 export const ListItemMeta = CoolList.Item.Meta;
 
 export const List = <TResponse, >(
@@ -43,11 +52,11 @@ export const List = <TResponse, >(
 			footer={footer?.(sourceContext)}
 			dataSource={sourceContext.data()}
 			loading={{
-				spinning: sourceContext.result[withLoading],
-				delay: 250,
+				spinning:  sourceContext.result[withLoading],
+				delay:     250,
 				indicator: <Template
-					icon={<LoaderIcon/>}
-				/>,
+							   icon={<LoaderIcon/>}
+						   />,
 				...loading,
 			}}
 			locale={{

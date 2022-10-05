@@ -1,6 +1,9 @@
 import {IFilterContext} from "@leight-core/api";
-import {useContext, useOptionalContext} from "@leight-core/client";
-import {createContext} from "react";
+import {
+	useContext,
+	useOptionalContext
+}                       from "@leight-core/client";
+import {createContext}  from "react";
 
 export const FilterContext = createContext<IFilterContext>(null as any);
 

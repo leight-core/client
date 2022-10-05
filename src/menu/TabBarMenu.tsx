@@ -1,8 +1,14 @@
-import {IQueryParams} from "@leight-core/api";
-import {useMenuSelectionContext, useNavigate} from "@leight-core/client";
-import {isString} from "@leight-core/utils";
-import {TabBar} from "antd-mobile";
-import {FC, ReactNode} from "react";
+import {IQueryParams}   from "@leight-core/api";
+import {
+	useMenuSelectionContext,
+	useNavigate
+}                       from "@leight-core/client";
+import {isString}       from "@leight-core/utils";
+import {TabBar}         from "antd-mobile";
+import {
+	FC,
+	ReactNode
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export interface ITabBarMenuItem {
@@ -17,9 +23,9 @@ export interface ITabBarMenuProps {
 }
 
 export const TabBarMenu: FC<ITabBarMenuProps> = ({items}) => {
-	const {t} = useTranslation();
-	const navigate = useNavigate();
-	const menuSelectionContext = useMenuSelectionContext();
+	const {t}                                       = useTranslation();
+	const navigate                                  = useNavigate();
+	const menuSelectionContext                      = useMenuSelectionContext();
 	const hrefs: { [key: string]: ITabBarMenuItem } = {};
 	for (const item of items) {
 		item && (hrefs[item.href] = item);

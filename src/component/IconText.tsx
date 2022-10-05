@@ -1,5 +1,12 @@
-import {Space, SpaceProps, Tooltip} from "antd";
-import {FC, ReactNode} from "react";
+import {
+	Space,
+	SpaceProps,
+	Tooltip
+}                       from "antd";
+import {
+	FC,
+	ReactNode
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IIconTextProps extends Partial<SpaceProps> {

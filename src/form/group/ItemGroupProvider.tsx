@@ -1,5 +1,8 @@
 import {ItemGroupContext} from "@leight-core/client";
-import {FC, PropsWithChildren} from "react";
+import {
+	FC,
+	PropsWithChildren
+}                         from "react";
 
 export type IItemGroupProviderProps = PropsWithChildren<{
 	prefix: (string | number)[];

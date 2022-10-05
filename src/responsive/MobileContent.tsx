@@ -1,5 +1,9 @@
 import {useIsMobile} from "@leight-core/client";
-import {FC, PropsWithChildren, ReactNode} from "react";
+import {
+	FC,
+	PropsWithChildren,
+	ReactNode
+}                    from "react";
 
 export type IMobileContentProps = PropsWithChildren<{
 	fallback?: ReactNode | null;

@@ -1,6 +1,13 @@
-import {CheckCircleTwoTone, CloseCircleTwoTone, MinusCircleTwoTone} from "@ant-design/icons";
+import {
+	CheckCircleTwoTone,
+	CloseCircleTwoTone,
+	MinusCircleTwoTone
+}               from "@ant-design/icons";
 import {Avatar} from "antd";
-import {FC, ReactNode} from "react";
+import {
+	FC,
+	ReactNode
+}               from "react";
 
 export interface IBoolInlineProps {
 	bool?: boolean | null;

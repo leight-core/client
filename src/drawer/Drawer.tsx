@@ -1,6 +1,19 @@
-import {Centered, ITranslateProps, Translate, useMobile, useVisibleContext} from "@leight-core/client";
-import {Drawer as CoolDrawer, Space} from "antd";
-import {ComponentProps, FC, ReactNode} from "react";
+import {
+	Centered,
+	ITranslateProps,
+	Translate,
+	useMobile,
+	useVisibleContext
+} from "@leight-core/client";
+import {
+	Drawer as CoolDrawer,
+	Space
+} from "antd";
+import {
+	ComponentProps,
+	FC,
+	ReactNode
+} from "react";
 
 type CoolDrawerProps = ComponentProps<typeof CoolDrawer>;
 
@@ -26,7 +39,7 @@ export const Drawer: FC<IDrawerProps> = (
 		...props
 	}) => {
 	const visibleContext = useVisibleContext();
-	const mobile = useMobile();
+	const mobile         = useMobile();
 	fullscreen && (width = "100vw") && (height = "100vh");
 	return <CoolDrawer
 		title={<Centered>

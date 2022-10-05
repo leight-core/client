@@ -1,6 +1,9 @@
-import {ISelectionContext, IWithIdentity} from "@leight-core/api";
+import {
+	ISelectionContext,
+	IWithIdentity
+}                            from "@leight-core/api";
 import {useSelectionContext} from "@leight-core/client";
-import {useEffect} from "react";
+import {useEffect}           from "react";
 
 export interface IOfSelection<TItem extends Record<string, any> & IWithIdentity = any, TOnChange = any> {
 	value?: TOnChange;

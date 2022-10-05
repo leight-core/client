@@ -1,9 +1,12 @@
-import {ISession} from "@leight-core/api";
-import {useQuery, UseQueryOptions} from "@tanstack/react-query";
+import {ISession}  from "@leight-core/api";
+import {
+	useQuery,
+	UseQueryOptions
+}                  from "@tanstack/react-query";
 import {useRouter} from "next/router";
 
 export async function fetchSession() {
-	const res = await fetch("/api/auth/session");
+	const res     = await fetch("/api/auth/session");
 	const session = await res.json();
 	if (Object.keys(session).length) {
 		return session;
@@ -25,10 +28,10 @@ export function useSession(
 	}: IUseSessionRequest = {}) {
 	const router = useRouter();
 	return useQuery<ISession>(["session"], fetchSession, {
-		staleTime: 60 * 100 * 5 * 3,
+		staleTime:            60 * 100 * 5 * 3,
 		refetchOnWindowFocus: "always",
-		refetchInterval: 60 * 100 * 5,
-		keepPreviousData: true,
+		refetchInterval:      60 * 100 * 5,
+		keepPreviousData:     true,
 		...queryConfig,
 		onSettled(data, error) {
 			queryConfig?.onSettled?.(data, error);

@@ -1,5 +1,10 @@
 import {MenuSelectionContext} from "@leight-core/client";
-import {FC, PropsWithChildren, useEffect, useState} from "react";
+import {
+	FC,
+	PropsWithChildren,
+	useEffect,
+	useState
+}                             from "react";
 
 export type IMenuSelectionProviderProps = PropsWithChildren<{
 	defaultSelection?: string[];

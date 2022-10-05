@@ -1,5 +1,11 @@
-import {Breadcrumb, BreadcrumbProps} from "antd";
-import {FC, ReactNode} from "react";
+import {
+	Breadcrumb,
+	BreadcrumbProps
+} from "antd";
+import {
+	FC,
+	ReactNode
+} from "react";
 
 export interface IBreadcrumbsProps extends Partial<BreadcrumbProps> {
 	children: ReactNode[];

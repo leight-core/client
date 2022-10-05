@@ -1,6 +1,9 @@
 import {LoaderIcon} from "@leight-core/client";
-import {Result, ResultProps} from "antd";
-import {FC} from "react";
+import {
+	Result,
+	ResultProps
+}                   from "antd";
+import {FC}         from "react";
 
 export interface IResultSpinnerProps extends Partial<ResultProps> {
 }

@@ -1,4 +1,10 @@
-import {ICursorContext, IFilterContext, IOrderByContext, IQueryParams, IQueryParamsContext} from "@leight-core/api";
+import {
+	ICursorContext,
+	IFilterContext,
+	IOrderByContext,
+	IQueryParams,
+	IQueryParamsContext
+}                   from "@leight-core/api";
 import {
 	CursorContext,
 	CursorProvider,
@@ -12,9 +18,9 @@ import {
 	OrderByProvider,
 	QueryParamsContext,
 	QueryParamsProvider
-} from "@leight-core/client";
+}                   from "@leight-core/client";
 import {isCallable} from "@leight-core/utils";
-import {ReactNode} from "react";
+import {ReactNode}  from "react";
 
 export interface ISourceControlProviderRender<TFilter = any, TOrderBy = any, TQueryParams extends IQueryParams | undefined = undefined> {
 	queryContext: IQueryParamsContext<TQueryParams>;

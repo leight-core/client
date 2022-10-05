@@ -1,8 +1,12 @@
 import {IQueryParams} from "@leight-core/api";
-import {Translate} from "@leight-core/client";
-import {Button} from "antd";
-import Link from "next/link";
-import React, {ComponentProps, FC, ReactNode} from "react";
+import {Translate}    from "@leight-core/client";
+import {Button}       from "antd";
+import Link           from "next/link";
+import React, {
+	ComponentProps,
+	FC,
+	ReactNode
+}                     from "react";
 
 export interface IButtonLinkProps extends Partial<ComponentProps<typeof Button>> {
 	/**

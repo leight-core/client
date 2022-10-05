@@ -1,6 +1,6 @@
-import {Skeleton} from "antd";
+import {Skeleton}           from "antd";
 import {SkeletonInputProps} from "antd/lib/skeleton/Input";
-import {ReactNode} from "react";
+import {ReactNode}          from "react";
 
 export interface IPlaceholderProps<TData = any> {
 	/**

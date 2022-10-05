@@ -1,6 +1,14 @@
-import {Centered, useIsBrowser, useIsMobile} from "@leight-core/client";
-import {Result} from "antd";
-import {ComponentProps, FC, ReactNode} from "react";
+import {
+	Centered,
+	useIsBrowser,
+	useIsMobile
+}                       from "@leight-core/client";
+import {Result}         from "antd";
+import {
+	ComponentProps,
+	FC,
+	ReactNode
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export interface ITemplateProps extends Partial<ComponentProps<typeof Result>> {
@@ -12,8 +20,8 @@ export interface ITemplateProps extends Partial<ComponentProps<typeof Result>> {
 }
 
 export const Template: FC<ITemplateProps> = ({icon, forceIcon = false, browserExtra, mobileExtra, label, title, subTitle, span = 16, children, ...props}) => {
-	const {t} = useTranslation();
-	const isMobile = useIsMobile();
+	const {t}       = useTranslation();
+	const isMobile  = useIsMobile();
 	const isBrowser = useIsBrowser();
 	return <>
 		{(isBrowser || isMobile) && <Result

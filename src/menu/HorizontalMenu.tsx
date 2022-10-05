@@ -1,4 +1,7 @@
-import {IMenuProps, Menu} from "@leight-core/client";
+import {
+	IMenuProps,
+	Menu
+}           from "@leight-core/client";
 import {FC} from "react";
 
 export interface IHorizontalMenuProps extends Partial<IMenuProps> {

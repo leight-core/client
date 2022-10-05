@@ -1,7 +1,17 @@
-import {Translate, useMobileFormContext} from "@leight-core/client";
-import {Space} from "antd";
-import {Button, Form} from "antd-mobile";
-import React, {ComponentProps, FC, ReactNode} from "react";
+import {
+	Translate,
+	useMobileFormContext
+}                       from "@leight-core/client";
+import {Space}          from "antd";
+import {
+	Button,
+	Form
+}                       from "antd-mobile";
+import React, {
+	ComponentProps,
+	FC,
+	ReactNode
+}                       from "react";
 import {useTranslation} from "react-i18next";
 
 export interface IMobileSubmitProps extends Partial<ComponentProps<typeof Button>> {
@@ -13,7 +23,7 @@ export interface IMobileSubmitProps extends Partial<ComponentProps<typeof Button
 }
 
 export const MobileSubmit: FC<IMobileSubmitProps> = ({label, icon, ...props}) => {
-	const {t} = useTranslation();
+	const {t}         = useTranslation();
 	const formContext = useMobileFormContext();
 	return <Form.Item>
 		<Button

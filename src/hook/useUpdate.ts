@@ -1,4 +1,8 @@
-import {DependencyList, useEffect, useRef} from "react";
+import {
+	DependencyList,
+	useEffect,
+	useRef
+} from "react";
 
 export const useUpdate = (deps: DependencyList[], callback: () => void) => {
 	const init = useRef(false);

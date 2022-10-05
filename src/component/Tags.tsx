@@ -1,6 +1,10 @@
-import {ITag} from "@leight-core/api";
-import {Tag, TagProps, Typography} from "antd";
-import {FC} from "react";
+import {ITag}           from "@leight-core/api";
+import {
+	Tag,
+	TagProps,
+	Typography
+}                       from "antd";
+import {FC}             from "react";
 import {useTranslation} from "react-i18next";
 
 export interface ITagsProps extends Omit<Partial<TagProps>, "onClick"> {
