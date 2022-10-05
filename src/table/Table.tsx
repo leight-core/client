@@ -1,4 +1,4 @@
-import {LoaderIcon, PaginationProvider, Template, useSourceContext} from "@leight-core/client";
+import {LoaderIcon, PaginationProvider, Template, useOptionalSelectionContext, useSourceContext} from "@leight-core/client";
 import {isString} from "@leight-core/utils";
 import {UseQueryResult} from "@tanstack/react-query";
 import {Empty, SpinProps, Table as CoolTable, TableProps} from "antd";
@@ -29,6 +29,7 @@ export const Table = <TResponse, >(
 	}: ITableProps<TResponse>) => {
 	const {t} = useTranslation();
 	const sourceContext = useSourceContext<TResponse>();
+	const selectionContext = useOptionalSelectionContext<TResponse>();
 
 	const createColumn = (props: any) => {
 		if (props.title === undefined) {
@@ -60,6 +61,14 @@ export const Table = <TResponse, >(
 				/>,
 				...loading,
 			}}
+			rowSelection={selectionContext ? {
+				type: selectionContext.type === "single" ? "radio" : "checkbox",
+				selectedRowKeys: selectionContext.toSelection(),
+				onSelect: (file, selected) => selectionContext.item(file, selected),
+				onSelectAll: (selected, _, files) => selectionContext.items(files, selected),
+				onSelectMultiple: (selected, _, files) => selectionContext.items(files, selected),
+				onSelectNone: () => selectionContext.clear(),
+			} : undefined}
 			size={"large"}
 			locale={{emptyText: <Empty description={t("common.nothing-found")}/>}}
 			pagination={{

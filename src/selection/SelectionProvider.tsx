@@ -46,6 +46,7 @@ export function SelectionProvider<TSelection, >({type = "single", defaultSelecti
 	}, [JSON.stringify(applySelection)]);
 
 	const context: ISelectionContext<TSelection> = {
+		type,
 		isSelected: id => !!selectionRef.current[id],
 		asSelection: () => selectionRef.current,
 		toSelection: () => Object.keys(selectionRef.current),
