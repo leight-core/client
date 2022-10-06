@@ -1,5 +1,5 @@
 {
-	"version": "0.6.253",
+	"version": "0.6.254",
 	"name": "@leight-core/client",
 	"description": "All that shiny client stuff.",
 	"license": "MIT",
@@ -22,7 +22,7 @@
 	},
 	"dependencies": {
 		"@fingerprintjs/fingerprintjs": "^3.3.6",
-		"@leight-core/api": "^0.6.188",
+		"@leight-core/api": "^0.6.193",
 		"@leight-core/utils": "^0.5.41",
 		"@tanstack/query-sync-storage-persister": "^4.6.1",
 		"@tanstack/react-query": "^4.10.1",
