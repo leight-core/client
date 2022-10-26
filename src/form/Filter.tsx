@@ -53,7 +53,7 @@ const FilterInternal: FC<IFilterInternalProps> = ({onClear, children}) => {
 				</Button>}
 				<Submit
 					icon={<SearchOutlined/>}
-					label={t("common.filter.submit")}
+					label={"common.filter.submit"}
 				/>
 			</Space>
 		</Centered>
