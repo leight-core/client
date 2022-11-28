@@ -2,14 +2,12 @@ import {ILocaleConfig}    from "@leight-core/api";
 import dayjs              from "dayjs";
 import i18n               from "i18next";
 import LanguageDetector   from "i18next-browser-languagedetector";
-import moment             from "moment";
 import {initReactI18next} from "react-i18next";
 import locales            from "./locale.json";
 
 const defaultLocale = {
-	dayjs:  "en-gb",
-	moment: "en-gb",
-	antd:   "en_GB",
+	dayjs: "en-gb",
+	antd:  "en_GB",
 };
 
 export const bootstrapLocale = async (): Promise<ILocaleConfig> => {
@@ -36,9 +34,6 @@ export const bootstrapLocale = async (): Promise<ILocaleConfig> => {
 		import(`dayjs/locale/${locale.dayjs}.js`)
 			.then(() => dayjs.locale(locale.dayjs))
 			.catch(() => console.log(`Cannot import [dayjs/locale/${locale.dayjs}.js].`));
-		import(`moment/locale/${locale.moment}.js`)
-			.then(() => moment.locale(locale.moment))
-			.catch(() => console.log(`Cannot import [moment/locale/${locale.moment}.js].`));
 		import(`antd/lib/locale/${locale.antd}.js`)
 			.then(({default: antd}) => resolver({antd}));
 	});
