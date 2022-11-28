@@ -1,8 +1,10 @@
+import {
+	PageHeader as CoolPageHeader,
+	PageHeaderProps as CoolPageHeaderProps
+}                 from "@ant-design/pro-layout";
 import {isString} from "@leight-core/utils";
 import {
 	Col,
-	PageHeader as CoolPageHeader,
-	PageHeaderProps as CoolPageHeaderProps,
 	Row,
 	Space
 }                 from "antd";
