@@ -14,7 +14,6 @@ export const Card: FC<ICardProps> = ({title, ...props}) => {
 	const mobile = useMobile();
 	const {t}    = useTranslation();
 	return <CoolCard
-		bodyStyle={mobile({padding: "8px"})}
 		headStyle={mobile({minHeight: "32px"})}
 		title={isString(title) ? t(title as string) : title}
 		bordered={false}

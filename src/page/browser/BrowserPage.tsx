@@ -116,7 +116,7 @@ export const BrowserPage: FC<IBrowserPageProps> = (
 			{...headerProps}
 		/>)}
 		<Card
-			bodyStyle={{padding: "0 8px", paddingBottom: "16px", minHeight: "60vh"}}
+			// bodyStyle={{padding: "0 8px", paddingBottom: "16px", minHeight: "60vh"}}
 			{...cardProps}
 		>
 			{children}
