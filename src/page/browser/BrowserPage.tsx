@@ -21,7 +21,6 @@ import {
 	Divider
 }                               from "antd";
 import Breadcrumb               from "antd/lib/breadcrumb";
-import * as React               from "react";
 import {
 	FC,
 	ReactNode
@@ -116,13 +115,10 @@ export const BrowserPage: FC<IBrowserPageProps> = (
 			{...headerProps}
 		/>)}
 		<Card
-			// bodyStyle={{padding: "0 8px", paddingBottom: "16px", minHeight: "60vh"}}
+			bodyStyle={{paddingBottom: "16px"}}
 			{...cardProps}
 		>
 			{children}
-		</Card>
-		<Card bordered={false}>
-			&nbsp;
 		</Card>
 	</EmptyPage>;
 };
