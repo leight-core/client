@@ -57,7 +57,7 @@ export const DrawerButton: FC<IDrawerButtonProps> = (
 						<Button
 							onClick={event => {
 								visibleContext.show();
-								onClick?.(event);
+								onClick?.(event as any);
 							}}
 							{...props}
 						>
