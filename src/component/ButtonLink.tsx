@@ -37,16 +37,18 @@ export const ButtonLink: FC<IButtonLinkProps> = ({href, label, query, ...props})
 				</span>
 			</Button>;
 		}
-		return <Link href={{pathname: href, query: query || undefined}}>
-			<Button
-				type={"link"}
-				size={"large"}
-				{...props}
-			>
+		return <Link href={{pathname: href, query: query || undefined}} passHref>
+			<a>
+				<Button
+					type={"link"}
+					size={"large"}
+					{...props}
+				>
 				<span>
 					<Translate text={label}/>
 				</span>
-			</Button>
+				</Button>
+			</a>
 		</Link>;
 	} catch (e) {
 		console.warn(`Cannot generate link [${href}] for ButtonLink. Params:`, query, e);
