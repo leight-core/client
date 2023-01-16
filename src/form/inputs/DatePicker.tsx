@@ -10,7 +10,7 @@ export type IDatePickerProps = {
 	usePlaceholder?: boolean
 }
 
-export const DatePicker: FC<DatePickerProps & IDatePickerProps> = ({format = "LLL", usePlaceholder = false, ...props}) => {
+export const DatePicker: FC<DatePickerProps & IDatePickerProps> = ({format = "LL", usePlaceholder = false, ...props}) => {
 	const formItemContext = useOptionalFormItemContext();
 	return <CoolDatePicker
 		format={date => date.format(format)}
