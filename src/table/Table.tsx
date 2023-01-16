@@ -85,7 +85,7 @@ export const Table = <TResponse, >(
 					onSelectMultiple: (selected, _, items) => selectionContext.items(items, selected),
 					onSelectNone:     () => selectionContext.clear(),
 				} : undefined}
-				size={"large"}
+				size={"small"}
 				locale={{emptyText: <Empty description={t("common.nothing-found")}/>}}
 				pagination={{
 					...paginationContext.pagination(),
