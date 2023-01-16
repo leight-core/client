@@ -61,10 +61,12 @@ export const DrawerButton: FC<IDrawerButtonProps> = (
 							}}
 							{...props}
 						>
-							<Translate
-								{...translation}
-								text={label}
-							/>
+							<span>
+								<Translate
+									{...translation}
+									text={label}
+								/>
+							</span>
 						</Button>
 					</UseToken>
 				</>}

@@ -9,6 +9,7 @@ import {
 	IDrawerButtonProps,
 	IFormProps,
 	Submit,
+	Translate,
 	useFilterContext,
 	useFormContext,
 	useOptionalCursorContext,
@@ -175,7 +176,7 @@ export function Filter<TFilter = any>(
 				}}
 				icon={<CloseCircleOutlined/>}
 			>
-				{t("common.filter.clear")}
+				<span><Translate text={"common.filter.clear"}/></span>
 			</Button>}
 		</Space>;
 }
